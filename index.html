@@ -274,6 +274,49 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
 .fin-tab { flex: 1; padding: 8px; text-align: center; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted); transition: all 0.2s; border: none; background: none; font-family: 'Outfit', sans-serif; }
 .fin-tab.active.receita { background: var(--green-bg); color: var(--green); }
 .fin-tab.active.gasto { background: var(--red-bg); color: var(--red); }
+
+/* VOICE FAB */
+.voice-fab {
+  position: fixed; bottom: 90px; right: 16px; z-index: 400;
+  width: 58px; height: 58px; border-radius: 50%;
+  background: linear-gradient(135deg, #f0a500, #e67e00);
+  border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; box-shadow: 0 4px 20px rgba(240,165,0,0.5);
+  transition: all 0.2s;
+}
+.voice-fab:hover { transform: scale(1.08); }
+.voice-fab.listening { background: linear-gradient(135deg, var(--red), #c0392b); animation: pulse-fab 1s ease-in-out infinite; }
+.voice-fab.processing { background: linear-gradient(135deg, var(--blue), #2563eb); }
+@keyframes pulse-fab { 0%,100%{transform:scale(1);box-shadow:0 4px 20px rgba(244,63,94,0.5)} 50%{transform:scale(1.1);box-shadow:0 4px 30px rgba(244,63,94,0.7)} }
+.voice-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+  z-index: 600; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s; padding: 20px;
+}
+.voice-overlay.open { opacity: 1; pointer-events: all; }
+.voice-box {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: 20px; padding: 24px 20px; width: 100%; max-width: 420px;
+  text-align: center; transform: scale(0.92); transition: transform 0.25s;
+}
+.voice-overlay.open .voice-box { transform: scale(1); }
+.voice-orb {
+  width: 88px; height: 88px; border-radius: 50%; margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center; font-size: 34px;
+  background: linear-gradient(135deg, var(--elet), #e67e00);
+}
+.voice-orb.listening { background: linear-gradient(135deg, var(--red), #c0392b); animation: orb-pulse 1s ease-in-out infinite; }
+.voice-orb.processing { background: linear-gradient(135deg, var(--blue), #2563eb); animation: orb-rotate 1.2s linear infinite; }
+@keyframes orb-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(244,63,94,0.5)} 50%{box-shadow:0 0 0 18px rgba(244,63,94,0)} }
+@keyframes orb-rotate { to{transform:rotate(360deg)} }
+.voice-status { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 10px; }
+.voice-transcript { font-size: 15px; color: var(--text); min-height: 48px; margin-bottom: 14px; line-height: 1.5; font-style: italic; padding: 0 8px; }
+.voice-result { background: var(--s2); border-radius: var(--r-sm); padding: 12px 14px; margin-bottom: 14px; text-align: left; display: none; }
+.voice-result.show { display: block; }
+.voice-result .vr-action { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--elet); margin-bottom: 8px; }
+.voice-result .vr-item { font-size: 13px; color: var(--muted); padding: 3px 0; }
+.voice-result .vr-item strong { color: var(--text); }
+.voice-hint { font-size: 11px; color: var(--muted2); margin-top: 12px; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -444,6 +487,12 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
     <button class="btn btn-ghost" onclick="salvarConexao()" style="margin-top:4px">Salvar e Reconectar</button>
   </div>
   <div class="card">
+    <div class="card-label">🎤 Anthropic API (Voz com IA)</div>
+    <div class="cfg-item"><label>Chave API Anthropic</label><input type="password" id="cfgAnthropicKey" placeholder="sk-ant-api03-..."></div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Necessária para o comando de voz. Obtenha em console.anthropic.com</div>
+    <button class="btn btn-ghost" onclick="salvarChaveAnthropics()">Salvar Chave</button>
+  </div>
+  <div class="card">
     <div class="card-label">💰 Valores Elétrica</div>
     <div class="cfg-item"><label>Hora Normal (R$)</label><input type="number" id="cfgHN" value="30" step="0.01"></div>
     <div class="cfg-item"><label>Hora Extra / FDS / Feriado (R$)</label><input type="number" id="cfgHE" value="45" step="0.01"></div>
@@ -569,6 +618,29 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
   </div>
 </div>
 
+<!-- VOICE FAB -->
+<button class="voice-fab" id="voiceFab" onclick="abrirVoice()" title="Comando de voz">🎤</button>
+
+<!-- VOICE OVERLAY -->
+<div class="voice-overlay" id="voiceOverlay">
+  <div class="voice-box">
+    <div class="voice-orb" id="voiceOrb">🎤</div>
+    <div class="voice-status" id="voiceStatus">Toque para falar</div>
+    <div class="voice-transcript" id="voiceTranscript">Diga o que deseja registrar...</div>
+    <div class="voice-result" id="voiceResult">
+      <div class="vr-action" id="vrAction"></div>
+      <div id="vrDetails"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" style="flex:1" onclick="fecharVoice()">Cancelar</button>
+      <button class="btn btn-primary" style="flex:2;display:none" id="voiceConfirmar" onclick="confirmarVoice()">✓ Confirmar</button>
+    </div>
+    <div class="voice-hint" id="voiceHint">
+      Exemplos: "Deslocamento elétrica pra Avantt km 105" · "Cheguei km 110" · "Serviço elétrica André das 8 às 17" · "Gasto combustível 80 reais"
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -585,6 +657,7 @@ cfg.hn = cfg.hn || 30;
 cfg.he = cfg.he || 45;
 cfg.base = cfg.base || 9;
 cfg.km = cfg.km || 0;
+cfg.anthropicKey = cfg.anthropicKey || '';
 
 let sbClient = null;
 let ativos = JSON.parse(localStorage.getItem('goAtivos') || '[]');
@@ -1279,6 +1352,13 @@ function carregarConfigUI() {
   document.getElementById('cfgHE').value = cfg.he;
   document.getElementById('cfgBase').value = cfg.base;
   document.getElementById('cfgKm').value = cfg.km;
+  document.getElementById('cfgAnthropicKey').value = cfg.anthropicKey || '';
+}
+
+function salvarChaveAnthropics() {
+  cfg.anthropicKey = document.getElementById('cfgAnthropicKey').value.trim();
+  localStorage.setItem('goCfg', JSON.stringify(cfg));
+  toast('✓ Chave Anthropic salva!');
 }
 
 function salvarConexao() {
@@ -1375,6 +1455,298 @@ function toast(msg, err = false) {
 // Init
 setTimeout(atualizarResumoDia, 500);
 setFinTipo('receita');
+
+// ══════════════════════════════════════════════
+// VOICE SYSTEM
+// ══════════════════════════════════════════════
+let voiceRecognition = null;
+let voiceAtivo = false;
+let voiceDadosInterpretados = null;
+let voiceTranscricao = '';
+
+function abrirVoice() {
+  document.getElementById('voiceOverlay').classList.add('open');
+  document.getElementById('voiceOrb').className = 'voice-orb';
+  document.getElementById('voiceOrb').textContent = '🎤';
+  document.getElementById('voiceStatus').textContent = 'Toque no microfone para falar';
+  document.getElementById('voiceTranscript').textContent = 'Diga o que deseja registrar...';
+  document.getElementById('voiceResult').classList.remove('show');
+  document.getElementById('voiceConfirmar').style.display = 'none';
+  document.getElementById('voiceHint').style.display = 'block';
+  voiceDadosInterpretados = null;
+  voiceTranscricao = '';
+}
+
+function fecharVoice() {
+  pararReconhecimento();
+  document.getElementById('voiceOverlay').classList.remove('open');
+  document.getElementById('voiceFab').className = 'voice-fab';
+}
+
+function abrirVoiceEGravar() {
+  abrirVoice();
+  setTimeout(iniciarReconhecimento, 300);
+}
+
+// Ao clicar no orb, inicia/para gravação
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('voiceOrb').addEventListener('click', () => {
+    if(voiceAtivo) pararReconhecimento();
+    else iniciarReconhecimento();
+  });
+  // Botão FAB inicia diretamente a gravação
+  document.getElementById('voiceFab').addEventListener('click', (e) => {
+    e.stopPropagation();
+    abrirVoice();
+    setTimeout(iniciarReconhecimento, 400);
+  });
+});
+
+function iniciarReconhecimento() {
+  const apiKey = cfg.anthropicKey;
+  if(!apiKey) { toast('Configure a chave API Anthropic na aba Config', true); return; }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition) { toast('Navegador não suporta reconhecimento de voz', true); return; }
+
+  voiceRecognition = new SpeechRecognition();
+  voiceRecognition.lang = 'pt-BR';
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = true;
+
+  voiceAtivo = true;
+  document.getElementById('voiceOrb').className = 'voice-orb listening';
+  document.getElementById('voiceOrb').textContent = '🔴';
+  document.getElementById('voiceStatus').textContent = 'Ouvindo... fale agora';
+  document.getElementById('voiceTranscript').textContent = '';
+  document.getElementById('voiceResult').classList.remove('show');
+  document.getElementById('voiceConfirmar').style.display = 'none';
+  document.getElementById('voiceFab').className = 'voice-fab listening';
+
+  voiceRecognition.onresult = (e) => {
+    let interim = '', final = '';
+    for(let i = e.resultIndex; i < e.results.length; i++) {
+      if(e.results[i].isFinal) final += e.results[i][0].transcript;
+      else interim += e.results[i][0].transcript;
+    }
+    document.getElementById('voiceTranscript').textContent = '"' + (final || interim) + '"';
+    if(final) voiceTranscricao = final;
+  };
+
+  voiceRecognition.onend = () => {
+    voiceAtivo = false;
+    document.getElementById('voiceFab').className = 'voice-fab';
+    if(voiceTranscricao) interpretarComIA(voiceTranscricao);
+    else {
+      document.getElementById('voiceOrb').className = 'voice-orb';
+      document.getElementById('voiceOrb').textContent = '🎤';
+      document.getElementById('voiceStatus').textContent = 'Toque para tentar novamente';
+    }
+  };
+
+  voiceRecognition.onerror = (e) => {
+    voiceAtivo = false;
+    document.getElementById('voiceOrb').className = 'voice-orb';
+    document.getElementById('voiceOrb').textContent = '🎤';
+    document.getElementById('voiceStatus').textContent = 'Erro: ' + (e.error === 'not-allowed' ? 'permita o microfone' : e.error);
+    document.getElementById('voiceFab').className = 'voice-fab';
+  };
+
+  voiceRecognition.start();
+}
+
+function pararReconhecimento() {
+  if(voiceRecognition) { try { voiceRecognition.stop(); } catch(e) {} }
+  voiceAtivo = false;
+  document.getElementById('voiceFab').className = 'voice-fab';
+}
+
+async function interpretarComIA(texto) {
+  document.getElementById('voiceOrb').className = 'voice-orb processing';
+  document.getElementById('voiceOrb').textContent = '⚙️';
+  document.getElementById('voiceStatus').textContent = 'Interpretando com IA...';
+  document.getElementById('voiceHint').style.display = 'none';
+
+  const hoje = fmtISO(new Date());
+  const horaAgora = horaAtual();
+  const ativosInfo = ativos.length > 0 ? `Deslocamento ativo: ${ativos[0].destino} (saída ${ativos[0].horaSaida}, segmento ${ativos[0].segmento})` : 'Nenhum deslocamento ativo';
+
+  const prompt = `Você é o assistente do app GestãoOp, um app de gestão operacional para técnico de elétrica e segurança eletrônica.
+
+Data atual: ${hoje}
+Hora atual: ${horaAgora}
+${ativosInfo}
+
+O usuário falou: "${texto}"
+
+Interprete o comando e retorne APENAS um JSON válido (sem markdown, sem explicação), com esta estrutura:
+
+Para iniciar deslocamento:
+{"acao":"iniciar_desloc","segmento":"eletrica|seguranca","destino":"nome do destino","kmInicial":numero,"horaSaida":"HH:MM"}
+
+Para encerrar deslocamento:
+{"acao":"encerrar_desloc","kmFinal":numero,"horaChegada":"HH:MM"}
+
+Para registrar serviço:
+{"acao":"servico","segmento":"eletrica|seguranca","cliente":"nome","horaInicio":"HH:MM","horaFim":"HH:MM","obs":"opcional"}
+
+Para lançamento financeiro:
+{"acao":"financeiro","tipo":"receita|gasto","descricao":"texto","valor":numero,"categoria":"material|combustivel|ferramenta|transporte|alimentacao|servico|outro","segmento":"eletrica|seguranca|geral"}
+
+Para qualquer dúvida:
+{"acao":"nao_entendido","mensagem":"explique o que entendeu e peça para repetir"}
+
+Regras:
+- Segmento padrão é "eletrica" se não mencionado
+- Se o usuário falar "cheguei" ou "km final" sem deslocamento ativo, use encerrar_desloc
+- Infira horários pelo contexto se não mencionado (use ${horaAgora} como referência)
+- Km deve ser número puro sem texto
+- Para valores monetários, converta "oitenta reais" para 80, "cento e cinquenta" para 150 etc
+- Retorne SOMENTE o JSON, nada mais`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': cfg.anthropicKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 500,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content?.[0]?.text || '';
+    const jsonStr = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(jsonStr);
+    voiceDadosInterpretados = parsed;
+    mostrarResultadoVoice(parsed, texto);
+  } catch(e) {
+    document.getElementById('voiceOrb').className = 'voice-orb';
+    document.getElementById('voiceOrb').textContent = '🎤';
+    document.getElementById('voiceStatus').textContent = 'Erro ao interpretar. Tente novamente.';
+    document.getElementById('voiceTranscript').textContent = '"' + texto + '"';
+    document.getElementById('voiceHint').style.display = 'block';
+  }
+}
+
+function mostrarResultadoVoice(dados, textoOriginal) {
+  const orb = document.getElementById('voiceOrb');
+  const status = document.getElementById('voiceStatus');
+  const result = document.getElementById('voiceResult');
+  const action = document.getElementById('vrAction');
+  const details = document.getElementById('vrDetails');
+  const confirmar = document.getElementById('voiceConfirmar');
+
+  orb.className = 'voice-orb';
+
+  if(dados.acao === 'nao_entendido') {
+    orb.textContent = '❓';
+    status.textContent = 'Não entendi bem...';
+    document.getElementById('voiceTranscript').textContent = dados.mensagem;
+    return;
+  }
+
+  orb.textContent = '✅';
+  status.textContent = 'Entendido! Confirme abaixo:';
+
+  const acaoLabel = {
+    'iniciar_desloc': '🚗 Iniciar Deslocamento',
+    'encerrar_desloc': '📍 Encerrar Deslocamento',
+    'servico': dados.segmento === 'eletrica' ? '⚡ Serviço Elétrica' : '📷 Serviço Segurança',
+    'financeiro': dados.tipo === 'receita' ? '➕ Receita' : '➖ Gasto',
+  };
+
+  action.textContent = acaoLabel[dados.acao] || dados.acao;
+
+  let html = '';
+  if(dados.acao === 'iniciar_desloc') {
+    html = `<div class="vr-item">Destino: <strong>${dados.destino || '—'}</strong></div>
+            <div class="vr-item">Km inicial: <strong>${dados.kmInicial || '—'}</strong></div>
+            <div class="vr-item">Hora saída: <strong>${dados.horaSaida || horaAtual()}</strong></div>
+            <div class="vr-item">Segmento: <strong>${dados.segmento === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}</strong></div>`;
+  } else if(dados.acao === 'encerrar_desloc') {
+    html = `<div class="vr-item">Km final: <strong>${dados.kmFinal || '—'}</strong></div>
+            <div class="vr-item">Hora chegada: <strong>${dados.horaChegada || horaAtual()}</strong></div>`;
+  } else if(dados.acao === 'servico') {
+    html = `<div class="vr-item">Cliente: <strong>${dados.cliente || '—'}</strong></div>
+            <div class="vr-item">Horário: <strong>${dados.horaInicio} → ${dados.horaFim}</strong></div>
+            ${dados.obs ? `<div class="vr-item">Obs: <strong>${dados.obs}</strong></div>` : ''}`;
+  } else if(dados.acao === 'financeiro') {
+    html = `<div class="vr-item">Descrição: <strong>${dados.descricao}</strong></div>
+            <div class="vr-item">Valor: <strong>R$ ${parseFloat(dados.valor||0).toFixed(2)}</strong></div>
+            <div class="vr-item">Categoria: <strong>${dados.categoria}</strong></div>`;
+  }
+
+  details.innerHTML = html;
+  result.classList.add('show');
+  confirmar.style.display = 'block';
+  document.getElementById('voiceHint').style.display = 'none';
+}
+
+async function confirmarVoice() {
+  const d = voiceDadosInterpretados;
+  if(!d) return;
+
+  if(d.acao === 'iniciar_desloc') {
+    tipoDeslocAtual = d.segmento || 'eletrica';
+    ativos.push({
+      tipo: 'desloc', segmento: tipoDeslocAtual,
+      destino: d.destino || '',
+      kmInicial: parseFloat(d.kmInicial) || 0,
+      horaSaida: d.horaSaida || horaAtual(),
+      tsInicio: new Date().toISOString(),
+      data: fmtISO(new Date())
+    });
+    salvarAtivos(); renderAtivos();
+    toast('🚗 Deslocamento iniciado!');
+
+  } else if(d.acao === 'encerrar_desloc') {
+    if(!ativos.length) { toast('Nenhum deslocamento ativo', true); fecharVoice(); return; }
+    const a = ativos[0];
+    const kmFinal = parseFloat(d.kmFinal) || 0;
+    const horaChegada = d.horaChegada || horaAtual();
+    const kmRodado = kmFinal > 0 ? kmFinal - a.kmInicial : 0;
+    const tempoDesloc = diffMin(a.horaSaida, horaChegada) / 60;
+    const bloco = {
+      tipo: 'desloc', segmento: a.segmento,
+      cliente: a.destino, local: a.destino, data: a.data,
+      hora_inicio: a.horaSaida, hora_fim: horaChegada,
+      km_inicial: a.kmInicial, km_final: kmFinal, km_rodado: kmRodado,
+      tempo_desloc: tempoDesloc, horas_trabalhadas: 0, valor_calculado: 0, gera_cobranca: false
+    };
+    await salvarBloco(bloco);
+    ativos.splice(0, 1); salvarAtivos(); renderAtivos(); atualizarResumoDia();
+    toast('📍 Deslocamento encerrado!');
+
+  } else if(d.acao === 'servico') {
+    const data = fmtISO(new Date());
+    const calc = calcHoras(d.horaInicio, d.horaFim, null, null, d.segmento || 'eletrica', data) || { total: 0, valor: 0 };
+    const bloco = {
+      tipo: d.segmento === 'seguranca' ? 'seguranca' : 'eletrica',
+      segmento: d.segmento || 'eletrica',
+      cliente: d.cliente || '', local: '', data,
+      hora_inicio: d.horaInicio, hora_fim: d.horaFim,
+      horas_trabalhadas: calc.total, km_rodado: 0, tempo_desloc: 0,
+      gera_cobranca: (d.segmento || 'eletrica') === 'eletrica',
+      obs: d.obs || '', valor_calculado: calc.valor
+    };
+    await salvarBloco(bloco); atualizarResumoDia();
+    toast(`✓ Serviço salvo! ${calc.valor > 0 ? 'R$ '+calc.valor.toFixed(2) : ''}`);
+
+  } else if(d.acao === 'financeiro') {
+    const lanc = {
+      tipo: d.tipo, descricao: d.descricao, valor: parseFloat(d.valor||0),
+      data: fmtISO(new Date()), categoria: d.categoria || 'outro', segmento: d.segmento || 'geral'
+    };
+    const ok = await salvarNoBanco('lancamentos', lanc);
+    const bk = JSON.parse(localStorage.getItem('lancamentos_bk') || '[]');
+    bk.unshift({ ...lanc, id: Date.now(), _local: !ok });
+    localStorage.setItem('lancamentos_bk', JSON.stringify(bk.slice(0, 500)));
+    toast(`✓ ${d.tipo === 'receita' ? 'Receita' : 'Gasto'} salvo! R$ ${parseFloat(d.valor||0).toFixed(2)}`);
+  }
+
+  fecharVoice();
+}
 </script>
 </body>
 </html>

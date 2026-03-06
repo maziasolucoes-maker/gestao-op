@@ -1582,18 +1582,13 @@ Retorne APENAS JSON puro sem markdown:
 Segmento padrão: eletrica. Hora padrão: ${horaAgora}. Apenas JSON, nada mais.`;
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const fnUrl = cfg.url.replace('supabase.co', 'supabase.co') + '/functions/v1/voice-interpret';
+    const res = await fetch(fnUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': cfg.anthropicKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      headers: { 'Content-Type': 'application/json', 'apikey': cfg.key, 'Authorization': 'Bearer ' + cfg.key },
+      body: JSON.stringify({ texto, hoje, horaAgora, ativosInfo })
     });
-    const data = await res.json();
-    const raw = data.content?.[0]?.text || '';
-    const jsonStr = raw.replace(/```json|```/g, '').trim();
+    const jsonStr = await res.text();
     const parsed = JSON.parse(jsonStr);
     voiceDadosInterpretados = parsed;
     mostrarResultadoVoice(parsed, texto);

@@ -1571,38 +1571,15 @@ async function interpretarComIA(texto) {
   const horaAgora = horaAtual();
   const ativosInfo = ativos.length > 0 ? `Deslocamento ativo: ${ativos[0].destino} (saída ${ativos[0].horaSaida}, segmento ${ativos[0].segmento})` : 'Nenhum deslocamento ativo';
 
-  const prompt = `Você é o assistente do app GestãoOp, um app de gestão operacional para técnico de elétrica e segurança eletrônica.
-
-Data atual: ${hoje}
-Hora atual: ${horaAgora}
-${ativosInfo}
-
-O usuário falou: "${texto}"
-
-Interprete o comando e retorne APENAS um JSON válido (sem markdown, sem explicação), com esta estrutura:
-
-Para iniciar deslocamento:
-{"acao":"iniciar_desloc","segmento":"eletrica|seguranca","destino":"nome do destino","kmInicial":numero,"horaSaida":"HH:MM"}
-
-Para encerrar deslocamento:
-{"acao":"encerrar_desloc","kmFinal":numero,"horaChegada":"HH:MM"}
-
-Para registrar serviço:
-{"acao":"servico","segmento":"eletrica|seguranca","cliente":"nome","horaInicio":"HH:MM","horaFim":"HH:MM","obs":"opcional"}
-
-Para lançamento financeiro:
-{"acao":"financeiro","tipo":"receita|gasto","descricao":"texto","valor":numero,"categoria":"material|combustivel|ferramenta|transporte|alimentacao|servico|outro","segmento":"eletrica|seguranca|geral"}
-
-Para qualquer dúvida:
-{"acao":"nao_entendido","mensagem":"explique o que entendeu e peça para repetir"}
-
-Regras:
-- Segmento padrão é "eletrica" se não mencionado
-- Se o usuário falar "cheguei" ou "km final" sem deslocamento ativo, use encerrar_desloc
-- Infira horários pelo contexto se não mencionado (use ${horaAgora} como referência)
-- Km deve ser número puro sem texto
-- Para valores monetários, converta "oitenta reais" para 80, "cento e cinquenta" para 150 etc
-- Retorne SOMENTE o JSON, nada mais`;
+  const prompt = `App GestãoOp. Data: ${hoje} Hora: ${horaAgora}. ${ativosInfo}.
+Comando: "${texto}"
+Retorne APENAS JSON puro sem markdown:
+- Desloc iniciar: {"acao":"iniciar_desloc","segmento":"eletrica","destino":"x","kmInicial":0,"horaSaida":"HH:MM"}
+- Desloc encerrar: {"acao":"encerrar_desloc","kmFinal":0,"horaChegada":"HH:MM"}
+- Serviço: {"acao":"servico","segmento":"eletrica","cliente":"x","horaInicio":"HH:MM","horaFim":"HH:MM","obs":""}
+- Financeiro: {"acao":"financeiro","tipo":"receita","descricao":"x","valor":0,"categoria":"outro","segmento":"geral"}
+- Dúvida: {"acao":"nao_entendido","mensagem":"x"}
+Segmento padrão: eletrica. Hora padrão: ${horaAgora}. Apenas JSON, nada mais.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -1610,7 +1587,7 @@ Regras:
       headers: { 'Content-Type': 'application/json', 'x-api-key': cfg.anthropicKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 500,
+        max_tokens: 1024,
         messages: [{ role: 'user', content: prompt }]
       })
     });

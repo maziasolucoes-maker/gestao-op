@@ -523,11 +523,12 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
     </div>
     <div class="row2">
       <div class="fg">
+        <label>Data</label>
+        <input type="date" id="mdData">
+      </div>
+      <div class="fg">
         <label>Hora de Saída</label>
         <input type="time" id="mdHoraSaida">
-      </div>
-      <div class="fg" style="display:flex;flex-direction:column;justify-content:flex-end">
-        <div class="info-box blue" style="margin:0;font-size:11px">Hora atual aplicada automaticamente</div>
       </div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px">
@@ -564,9 +565,9 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="msTitulo">⚡ Registrar Serviço</div>
-    <div class="fg">
-      <label>Cliente</label>
-      <input type="text" id="msCliente" placeholder="Nome do cliente">
+    <div class="row2">
+      <div class="fg"><label>Data</label><input type="date" id="msData"></div>
+      <div class="fg"><label>Cliente</label><input type="text" id="msCliente" placeholder="Nome do cliente"></div>
     </div>
     <div class="fg">
       <label>Local</label>
@@ -615,6 +616,7 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
         <option value="seguranca">Segurança</option>
       </select>
     </div>
+    <div class="fg"><label>Data</label><input type="date" id="maData"></div>
     <div class="fg"><label>Descrição</label><input type="text" id="maDesc" placeholder="Ex: Reunião, orçamento, visita técnica..."></div>
     <div class="row2">
       <div class="fg"><label>Início</label><input type="time" id="maInicio"></div>
@@ -636,7 +638,10 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">🎓 Capacitação / Estudo</div>
-    <div class="fg"><label>Descrição</label><input type="text" id="capDesc" placeholder="Ex: Curso NR10, estudo de automação..."></div>
+    <div class="row2">
+      <div class="fg"><label>Data</label><input type="date" id="capData"></div>
+      <div class="fg"><label>Descrição</label><input type="text" id="capDesc" placeholder="Ex: Curso NR10..."></div>
+    </div>
     <div class="row2">
       <div class="fg"><label>Início</label><input type="time" id="capInicio"></div>
       <div class="fg"><label>Fim</label><input type="time" id="capFim"></div>
@@ -820,6 +825,7 @@ function abrirModalDesloc(segmento) {
   document.getElementById('mdTitulo').textContent = `🚗 Deslocamento — ${segmento === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}`;
   document.getElementById('mdDestino').value = '';
   document.getElementById('mdKmInicial').value = '';
+  document.getElementById('mdData').value = fmtISO(new Date());
   document.getElementById('mdHoraSaida').value = horaAtual();
   abrirModal('modalDeslocIniciar');
 }
@@ -837,7 +843,7 @@ function iniciarDeslocamento() {
     kmInicial: parseFloat(kmInicial) || 0,
     horaSaida,
     tsInicio: new Date().toISOString(),
-    data: fmtISO(new Date())
+    data: document.getElementById('mdData').value || fmtISO(new Date())
   });
   salvarAtivos();
   fecharModal('modalDeslocIniciar');
@@ -929,6 +935,7 @@ function abrirModalServico(segmento) {
   ['msCliente','msLocal','msInicio','msFim','msIntervI','msIntervF','msObs'].forEach(id => {
     document.getElementById(id).value = '';
   });
+  document.getElementById('msData').value = fmtISO(new Date());
   intervAberto = false;
   document.getElementById('msIntervSection').style.display = 'none';
   document.getElementById('msIntervBtn').style.display = 'block';
@@ -972,7 +979,7 @@ async function salvarServico() {
 
   const ii = intervAberto ? document.getElementById('msIntervI').value : null;
   const if_ = intervAberto ? document.getElementById('msIntervF').value : null;
-  const data = fmtISO(new Date());
+  const data = document.getElementById('msData').value || fmtISO(new Date());
   const calc = calcHoras(ini, fim, ii, if_, tipoServicoAtual, data) || { total: 0, valor: 0 };
 
   const bloco = {
@@ -1006,6 +1013,7 @@ function abrirModalAdmin() {
   document.getElementById('maDesc').value = '';
   document.getElementById('maInicio').value = '';
   document.getElementById('maFim').value = '';
+  document.getElementById('maData').value = fmtISO(new Date());
   document.getElementById('maCobrancaToggle').classList.remove('on');
   abrirModal('modalAdmin');
 }
@@ -1015,7 +1023,7 @@ async function salvarAdmin() {
   const ini = document.getElementById('maInicio').value;
   const fim = document.getElementById('maFim').value;
   const cob = document.getElementById('maCobrancaToggle').classList.contains('on');
-  const data = fmtISO(new Date());
+  const data = document.getElementById('maData').value || fmtISO(new Date());
 
   let horas = 0, valor = 0;
   if(ini && fim) {
@@ -1051,6 +1059,7 @@ function abrirModalCapacitacao() {
   document.getElementById('capInicio').value = '';
   document.getElementById('capFim').value = '';
   document.getElementById('capObs').value = '';
+  document.getElementById('capData').value = fmtISO(new Date());
   abrirModal('modalCap');
 }
 
@@ -1065,7 +1074,7 @@ async function salvarCapacitacao() {
     segmento: 'geral',
     cliente: document.getElementById('capDesc').value.trim(),
     local: '',
-    data: fmtISO(new Date()),
+    data: document.getElementById('capData').value || fmtISO(new Date()),
     hora_inicio: ini || null,
     hora_fim: fim || null,
     horas_trabalhadas: horas,

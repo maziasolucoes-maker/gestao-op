@@ -3,1407 +3,1394 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Gestão Operacional</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>GestãoOp</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root {
-  --bg: #0a0c12;
-  --surface: #111420;
-  --surface2: #181c2e;
-  --surface3: #1e2340;
-  --accent: #4f8ef7;
-  --accent2: #7c3aed;
-  --eletrica: #f59e0b;
-  --seguranca: #10b981;
-  --admin: #8b5cf6;
-  --capacitacao: #06b6d4;
-  --red: #ef4444;
+  --bg: #0d0f14;
+  --s1: #13161e;
+  --s2: #1a1e2a;
+  --s3: #222736;
+  --border: #2a2f42;
+  --border2: #353b52;
+  --text: #e8ecf4;
+  --muted: #6b7280;
+  --muted2: #4b5163;
+  --elet: #f0a500;
+  --elet-bg: rgba(240,165,0,0.1);
+  --elet-border: rgba(240,165,0,0.25);
+  --seg: #00c896;
+  --seg-bg: rgba(0,200,150,0.1);
+  --seg-border: rgba(0,200,150,0.25);
+  --admin: #818cf8;
+  --admin-bg: rgba(129,140,248,0.1);
+  --cap: #22d3ee;
+  --cap-bg: rgba(34,211,238,0.1);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59,130,246,0.12);
+  --red: #f43f5e;
+  --red-bg: rgba(244,63,94,0.1);
   --green: #22c55e;
-  --text: #e2e8f0;
-  --muted: #64748b;
-  --border: #1e2740;
-  --radius: 14px;
+  --green-bg: rgba(34,197,94,0.1);
+  --r: 12px;
+  --r-sm: 8px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Outfit', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  padding-bottom: 90px;
+  padding-bottom: 80px;
   overscroll-behavior: none;
 }
 
-/* HEADER */
+/* ── HEADER ── */
 .header {
-  background: var(--surface);
+  background: var(--s1);
   border-bottom: 1px solid var(--border);
-  padding: 14px 18px;
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  position: sticky; top: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: space-between;
 }
+.logo { font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 700; letter-spacing: -0.5px; }
+.logo em { color: var(--elet); font-style: normal; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); transition: background 0.3s; }
+.conn-dot.on { background: var(--green); }
+.btn-icon { background: var(--s2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
+.btn-icon:hover { border-color: var(--border2); color: var(--text); }
 
-.logo {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 17px;
-  color: var(--text);
-  letter-spacing: -0.5px;
-}
-
-.logo span { color: var(--accent); }
-
-.header-date {
-  font-size: 11px;
-  color: var(--muted);
-  text-align: right;
-}
-
-/* NAV BOTTOM */
+/* ── NAV ── */
 .nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: flex;
-  z-index: 200;
-  padding-bottom: env(safe-area-inset-bottom);
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--s1); border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  z-index: 300; padding-bottom: env(safe-area-inset-bottom);
 }
-
-.nav-item {
-  flex: 1;
-  padding: 10px 4px 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-top: 2px solid transparent;
+.nav-btn {
+  padding: 10px 4px 8px; text-align: center; cursor: pointer;
+  border-top: 2px solid transparent; transition: all 0.2s;
+  background: none; border-left: none; border-right: none; border-bottom: none;
 }
+.nav-btn.active { border-top-color: var(--elet); }
+.nav-btn .ni { font-size: 18px; display: block; margin-bottom: 2px; }
+.nav-btn .nl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+.nav-btn.active .nl { color: var(--elet); }
 
-.nav-item.active { border-top-color: var(--accent); }
-.nav-item .nav-icon { font-size: 20px; display: block; margin-bottom: 2px; }
-.nav-item .nav-label { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
-.nav-item.active .nav-label { color: var(--accent); }
-
-/* PAGES */
-.page { display: none; padding: 16px; }
+/* ── PAGES ── */
+.page { display: none; padding: 14px; }
 .page.active { display: block; }
 
-/* CARDS */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 12px;
-}
+/* ── CARDS ── */
+.card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-bottom: 10px; }
+.card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px; }
 
-.card-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-
-/* TIPO SELECTOR */
-.tipo-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
-.tipo-btn {
-  background: var(--surface2);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.tipo-btn .tipo-icon { font-size: 22px; display: block; margin-bottom: 4px; }
-.tipo-btn .tipo-label { font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1.3; }
-.tipo-btn .tipo-seg { font-size: 10px; color: var(--muted); opacity: 0.6; margin-top: 2px; }
-
-.tipo-btn.selected-eletrica { border-color: var(--eletrica); background: rgba(245,158,11,0.1); }
-.tipo-btn.selected-eletrica .tipo-label { color: var(--eletrica); }
-.tipo-btn.selected-seguranca { border-color: var(--seguranca); background: rgba(16,185,129,0.1); }
-.tipo-btn.selected-seguranca .tipo-label { color: var(--seguranca); }
-.tipo-btn.selected-admin-e { border-color: var(--admin); background: rgba(139,92,246,0.1); }
-.tipo-btn.selected-admin-e .tipo-label { color: var(--admin); }
-.tipo-btn.selected-admin-s { border-color: var(--admin); background: rgba(139,92,246,0.1); }
-.tipo-btn.selected-admin-s .tipo-label { color: var(--admin); }
-.tipo-btn.selected-capacitacao { border-color: var(--capacitacao); background: rgba(6,182,212,0.1); }
-.tipo-btn.selected-capacitacao .tipo-label { color: var(--capacitacao); }
-
-/* FORM */
-.form-group { margin-bottom: 12px; }
-
-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
-}
-
-input, select, textarea {
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.2s;
-  -webkit-appearance: none;
-}
-
-input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-select option { background: var(--surface2); }
-textarea { resize: vertical; min-height: 70px; }
-
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-/* TOGGLE */
-.toggle-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
-}
-
-.toggle-label { font-size: 14px; color: var(--text); }
-.toggle-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-.toggle {
-  width: 48px;
-  height: 26px;
-  background: var(--surface3);
-  border-radius: 13px;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.3s;
-  border: none;
-  flex-shrink: 0;
-}
-
-.toggle.on { background: var(--accent); }
-.toggle::after {
-  content: '';
-  position: absolute;
-  width: 20px; height: 20px;
-  background: white;
-  border-radius: 50%;
-  top: 3px; left: 3px;
-  transition: transform 0.3s;
-}
-.toggle.on::after { transform: translateX(22px); }
-
-/* BUTTONS */
-button { font-family: 'DM Sans', sans-serif; cursor: pointer; font-weight: 600; }
-
-.btn {
-  width: 100%;
-  padding: 15px;
-  border-radius: 12px;
-  font-size: 15px;
-  border: none;
-  transition: all 0.2s;
-  letter-spacing: 0.2px;
-}
-
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:active { opacity: 0.85; transform: scale(0.99); }
-.btn-danger { background: var(--red); color: #fff; margin-top: 8px; }
-.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); margin-top: 8px; }
-.btn-sm { padding: 9px 16px; border-radius: 8px; font-size: 13px; border: none; background: var(--accent); color: #fff; width: auto; }
-.btn-export { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px 14px; border-radius: 8px; font-size: 12px; width: auto; font-weight: 600; }
-
-/* DIVIDER */
-.divider { height: 1px; background: var(--border); margin: 14px 0; }
-
-/* BLOCO CARD */
-.bloco-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+/* ── ATIVO CARD ── */
+.ativo-card {
+  border-radius: var(--r);
   padding: 14px;
   margin-bottom: 10px;
   position: relative;
   overflow: hidden;
+  animation: pulse-border 2s ease-in-out infinite;
+}
+.ativo-card.desloc { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.4); }
+.ativo-card.servico-e { background: var(--elet-bg); border: 1px solid var(--elet-border); }
+.ativo-card.servico-s { background: var(--seg-bg); border: 1px solid var(--seg-border); }
+
+@keyframes pulse-border {
+  0%,100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
 }
 
-.bloco-card::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 4px;
-}
+.ativo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.ativo-tipo { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.ativo-tipo.desloc { color: var(--blue); }
+.ativo-tipo.elet { color: var(--elet); }
+.ativo-tipo.seg { color: var(--seg); }
 
-.bloco-card.tipo-eletrica::before { background: var(--eletrica); }
-.bloco-card.tipo-seguranca::before { background: var(--seguranca); }
-.bloco-card.tipo-admin::before { background: var(--admin); }
-.bloco-card.tipo-capacitacao::before { background: var(--capacitacao); }
-
-.bloco-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
-  padding-left: 8px;
-}
-
-.bloco-tipo {
-  font-family: 'Syne', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.bloco-data { font-size: 11px; color: var(--muted); }
-
-.bloco-cliente {
-  font-size: 14px;
-  font-weight: 600;
+.cronometro {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px; font-weight: 700;
   color: var(--text);
-  padding-left: 8px;
-  margin-bottom: 8px;
+  letter-spacing: 2px;
 }
 
-.bloco-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding-left: 8px;
-}
+.ativo-info { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.ativo-info strong { color: var(--text); }
 
+.ativo-actions { display: flex; gap: 8px; }
+
+/* ── BUTTONS ── */
+button { font-family: 'Outfit', sans-serif; cursor: pointer; }
+.btn {
+  width: 100%; padding: 13px; border-radius: var(--r);
+  font-size: 14px; font-weight: 700; border: none;
+  transition: all 0.15s; letter-spacing: 0.2px;
+}
+.btn:active { transform: scale(0.98); opacity: 0.9; }
+.btn-primary { background: var(--elet); color: #000; }
+.btn-seg { background: var(--seg); color: #000; }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-ghost { background: var(--s2); border: 1px solid var(--border); color: var(--text); }
+.btn-sm { padding: 8px 14px; border-radius: var(--r-sm); font-size: 12px; font-weight: 700; border: none; width: auto; }
+.btn-sm.primary { background: var(--elet); color: #000; }
+.btn-sm.blue { background: var(--blue); color: #fff; }
+.btn-sm.ghost { background: var(--s2); border: 1px solid var(--border); color: var(--text); }
+.btn-sm.danger { background: var(--red-bg); border: 1px solid rgba(244,63,94,0.3); color: var(--red); }
+
+/* ── FORM ── */
+.fg { margin-bottom: 10px; }
+label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 5px; }
+input, select, textarea {
+  width: 100%; background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 11px 13px;
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px;
+  outline: none; transition: border-color 0.2s; -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--blue); }
+select option { background: var(--s2); }
+textarea { resize: vertical; min-height: 70px; font-size: 14px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+/* ── TIPO GRID ── */
+.tipo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.tipo-btn {
+  background: var(--s2); border: 2px solid var(--border);
+  border-radius: var(--r); padding: 12px 8px; text-align: center;
+  cursor: pointer; transition: all 0.18s;
+}
+.tipo-btn .ti { font-size: 20px; display: block; margin-bottom: 4px; }
+.tipo-btn .tl { font-size: 12px; font-weight: 600; color: var(--muted); }
+.tipo-btn .ts { font-size: 10px; color: var(--muted2); margin-top: 2px; }
+.tipo-btn.sel-e { border-color: var(--elet); background: var(--elet-bg); }
+.tipo-btn.sel-e .tl { color: var(--elet); }
+.tipo-btn.sel-s { border-color: var(--seg); background: var(--seg-bg); }
+.tipo-btn.sel-s .tl { color: var(--seg); }
+.tipo-btn.sel-a { border-color: var(--admin); background: var(--admin-bg); }
+.tipo-btn.sel-a .tl { color: var(--admin); }
+.tipo-btn.sel-c { border-color: var(--cap); background: var(--cap-bg); }
+.tipo-btn.sel-c .tl { color: var(--cap); }
+
+/* ── TOGGLE ── */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; }
+.toggle-info .tl { font-size: 14px; color: var(--text); }
+.toggle-info .ts { font-size: 11px; color: var(--muted); }
+.toggle {
+  width: 44px; height: 24px; background: var(--s3); border-radius: 12px;
+  position: relative; cursor: pointer; transition: background 0.3s; border: none; flex-shrink: 0;
+}
+.toggle.on { background: var(--blue); }
+.toggle::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; background: white; border-radius: 50%;
+  top: 3px; left: 3px; transition: transform 0.3s;
+}
+.toggle.on::after { transform: translateX(20px); }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--border); margin: 12px 0; }
+
+/* ── BLOCO CARD ── */
+.bloco-card {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 13px; margin-bottom: 8px;
+  position: relative; overflow: hidden;
+}
+.bloco-card::before {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+}
+.bloco-card.tc-e::before { background: var(--elet); }
+.bloco-card.tc-s::before { background: var(--seg); }
+.bloco-card.tc-a::before { background: var(--admin); }
+.bloco-card.tc-c::before { background: var(--cap); }
+.bloco-card.tc-d::before { background: var(--blue); }
+
+.bc-head { display: flex; justify-content: space-between; align-items: flex-start; padding-left: 8px; margin-bottom: 6px; }
+.bc-tipo { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
+.bc-data { font-size: 11px; color: var(--muted); }
+.bc-cliente { font-size: 14px; font-weight: 600; padding-left: 8px; margin-bottom: 8px; }
+.bc-tags { display: flex; flex-wrap: wrap; gap: 5px; padding-left: 8px; }
 .tag {
-  background: var(--surface2);
-  border-radius: 6px;
-  padding: 3px 9px;
-  font-size: 11px;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  background: var(--s2); border-radius: 5px;
+  padding: 3px 8px; font-size: 11px; color: var(--muted);
 }
-
-.tag.eletrica { background: rgba(245,158,11,0.12); color: var(--eletrica); }
-.tag.seguranca { background: rgba(16,185,129,0.12); color: var(--seguranca); }
-.tag.highlight { background: var(--surface3); color: var(--text); }
-
-.bloco-valor {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-  padding-left: 8px;
+.tag.e { background: var(--elet-bg); color: var(--elet); }
+.tag.s { background: var(--seg-bg); color: var(--seg); }
+.tag.b { background: var(--blue-bg); color: var(--blue); }
+.tag.hi { background: var(--s3); color: var(--text); font-family: 'Space Mono', monospace; font-size: 10px; }
+.bc-valor { display: flex; justify-content: flex-end; margin-top: 8px; padding-left: 8px; }
+.valor-pill {
+  font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
+  color: var(--elet); background: var(--elet-bg);
+  padding: 3px 12px; border-radius: 20px;
 }
-
-.valor-badge {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--eletrica);
-  background: rgba(245,158,11,0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
+.btn-del {
+  position: absolute; top: 10px; right: 10px;
+  background: none; border: none; color: var(--muted2);
+  font-size: 14px; cursor: pointer; padding: 3px; width: auto;
+  transition: color 0.2s;
 }
+.btn-del:hover { color: var(--red); }
 
-.del-bloco {
-  position: absolute;
-  top: 10px; right: 10px;
-  background: none;
-  border: none;
-  color: var(--muted);
-  font-size: 16px;
-  cursor: pointer;
-  padding: 4px;
-  width: auto;
-  opacity: 0.5;
-  transition: opacity 0.2s;
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.stat {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 13px 12px;
 }
-.del-bloco:hover { opacity: 1; color: var(--red); }
+.stat .sl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 5px; }
+.stat .sv { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; color: var(--text); }
+.stat .ss { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.stat.e { border-color: var(--elet-border); background: var(--elet-bg); }
+.stat.e .sv { color: var(--elet); }
+.stat.s { border-color: var(--seg-border); background: var(--seg-bg); }
+.stat.s .sv { color: var(--seg); }
 
-/* RESUMO */
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 14px;
+/* ── VALOR TOTAL ── */
+.valor-total {
+  background: var(--s1); border: 1px solid var(--elet-border);
+  border-radius: var(--r); padding: 18px; text-align: center; margin-bottom: 12px;
+  position: relative; overflow: hidden;
 }
-
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 12px;
+.valor-total::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--elet), var(--seg));
 }
+.vt-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; }
+.vt-num { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; color: var(--elet); }
+.vt-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
 
-.stat-card .s-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-.stat-card .s-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--text); }
-.stat-card .s-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+/* ── DETALHE ROWS ── */
+.det-box { background: var(--s2); border-radius: var(--r-sm); padding: 12px 13px; margin-bottom: 8px; }
+.det-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.det-row:last-child { border-bottom: none; }
+.det-row .dl { font-size: 13px; color: var(--muted); }
+.det-row .dv { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text); }
+.det-row .dv.money { color: var(--elet); }
+.det-row .dv.fds { color: var(--admin); }
 
-.stat-card.highlight-e { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
-.stat-card.highlight-e .s-val { color: var(--eletrica); }
-.stat-card.highlight-s { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.06); }
-.stat-card.highlight-s .s-val { color: var(--seguranca); }
+/* ── PERIODO ── */
+.periodo-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+.periodo-bar input { flex: 1; font-size: 12px; padding: 9px 11px; }
 
-/* PERIODO */
-.periodo-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-  align-items: center;
+/* ── SECTION HEADER ── */
+.sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.sec-title { font-size: 14px; font-weight: 700; color: var(--text); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  z-index: 500; display: flex; align-items: flex-end; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
 }
-.periodo-row input { flex: 1; font-size: 13px; padding: 10px 12px; }
-
-/* VALOR TOTAL */
-.valor-total-card {
-  background: linear-gradient(135deg, rgba(79,142,247,0.15), rgba(124,58,237,0.15));
-  border: 1px solid rgba(79,142,247,0.3);
-  border-radius: var(--radius);
-  padding: 18px;
-  text-align: center;
-  margin-bottom: 14px;
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: 20px 20px 0 0; padding: 20px 16px;
+  width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+  transform: translateY(30px); transition: transform 0.25s;
 }
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 16px; }
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
 
-.valor-total-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.valor-total-num { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--eletrica); }
-.valor-total-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
-
-/* DETALHE HORAS */
-.horas-detalhe {
-  background: var(--surface2);
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 10px;
+/* ── PREVIEW CALC ── */
+.preview-calc {
+  background: var(--s2); border-radius: var(--r-sm);
+  padding: 10px 12px; margin-top: 8px; display: none;
 }
+.preview-calc.show { display: block; }
+.pc-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
+.pc-row .pk { color: var(--muted); }
+.pc-row .pv { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--text); }
+.pc-row .pv.money { color: var(--elet); }
 
-.horas-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 0;
-  border-bottom: 1px solid var(--border);
-}
+/* ── EMPTY / LOADING ── */
+.empty { text-align: center; color: var(--muted); padding: 40px 20px; }
+.empty .ei { font-size: 36px; display: block; margin-bottom: 8px; }
+.loading { text-align: center; padding: 40px 20px; color: var(--muted); }
+.spin { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--elet); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.horas-row:last-child { border-bottom: none; }
-.horas-row .h-label { font-size: 13px; color: var(--muted); }
-.horas-row .h-val { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); }
-.horas-row .h-val.money { color: var(--eletrica); }
-.horas-row .h-val.green { color: var(--green); }
-
-/* TOAST */
+/* ── TOAST ── */
 .toast {
-  position: fixed;
-  bottom: 100px; left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  padding: 10px 24px;
-  border-radius: 30px;
-  font-size: 14px;
-  font-weight: 600;
-  opacity: 0;
-  transition: all 0.3s;
-  z-index: 999;
-  white-space: nowrap;
-  pointer-events: none;
+  position: fixed; bottom: 90px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  padding: 9px 20px; border-radius: 30px;
+  font-size: 13px; font-weight: 600;
+  opacity: 0; transition: all 0.25s; z-index: 999;
+  white-space: nowrap; pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* LOADING */
-.loading {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--muted);
+/* ── CONFIG ── */
+.cfg-item { background: var(--s2); border-radius: var(--r-sm); padding: 12px; margin-bottom: 8px; }
+
+/* ── HIGHLIGHT BOX ── */
+.info-box {
+  border-radius: var(--r-sm); padding: 10px 12px; margin-bottom: 10px;
+  font-size: 13px; line-height: 1.5;
 }
+.info-box.blue { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; }
+.info-box.elet { background: var(--elet-bg); border: 1px solid var(--elet-border); color: #fcd34d; }
 
-.spinner {
-  width: 32px; height: 32px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 12px;
+/* ── INTERVALO BADGE ── */
+.interv-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--s3); border: 1px solid var(--border2);
+  border-radius: 20px; padding: 4px 12px; font-size: 12px;
+  color: var(--muted); cursor: pointer; margin-top: 8px;
+  transition: all 0.2s;
 }
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.empty { text-align: center; color: var(--muted); padding: 40px 20px; }
-.empty .e-icon { font-size: 40px; margin-bottom: 10px; display: block; }
-
-/* CONFIG */
-.config-item {
-  background: var(--surface2);
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 10px;
-}
-.config-item label { margin-bottom: 8px; }
-
-/* STATUS CONEXÃO */
-.status-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-}
-.status-bar.online { background: rgba(34,197,94,0.12); color: var(--green); }
-.status-bar.offline { background: rgba(239,68,68,0.12); color: var(--red); }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-
-/* SECTION HEADER */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-}
-
-/* COBRANCA */
-.cobranca-row {
-  display: none;
-  background: rgba(139,92,246,0.08);
-  border: 1px solid rgba(139,92,246,0.2);
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-top: 10px;
-}
-.cobranca-row.visible { display: flex; align-items: center; justify-content: space-between; }
+.interv-badge:hover { border-color: var(--blue); color: var(--text); }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
-  <div>
-    <div class="logo">Gestão<span>Op</span></div>
-    <div class="header-date" id="headerDate"></div>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px">
-    <div class="status-bar offline" id="statusBar">
-      <div class="status-dot"></div>
-      <span id="statusText">Offline</span>
-    </div>
-    <button class="btn-export" onclick="exportarExcel()">⬇ XLS</button>
+  <div class="logo">Gestão<em>Op</em></div>
+  <div class="header-right">
+    <div class="conn-dot" id="connDot" title="Status da conexão"></div>
+    <button class="btn-icon" onclick="exportarExcel()">↓ Excel</button>
   </div>
 </div>
 
 <!-- NAV -->
 <nav class="nav">
-  <div class="nav-item active" onclick="showPage('novo', this)">
-    <span class="nav-icon">＋</span>
-    <span class="nav-label">Novo</span>
-  </div>
-  <div class="nav-item" onclick="showPage('blocos', this)">
-    <span class="nav-icon">📋</span>
-    <span class="nav-label">Blocos</span>
-  </div>
-  <div class="nav-item" onclick="showPage('resumo', this)">
-    <span class="nav-icon">📊</span>
-    <span class="nav-label">Resumo</span>
-  </div>
-  <div class="nav-item" onclick="showPage('config', this)">
-    <span class="nav-icon">⚙️</span>
-    <span class="nav-label">Config</span>
-  </div>
+  <button class="nav-btn active" onclick="showPage('home',this)">
+    <span class="ni">⚡</span><span class="nl">Hoje</span>
+  </button>
+  <button class="nav-btn" onclick="showPage('registros',this)">
+    <span class="ni">📋</span><span class="nl">Registros</span>
+  </button>
+  <button class="nav-btn" onclick="showPage('resumo',this)">
+    <span class="ni">📊</span><span class="nl">Resumo</span>
+  </button>
+  <button class="nav-btn" onclick="showPage('config',this)">
+    <span class="ni">⚙️</span><span class="nl">Config</span>
+  </button>
 </nav>
 
-<!-- PÁGINA NOVO BLOCO -->
-<div class="page active" id="page-novo">
+<!-- ═══════════════════════════════════ PAGE HOME ═══════════════════════════════════ -->
+<div class="page active" id="page-home">
 
+  <!-- ATIVOS -->
+  <div id="ativosContainer"></div>
+
+  <!-- AÇÕES RÁPIDAS -->
   <div class="card">
-    <div class="card-title">Tipo de Atividade</div>
+    <div class="card-label">Iniciar Atividade</div>
     <div class="tipo-grid">
-      <div class="tipo-btn" onclick="selecionarTipo('eletrica')" id="tipo-eletrica">
-        <span class="tipo-icon">⚡</span>
-        <div class="tipo-label">Elétrica</div>
-        <div class="tipo-seg">Campo</div>
+      <div class="tipo-btn" id="tb-desloc-e" onclick="abrirModalDesloc('eletrica')">
+        <span class="ti">🚗</span>
+        <div class="tl">Deslocamento</div>
+        <div class="ts">Elétrica</div>
       </div>
-      <div class="tipo-btn" onclick="selecionarTipo('seguranca')" id="tipo-seguranca">
-        <span class="tipo-icon">📷</span>
-        <div class="tipo-label">Segurança</div>
-        <div class="tipo-seg">Campo</div>
-      </div>
-      <div class="tipo-btn" onclick="selecionarTipo('admin-e')" id="tipo-admin-e">
-        <span class="tipo-icon">📋</span>
-        <div class="tipo-label">Administrativo</div>
-        <div class="tipo-seg">Elétrica</div>
-      </div>
-      <div class="tipo-btn" onclick="selecionarTipo('admin-s')" id="tipo-admin-s">
-        <span class="tipo-icon">📋</span>
-        <div class="tipo-label">Administrativo</div>
-        <div class="tipo-seg">Segurança</div>
+      <div class="tipo-btn" id="tb-desloc-s" onclick="abrirModalDesloc('seguranca')">
+        <span class="ti">🚗</span>
+        <div class="tl">Deslocamento</div>
+        <div class="ts">Segurança</div>
       </div>
     </div>
     <div class="tipo-grid" style="margin-top:8px">
-      <div class="tipo-btn" onclick="selecionarTipo('capacitacao')" id="tipo-capacitacao">
-        <span class="tipo-icon">🎓</span>
-        <div class="tipo-label">Capacitação / Estudo</div>
-        <div class="tipo-seg">—</div>
+      <div class="tipo-btn" id="tb-serv-e" onclick="abrirModalServico('eletrica')">
+        <span class="ti">⚡</span>
+        <div class="tl">Serviço</div>
+        <div class="ts">Elétrica</div>
       </div>
-      <div></div>
-    </div>
-
-    <!-- Cobrança (só admin-e) -->
-    <div class="cobranca-row" id="cobrancaRow">
-      <div>
-        <div class="toggle-label" style="font-size:13px">Gera cobrança?</div>
-        <div class="toggle-sub">Entra no valor a receber</div>
+      <div class="tipo-btn" id="tb-serv-s" onclick="abrirModalServico('seguranca')">
+        <span class="ti">📷</span>
+        <div class="tl">Serviço</div>
+        <div class="ts">Segurança</div>
       </div>
-      <button class="toggle" id="cobrancaToggle" onclick="toggleCobranca()"></button>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Identificação</div>
-    <div class="form-group">
-      <label>Cliente / Descrição</label>
-      <input type="text" id="cliente" placeholder="Ex: Avant, treinamento NR10...">
-    </div>
-    <div class="form-group">
-      <label>Local</label>
-      <input type="text" id="local" placeholder="Ex: Rua das Flores, 123">
-    </div>
-    <div class="form-group">
-      <label>Data</label>
-      <input type="date" id="dataBloco">
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">🚗 Deslocamento</div>
-    <div class="toggle-row">
-      <div>
-        <div class="toggle-label">Houve deslocamento?</div>
-        <div class="toggle-sub">Registrar km e tempo de trajeto</div>
+    <div class="tipo-grid" style="margin-top:8px">
+      <div class="tipo-btn" onclick="abrirModalAdmin()">
+        <span class="ti">📋</span>
+        <div class="tl">Administrativo</div>
+        <div class="ts">Elétrica / Seg.</div>
       </div>
-      <button class="toggle" id="deslocToggle" onclick="toggleDesloc()"></button>
-    </div>
-
-    <div id="deslocSection" style="display:none; margin-top:12px">
-      <div class="row2">
-        <div class="form-group">
-          <label>Saída</label>
-          <input type="time" id="saidaDesloc">
-        </div>
-        <div class="form-group">
-          <label>Chegada</label>
-          <input type="time" id="chegadaDesloc">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Km Rodado</label>
-        <input type="number" id="kmRodado" placeholder="0">
+      <div class="tipo-btn" onclick="abrirModalCapacitacao()">
+        <span class="ti">🎓</span>
+        <div class="tl">Capacitação</div>
+        <div class="ts">Estudo</div>
       </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title">⏱ Horas Trabalhadas</div>
-    <div class="row2">
-      <div class="form-group">
-        <label>Início</label>
-        <input type="time" id="horaInicio">
-      </div>
-      <div class="form-group">
-        <label>Fim</label>
-        <input type="time" id="horaFim">
-      </div>
-    </div>
-
-    <div class="toggle-row">
-      <div>
-        <div class="toggle-label">Teve intervalo?</div>
-        <div class="toggle-sub">Será descontado do total</div>
-      </div>
-      <button class="toggle" id="intervToggle" onclick="toggleInterv()"></button>
-    </div>
-
-    <div id="intervSection" style="display:none; margin-top:10px">
-      <div class="row2">
-        <div class="form-group">
-          <label>Início intervalo</label>
-          <input type="time" id="intervInicio">
-        </div>
-        <div class="form-group">
-          <label>Fim intervalo</label>
-          <input type="time" id="intervFim">
-        </div>
-      </div>
-    </div>
-
-    <div id="previewHoras" style="display:none; margin-top:10px">
-      <div class="horas-detalhe">
-        <div class="horas-row">
-          <span class="h-label">Horas trabalhadas</span>
-          <span class="h-val" id="prevHoras">—</span>
-        </div>
-        <div class="horas-row" id="prevExtraRow" style="display:none">
-          <span class="h-label">Horas normais</span>
-          <span class="h-val" id="prevNormais">—</span>
-        </div>
-        <div class="horas-row" id="prevExtraRow2" style="display:none">
-          <span class="h-label">Horas extras</span>
-          <span class="h-val" id="prevExtras">—</span>
-        </div>
-        <div class="horas-row" id="prevValorRow" style="display:none">
-          <span class="h-label">Valor estimado</span>
-          <span class="h-val money" id="prevValor">—</span>
-        </div>
+  <!-- RESUMO DO DIA -->
+  <div class="card" id="resumoDiaCard">
+    <div class="card-label">Resumo do Dia</div>
+    <div id="resumoDiaConteudo">
+      <div class="empty" style="padding:16px 0">
+        <span class="ei">📅</span>
+        <span style="font-size:13px">Nenhum registro hoje</span>
       </div>
     </div>
   </div>
-
-  <div class="card">
-    <div class="card-title">Observações</div>
-    <textarea id="obs" placeholder="Anotações sobre a atividade..."></textarea>
-  </div>
-
-  <button class="btn btn-primary" onclick="salvarBloco()">✓ Salvar Bloco</button>
 
 </div>
 
-<!-- PÁGINA BLOCOS -->
-<div class="page" id="page-blocos">
-  <div class="section-header">
-    <div class="section-title">Registros</div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <input type="date" id="filtroBlocoData" style="padding:7px 10px;font-size:12px;width:auto;border-radius:8px" onchange="carregarBlocos()">
-    </div>
+<!-- ═══════════════════════════════════ PAGE REGISTROS ═══════════════════════════════════ -->
+<div class="page" id="page-registros">
+  <div class="sec-head">
+    <div class="sec-title">Registros</div>
+    <input type="date" id="filtroData" style="padding:7px 10px;font-size:12px;width:auto;border-radius:8px" onchange="carregarRegistros()">
   </div>
-  <div id="listaBlocos">
-    <div class="loading"><div class="spinner"></div>Carregando...</div>
+  <div id="listaRegistros">
+    <div class="loading"><div class="spin"></div>Carregando...</div>
   </div>
 </div>
 
-<!-- PÁGINA RESUMO -->
+<!-- ═══════════════════════════════════ PAGE RESUMO ═══════════════════════════════════ -->
 <div class="page" id="page-resumo">
-  <div class="periodo-row">
-    <input type="date" id="periodoInicio" style="font-size:12px">
-    <input type="date" id="periodoFim" style="font-size:12px">
-    <button class="btn-sm" onclick="calcularResumo()">Ver</button>
+  <div class="periodo-bar">
+    <input type="date" id="pInicio">
+    <input type="date" id="pFim">
+    <button class="btn-sm primary" onclick="calcResumo()">Ver</button>
   </div>
 
-  <!-- VALOR A RECEBER ELÉTRICA -->
-  <div class="valor-total-card">
-    <div class="valor-total-label">⚡ Valor a Receber — Elétrica</div>
-    <div class="valor-total-num" id="valorTotalEletrica">R$ 0,00</div>
-    <div class="valor-total-sub" id="valorTotalSub">Selecione um período</div>
+  <div class="valor-total">
+    <div class="vt-label">⚡ Valor a Receber — Elétrica</div>
+    <div class="vt-num" id="vtNum">R$ 0,00</div>
+    <div class="vt-sub" id="vtSub">Selecione um período</div>
   </div>
 
-  <!-- STATS -->
   <div class="stats-grid">
-    <div class="stat-card highlight-e">
-      <div class="s-label">Horas Elétrica</div>
-      <div class="s-val" id="statHorasE">0h</div>
-      <div class="s-sub" id="statHorasESub">—</div>
-    </div>
-    <div class="stat-card highlight-s">
-      <div class="s-label">Horas Segurança</div>
-      <div class="s-val" id="statHorasS">0h</div>
-      <div class="s-sub">gerencial</div>
-    </div>
-    <div class="stat-card">
-      <div class="s-label">Km Segurança</div>
-      <div class="s-val" id="statKm">0</div>
-      <div class="s-sub" id="statKmSub">ressarcimento</div>
-    </div>
-    <div class="stat-card">
-      <div class="s-label">Tempo Desloc.</div>
-      <div class="s-val" id="statDesloc">0h</div>
-      <div class="s-sub">total no trânsito</div>
-    </div>
-    <div class="stat-card">
-      <div class="s-label">Dias Trabalhados</div>
-      <div class="s-val" id="statDias">0</div>
-      <div class="s-sub">no período</div>
-    </div>
-    <div class="stat-card">
-      <div class="s-label">Horas Admin/Cap.</div>
-      <div class="s-val" id="statAdmin">0h</div>
-      <div class="s-sub">investidas</div>
-    </div>
+    <div class="stat e"><div class="sl">Horas Elétrica</div><div class="sv" id="stHE">0h</div><div class="ss" id="stHESub">—</div></div>
+    <div class="stat s"><div class="sl">Horas Segurança</div><div class="sv" id="stHS">0h</div><div class="ss">gerencial</div></div>
+    <div class="stat"><div class="sl">Km Segurança</div><div class="sv" id="stKm">0km</div><div class="ss" id="stKmSub">—</div></div>
+    <div class="stat"><div class="sl">Deslocamento</div><div class="sv" id="stDesloc">0h</div><div class="ss">tempo total</div></div>
+    <div class="stat"><div class="sl">Dias Trabalhados</div><div class="sv" id="stDias">0</div><div class="ss">no período</div></div>
+    <div class="stat"><div class="sl">Admin / Cap.</div><div class="sv" id="stAdmin">0h</div><div class="ss">investidas</div></div>
   </div>
 
-  <!-- DETALHE ELÉTRICA -->
-  <div class="card" id="detalheEletrica" style="display:none">
-    <div class="card-title">Detalhamento Elétrica</div>
-    <div id="detalheEletricaConteudo"></div>
+  <div id="detalheElDiv" style="display:none">
+    <div class="card">
+      <div class="card-label">Detalhamento Elétrica por Dia</div>
+      <div class="det-box" id="detalheElConteudo"></div>
+    </div>
   </div>
-
-  <!-- KM RESSARCIMENTO -->
-  <div class="card" id="detalheKm" style="display:none">
-    <div class="card-title">Ressarcimento Km</div>
-    <div id="detalheKmConteudo"></div>
-  </div>
-
 </div>
 
-<!-- PÁGINA CONFIG -->
+<!-- ═══════════════════════════════════ PAGE CONFIG ═══════════════════════════════════ -->
 <div class="page" id="page-config">
-
   <div class="card">
-    <div class="card-title">🔑 Conexão Supabase</div>
-    <div class="config-item">
-      <label>URL do Projeto</label>
-      <input type="text" id="cfgUrl" placeholder="https://xxx.supabase.co">
-    </div>
-    <div class="config-item">
-      <label>Chave Publishable</label>
-      <input type="password" id="cfgKey" placeholder="sb_publishable_...">
-    </div>
-    <button class="btn btn-primary" onclick="salvarConfig()" style="margin-top:4px">Salvar e Conectar</button>
+    <div class="card-label">🔑 Supabase</div>
+    <div class="cfg-item"><label>URL do Projeto</label><input type="text" id="cfgUrl" placeholder="https://xxx.supabase.co"></div>
+    <div class="cfg-item"><label>Chave Publishable</label><input type="password" id="cfgKey" placeholder="sb_publishable_..."></div>
+    <button class="btn btn-ghost" onclick="salvarConexao()" style="margin-top:4px">Salvar e Reconectar</button>
   </div>
-
   <div class="card">
-    <div class="card-title">💰 Valores Elétrica</div>
-    <div class="config-item">
-      <label>Hora Normal (R$)</label>
-      <input type="number" id="cfgHoraNormal" value="30" step="0.01">
-    </div>
-    <div class="config-item">
-      <label>Hora Extra / FDS / Feriado (R$)</label>
-      <input type="number" id="cfgHoraExtra" value="45" step="0.01">
-    </div>
-    <div class="config-item">
-      <label>Horas para hora extra (padrão: 9)</label>
-      <input type="number" id="cfgHorasBase" value="9">
-    </div>
-    <button class="btn btn-outline" onclick="salvarValores()">Salvar Valores</button>
+    <div class="card-label">💰 Valores Elétrica</div>
+    <div class="cfg-item"><label>Hora Normal (R$)</label><input type="number" id="cfgHN" value="30" step="0.01"></div>
+    <div class="cfg-item"><label>Hora Extra / FDS / Feriado (R$)</label><input type="number" id="cfgHE" value="45" step="0.01"></div>
+    <div class="cfg-item"><label>Base de horas (diária padrão)</label><input type="number" id="cfgBase" value="9"></div>
+    <button class="btn btn-ghost" onclick="salvarValores()" style="margin-top:4px">Salvar Valores</button>
   </div>
-
   <div class="card">
-    <div class="card-title">🚗 Ressarcimento Km</div>
-    <div class="config-item">
-      <label>Valor por Km (R$)</label>
-      <input type="number" id="cfgKmValor" value="0" step="0.01" placeholder="0,00">
-    </div>
-    <button class="btn btn-outline" onclick="salvarValores()">Salvar</button>
+    <div class="card-label">🚗 Ressarcimento Km</div>
+    <div class="cfg-item"><label>Valor por Km (R$)</label><input type="number" id="cfgKm" value="0" step="0.01"></div>
+    <button class="btn btn-ghost" onclick="salvarValores()" style="margin-top:4px">Salvar</button>
   </div>
+</div>
 
-  <div class="card">
-    <div class="card-title">🎤 IA por Voz (Anthropic)</div>
-    <div class="config-item">
-      <label>Chave API Anthropic</label>
-      <input type="password" id="cfgAnthropicKey" placeholder="sk-ant-...">
+<!-- ═══════════════════════════════════ MODAIS ═══════════════════════════════════ -->
+
+<!-- MODAL DESLOCAMENTO INICIAR -->
+<div class="modal-overlay" id="modalDeslocIniciar">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="mdTitulo">🚗 Iniciar Deslocamento</div>
+    <div class="fg">
+      <label>Destino / Cliente</label>
+      <input type="text" id="mdDestino" placeholder="Ex: Avantt, Obra rua das flores...">
     </div>
-    <button class="btn btn-outline" onclick="salvarValores()">Salvar</button>
+    <div class="fg">
+      <label>Km Atual (odômetro)</label>
+      <input type="number" id="mdKmInicial" placeholder="Ex: 45230">
+    </div>
+    <div class="row2">
+      <div class="fg">
+        <label>Hora de Saída</label>
+        <input type="time" id="mdHoraSaida">
+      </div>
+      <div class="fg" style="display:flex;flex-direction:column;justify-content:flex-end">
+        <div class="info-box blue" style="margin:0;font-size:11px">Hora atual aplicada automaticamente</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalDeslocIniciar')">Cancelar</button>
+      <button class="btn btn-blue" style="flex:2" onclick="iniciarDeslocamento()">🚗 Iniciar</button>
+    </div>
   </div>
+</div>
 
+<!-- MODAL DESLOCAMENTO ENCERRAR -->
+<div class="modal-overlay" id="modalDeslocEncerrar">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📍 Cheguei no Destino</div>
+    <div class="info-box blue" id="mdEncInfo"></div>
+    <div class="fg">
+      <label>Km Atual (odômetro)</label>
+      <input type="number" id="mdKmFinal" placeholder="Ex: 45285">
+    </div>
+    <div class="fg">
+      <label>Hora de Chegada</label>
+      <input type="time" id="mdHoraChegada">
+    </div>
+    <div id="mdEncCalc" class="preview-calc"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalDeslocEncerrar')">Cancelar</button>
+      <button class="btn btn-primary" style="flex:2" onclick="encerrarDeslocamento()">✓ Confirmar Chegada</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SERVIÇO -->
+<div class="modal-overlay" id="modalServico">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="msTitulo">⚡ Registrar Serviço</div>
+    <div class="fg">
+      <label>Cliente</label>
+      <input type="text" id="msCliente" placeholder="Nome do cliente">
+    </div>
+    <div class="fg">
+      <label>Local</label>
+      <input type="text" id="msLocal" placeholder="Endereço ou descrição">
+    </div>
+    <div class="row2">
+      <div class="fg"><label>Início do Serviço</label><input type="time" id="msInicio"></div>
+      <div class="fg"><label>Fim do Serviço</label><input type="time" id="msFim"></div>
+    </div>
+
+    <!-- Intervalo -->
+    <div id="msIntervBtn">
+      <div class="interv-badge" onclick="toggleIntervModal()">
+        <span>+</span> Adicionar intervalo
+      </div>
+    </div>
+    <div id="msIntervSection" style="display:none;margin-top:8px">
+      <div class="row2">
+        <div class="fg"><label>Início Intervalo</label><input type="time" id="msIntervI"></div>
+        <div class="fg"><label>Fim Intervalo</label><input type="time" id="msIntervF"></div>
+      </div>
+    </div>
+
+    <div id="msCalcPreview" class="preview-calc" style="margin-top:8px"></div>
+
+    <div class="fg" style="margin-top:10px">
+      <label>Observações (opcional)</label>
+      <textarea id="msObs" placeholder="Anotações..."></textarea>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalServico')">Cancelar</button>
+      <button class="btn" id="msSalvarBtn" style="flex:2" onclick="salvarServico()">✓ Salvar Serviço</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ADMIN -->
+<div class="modal-overlay" id="modalAdmin">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📋 Registro Administrativo</div>
+    <div class="fg">
+      <label>Segmento</label>
+      <select id="maSegmento">
+        <option value="eletrica">Elétrica</option>
+        <option value="seguranca">Segurança</option>
+      </select>
+    </div>
+    <div class="fg"><label>Descrição</label><input type="text" id="maDesc" placeholder="Ex: Reunião, orçamento, visita técnica..."></div>
+    <div class="row2">
+      <div class="fg"><label>Início</label><input type="time" id="maInicio"></div>
+      <div class="fg"><label>Fim</label><input type="time" id="maFim"></div>
+    </div>
+    <div class="toggle-row" style="margin-top:4px">
+      <div class="toggle-info"><div class="tl">Gera cobrança?</div><div class="ts">Entra no valor a receber</div></div>
+      <button class="toggle" id="maCobrancaToggle" onclick="this.classList.toggle('on')"></button>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalAdmin')">Cancelar</button>
+      <button class="btn btn-ghost" style="flex:2;border-color:var(--admin);color:var(--admin)" onclick="salvarAdmin()">✓ Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CAPACITAÇÃO -->
+<div class="modal-overlay" id="modalCap">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🎓 Capacitação / Estudo</div>
+    <div class="fg"><label>Descrição</label><input type="text" id="capDesc" placeholder="Ex: Curso NR10, estudo de automação..."></div>
+    <div class="row2">
+      <div class="fg"><label>Início</label><input type="time" id="capInicio"></div>
+      <div class="fg"><label>Fim</label><input type="time" id="capFim"></div>
+    </div>
+    <div class="fg"><label>Observações</label><textarea id="capObs" placeholder="Anotações..."></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalCap')">Cancelar</button>
+      <button class="btn btn-ghost" style="flex:2;border-color:var(--cap);color:var(--cap)" onclick="salvarCapacitacao()">✓ Salvar</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ============ CONFIG ============
-const SUPABASE_URL = 'https://vfjpwrahcwiekbunflbb.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_A2GQIb5iUrSXAHaHBk21AQ_CEyHhSGu';
+// ══════════════════════════════════════════════
+// CONFIG & STATE
+// ══════════════════════════════════════════════
+const SUPA_URL = 'https://vfjpwrahcwiekbunflbb.supabase.co';
+const SUPA_KEY = 'sb_publishable_A2GQIb5iUrSXAHaHBk21AQ_CEyHhSGu';
 
 let cfg = JSON.parse(localStorage.getItem('goCfg') || '{}');
-cfg.url = cfg.url || SUPABASE_URL;
-cfg.key = cfg.key || SUPABASE_KEY;
-cfg.horaNormal = cfg.horaNormal || 30;
-cfg.horaExtra = cfg.horaExtra || 45;
-cfg.horasBase = cfg.horasBase || 9;
-cfg.kmValor = cfg.kmValor || 0;
+cfg.url = cfg.url || SUPA_URL;
+cfg.key = cfg.key || SUPA_KEY;
+cfg.hn = cfg.hn || 30;
+cfg.he = cfg.he || 45;
+cfg.base = cfg.base || 9;
+cfg.km = cfg.km || 0;
 
 let sbClient = null;
-let tipoSelecionado = null;
-let cobrancaAtiva = false;
-let deslocAtivo = false;
-let intervAtivo = false;
-let blocos = [];
+let ativos = JSON.parse(localStorage.getItem('goAtivos') || '[]');
+let tipoDeslocAtual = null;
+let tipoServicoAtual = null;
+let intervAberto = false;
+let cronTimer = null;
 
-// ============ INIT ============
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   const hoje = new Date();
-  document.getElementById('headerDate').textContent = hoje.toLocaleDateString('pt-BR', {weekday:'long', day:'numeric', month:'long'});
-  document.getElementById('dataBloco').value = hoje.toISOString().split('T')[0];
-  document.getElementById('filtroBlocoData').value = hoje.toISOString().split('T')[0];
-
-  // Período padrão: mês atual
-  const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0];
-  const ultimoDia = new Date(hoje.getFullYear(), hoje.getMonth()+1, 0).toISOString().split('T')[0];
-  document.getElementById('periodoInicio').value = primeiroDia;
-  document.getElementById('periodoFim').value = ultimoDia;
+  document.getElementById('filtroData').value = fmtISO(hoje);
+  const p1 = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+  const p2 = new Date(hoje.getFullYear(), hoje.getMonth()+1, 0);
+  document.getElementById('pInicio').value = fmtISO(p1);
+  document.getElementById('pFim').value = fmtISO(p2);
 
   carregarConfigUI();
   iniciarSupabase();
+  renderAtivos();
+  iniciarCronometros();
 
-  // Preview horas em tempo real
-  ['horaInicio','horaFim','intervInicio','intervFim'].forEach(id => {
-    document.getElementById(id).addEventListener('change', atualizarPreview);
+  // Preview em tempo real no modal serviço
+  ['msInicio','msFim','msIntervI','msIntervF'].forEach(id => {
+    document.getElementById(id).addEventListener('input', atualizarPreviewServico);
+  });
+  ['mdKmFinal','mdHoraChegada'].forEach(id => {
+    document.getElementById(id).addEventListener('input', atualizarPreviewDesloc);
   });
 });
 
-// ============ SUPABASE ============
+// ══════════════════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════════════════
 async function iniciarSupabase() {
   try {
     sbClient = window.supabase.createClient(cfg.url, cfg.key);
-    await criarTabelas();
-    atualizarStatus(true);
-    carregarBlocos();
+    const { error } = await sbClient.from('blocos').select('id').limit(1);
+    if(error && error.code === '42P01') await criarTabela();
+    document.getElementById('connDot').classList.add('on');
   } catch(e) {
-    console.error('Supabase error:', e);
-    atualizarStatus(false);
-    carregarBlocosLocal();
+    document.getElementById('connDot').classList.remove('on');
   }
 }
 
-async function criarTabelas() {
-  // Tenta inserir e ver se a tabela existe
-  const { error } = await sbClient.from('blocos').select('id').limit(1);
-  if(error && error.code === '42P01') {
-    // Tabela não existe — cria via SQL
-    await sbClient.rpc('exec_sql', { sql: `
-      CREATE TABLE IF NOT EXISTS blocos (
-        id BIGSERIAL PRIMARY KEY,
-        tipo TEXT NOT NULL,
-        segmento TEXT,
-        cliente TEXT,
-        local TEXT,
-        data DATE NOT NULL,
-        hora_inicio TIME,
-        hora_fim TIME,
-        interv_inicio TIME,
-        interv_fim TIME,
-        horas_trabalhadas DECIMAL(5,2),
-        saida_desloc TIME,
-        chegada_desloc TIME,
-        tempo_desloc DECIMAL(5,2),
-        km_rodado DECIMAL(8,1),
-        gera_cobranca BOOLEAN DEFAULT false,
-        obs TEXT,
-        valor_calculado DECIMAL(10,2),
-        created_at TIMESTAMPTZ DEFAULT NOW()
-      );
-    `});
+async function criarTabela() {
+  // Tabela criada via interface Supabase ou SQL Editor
+  // O app salva localmente como fallback
+}
+
+async function salvarNoBanco(bloco) {
+  if(!sbClient) return false;
+  try {
+    const { error } = await sbClient.from('blocos').insert([bloco]);
+    return !error;
+  } catch(e) { return false; }
+}
+
+async function buscarBlocos(filtros = {}) {
+  if(!sbClient) return [];
+  try {
+    let q = sbClient.from('blocos').select('*').order('data', { ascending: false }).order('created_at', { ascending: false });
+    if(filtros.data) q = q.eq('data', filtros.data);
+    if(filtros.de) q = q.gte('data', filtros.de);
+    if(filtros.ate) q = q.lte('data', filtros.ate);
+    const { data, error } = await q.limit(200);
+    if(error) return buscarLocal(filtros);
+    return data || [];
+  } catch(e) { return buscarLocal(filtros); }
+}
+
+function buscarLocal(filtros = {}) {
+  let dados = JSON.parse(localStorage.getItem('blocos_bk') || '[]');
+  if(filtros.data) dados = dados.filter(b => b.data === filtros.data);
+  if(filtros.de) dados = dados.filter(b => b.data >= filtros.de);
+  if(filtros.ate) dados = dados.filter(b => b.data <= filtros.ate);
+  return dados;
+}
+
+async function deletarBloco(id) {
+  if(!confirm('Excluir este registro?')) return;
+  if(sbClient) {
+    try { await sbClient.from('blocos').delete().eq('id', id); } catch(e) {}
   }
+  const bk = JSON.parse(localStorage.getItem('blocos_bk') || '[]');
+  localStorage.setItem('blocos_bk', JSON.stringify(bk.filter(b => b.id != id)));
+  carregarRegistros();
+  atualizarResumoDia();
+  toast('Registro excluído');
 }
 
-function atualizarStatus(online) {
-  const bar = document.getElementById('statusBar');
-  const txt = document.getElementById('statusText');
-  bar.className = 'status-bar ' + (online ? 'online' : 'offline');
-  txt.textContent = online ? 'Online' : 'Offline';
+// ══════════════════════════════════════════════
+// ATIVOS (em andamento)
+// ══════════════════════════════════════════════
+function salvarAtivos() { localStorage.setItem('goAtivos', JSON.stringify(ativos)); }
+
+function renderAtivos() {
+  const c = document.getElementById('ativosContainer');
+  if(!ativos.length) { c.innerHTML = ''; return; }
+
+  c.innerHTML = ativos.map((a, i) => {
+    if(a.tipo === 'desloc') {
+      return `
+      <div class="ativo-card desloc">
+        <div class="ativo-header">
+          <div class="ativo-tipo desloc">🚗 Deslocamento em andamento — ${a.segmento === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}</div>
+          <div class="cronometro" id="cron-${i}">00:00</div>
+        </div>
+        <div class="ativo-info">Para: <strong>${a.destino || '—'}</strong> · Saída: <strong>${a.horaSaida}</strong> · Km inicial: <strong>${a.kmInicial}</strong></div>
+        <div class="ativo-actions">
+          <button class="btn btn-primary btn-sm" onclick="abrirEncerrarDesloc(${i})">📍 Cheguei</button>
+          <button class="btn btn-sm danger" onclick="cancelarAtivo(${i})">Cancelar</button>
+        </div>
+      </div>`;
+    }
+    return '';
+  }).join('');
+
+  iniciarCronometros();
 }
 
-// ============ PAGES ============
-function showPage(page, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  el.classList.add('active');
-  if(page === 'blocos') carregarBlocos();
-  if(page === 'resumo') calcularResumo();
+function iniciarCronometros() {
+  if(cronTimer) clearInterval(cronTimer);
+  if(!ativos.length) return;
+  cronTimer = setInterval(() => {
+    ativos.forEach((a, i) => {
+      const el = document.getElementById('cron-' + i);
+      if(!el) return;
+      const inicio = new Date(a.tsInicio);
+      const diff = Math.floor((Date.now() - inicio.getTime()) / 1000);
+      const h = Math.floor(diff / 3600).toString().padStart(2,'0');
+      const m = Math.floor((diff % 3600) / 60).toString().padStart(2,'0');
+      const s = (diff % 60).toString().padStart(2,'0');
+      el.textContent = `${h}:${m}:${s}`;
+    });
+  }, 1000);
 }
 
-// ============ TIPO ============
-function selecionarTipo(tipo) {
-  tipoSelecionado = tipo;
-  document.querySelectorAll('.tipo-btn').forEach(b => {
-    b.className = 'tipo-btn';
+function cancelarAtivo(i) {
+  if(!confirm('Cancelar este registro em andamento?')) return;
+  ativos.splice(i, 1);
+  salvarAtivos();
+  renderAtivos();
+}
+
+// ══════════════════════════════════════════════
+// MODAL DESLOCAMENTO
+// ══════════════════════════════════════════════
+function abrirModalDesloc(segmento) {
+  tipoDeslocAtual = segmento;
+  document.getElementById('mdTitulo').textContent = `🚗 Deslocamento — ${segmento === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}`;
+  document.getElementById('mdDestino').value = '';
+  document.getElementById('mdKmInicial').value = '';
+  document.getElementById('mdHoraSaida').value = horaAtual();
+  abrirModal('modalDeslocIniciar');
+}
+
+function iniciarDeslocamento() {
+  const destino = document.getElementById('mdDestino').value.trim();
+  const kmInicial = document.getElementById('mdKmInicial').value;
+  const horaSaida = document.getElementById('mdHoraSaida').value;
+  if(!horaSaida) { toast('Informe a hora de saída', true); return; }
+
+  ativos.push({
+    tipo: 'desloc',
+    segmento: tipoDeslocAtual,
+    destino,
+    kmInicial: parseFloat(kmInicial) || 0,
+    horaSaida,
+    tsInicio: new Date().toISOString(),
+    data: fmtISO(new Date())
   });
-  const classes = {
-    'eletrica': 'selected-eletrica',
-    'seguranca': 'selected-seguranca',
-    'admin-e': 'selected-admin-e',
-    'admin-s': 'selected-admin-s',
-    'capacitacao': 'selected-capacitacao'
-  };
-  document.getElementById('tipo-' + tipo).classList.add(classes[tipo]);
-
-  // Cobrança só para admin-e
-  const row = document.getElementById('cobrancaRow');
-  row.className = 'cobranca-row' + (tipo === 'admin-e' ? ' visible' : '');
-
-  atualizarPreview();
+  salvarAtivos();
+  fecharModal('modalDeslocIniciar');
+  renderAtivos();
+  toast('🚗 Deslocamento iniciado!');
 }
 
-// ============ TOGGLES ============
-function toggleCobranca() {
-  cobrancaAtiva = !cobrancaAtiva;
-  const t = document.getElementById('cobrancaToggle');
-  t.classList.toggle('on', cobrancaAtiva);
-  atualizarPreview();
+function abrirEncerrarDesloc(i) {
+  const a = ativos[i];
+  document.getElementById('mdEncInfo').textContent =
+    `Para ${a.destino || 'destino'} · Saída ${a.horaSaida} · Km inicial ${a.kmInicial}`;
+  document.getElementById('mdKmFinal').value = '';
+  document.getElementById('mdHoraChegada').value = horaAtual();
+  document.getElementById('mdEncCalc').innerHTML = '';
+  document.getElementById('mdEncCalc').classList.remove('show');
+  document.getElementById('modalDeslocEncerrar').dataset.ativoIdx = i;
+  abrirModal('modalDeslocEncerrar');
+  setTimeout(atualizarPreviewDesloc, 100);
 }
 
-function toggleDesloc() {
-  deslocAtivo = !deslocAtivo;
-  document.getElementById('deslocToggle').classList.toggle('on', deslocAtivo);
-  document.getElementById('deslocSection').style.display = deslocAtivo ? 'block' : 'none';
-}
+function atualizarPreviewDesloc() {
+  const i = document.getElementById('modalDeslocEncerrar').dataset.ativoIdx;
+  if(i === undefined) return;
+  const a = ativos[parseInt(i)];
+  if(!a) return;
 
-function toggleInterv() {
-  intervAtivo = !intervAtivo;
-  document.getElementById('intervToggle').classList.toggle('on', intervAtivo);
-  document.getElementById('intervSection').style.display = intervAtivo ? 'block' : 'none';
-  atualizarPreview();
-}
+  const kmF = parseFloat(document.getElementById('mdKmFinal').value) || 0;
+  const hCheg = document.getElementById('mdHoraChegada').value;
 
-// ============ PREVIEW HORAS ============
-function atualizarPreview() {
-  const inicio = document.getElementById('horaInicio').value;
-  const fim = document.getElementById('horaFim').value;
-  if(!inicio || !fim) { document.getElementById('previewHoras').style.display = 'none'; return; }
+  const km = kmF > 0 ? kmF - a.kmInicial : 0;
+  const tempMin = hCheg && a.horaSaida ? diffMin(a.horaSaida, hCheg) : 0;
 
-  const calc = calcularHoras(inicio, fim,
-    intervAtivo ? document.getElementById('intervInicio').value : null,
-    intervAtivo ? document.getElementById('intervFim').value : null,
-    tipoSelecionado, document.getElementById('dataBloco').value
-  );
-
-  if(!calc) return;
-
-  document.getElementById('previewHoras').style.display = 'block';
-  document.getElementById('prevHoras').textContent = formatHoras(calc.horasEfetivas);
-
-  const mostraCalculo = (tipoSelecionado === 'eletrica') || (tipoSelecionado === 'admin-e' && cobrancaAtiva);
-
-  document.getElementById('prevExtraRow').style.display = mostraCalculo ? 'flex' : 'none';
-  document.getElementById('prevExtraRow2').style.display = mostraCalculo ? 'flex' : 'none';
-  document.getElementById('prevValorRow').style.display = mostraCalculo ? 'flex' : 'none';
-
-  if(mostraCalculo) {
-    document.getElementById('prevNormais').textContent = formatHoras(calc.horasNormais);
-    document.getElementById('prevExtras').textContent = formatHoras(calc.horasExtras);
-    document.getElementById('prevValor').textContent = 'R$ ' + calc.valor.toFixed(2);
+  const el = document.getElementById('mdEncCalc');
+  if(km > 0 || tempMin > 0) {
+    el.classList.add('show');
+    el.innerHTML = `
+      <div class="pc-row"><span class="pk">Km rodado</span><span class="pv">${km > 0 ? km.toFixed(0)+' km' : '—'}</span></div>
+      <div class="pc-row"><span class="pk">Tempo de deslocamento</span><span class="pv">${tempMin > 0 ? fmtMin(tempMin) : '—'}</span></div>
+      ${cfg.km > 0 && km > 0 ? `<div class="pc-row"><span class="pk">Ressarcimento estimado</span><span class="pv money">R$ ${(km * cfg.km).toFixed(2)}</span></div>` : ''}
+    `;
   }
 }
 
-function calcularHoras(inicio, fim, intervI, intervF, tipo, data) {
-  if(!inicio || !fim) return null;
+async function encerrarDeslocamento() {
+  const i = parseInt(document.getElementById('modalDeslocEncerrar').dataset.ativoIdx);
+  const a = ativos[i];
+  const kmFinal = parseFloat(document.getElementById('mdKmFinal').value) || 0;
+  const horaChegada = document.getElementById('mdHoraChegada').value;
+  if(!horaChegada) { toast('Informe a hora de chegada', true); return; }
 
-  const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
-  let minutos = toMin(fim) - toMin(inicio);
-  if(minutos < 0) minutos += 24*60;
-
-  if(intervI && intervF) {
-    let intervMin = toMin(intervF) - toMin(intervI);
-    if(intervMin < 0) intervMin += 24*60;
-    minutos -= intervMin;
-  }
-
-  if(minutos < 0) minutos = 0;
-  const horasEfetivas = minutos / 60;
-
-  let horasNormais = 0, horasExtras = 0, valor = 0;
-
-  const isFds = data ? [0,6].includes(new Date(data + 'T12:00:00').getDay()) : false;
-  const mostraCalculo = (tipo === 'eletrica') || (tipo === 'admin-e');
-
-  if(mostraCalculo) {
-    if(isFds) {
-      horasExtras = horasEfetivas;
-      valor = horasEfetivas * cfg.horaExtra;
-    } else {
-      horasNormais = Math.min(horasEfetivas, cfg.horasBase);
-      horasExtras = Math.max(0, horasEfetivas - cfg.horasBase);
-      valor = horasNormais * cfg.horaNormal + horasExtras * cfg.horaExtra;
-    }
-  }
-
-  return { horasEfetivas, horasNormais, horasExtras, valor, isFds };
-}
-
-function formatHoras(h) {
-  const hh = Math.floor(h);
-  const mm = Math.round((h - hh) * 60);
-  return `${hh}h${mm > 0 ? mm + 'min' : ''}`;
-}
-
-// ============ SALVAR BLOCO ============
-async function salvarBloco() {
-  if(!tipoSelecionado) { showToast('Selecione o tipo de atividade', true); return; }
-
-  const inicio = document.getElementById('horaInicio').value;
-  const fim = document.getElementById('horaFim').value;
-  const data = document.getElementById('dataBloco').value;
-  if(!data) { showToast('Informe a data', true); return; }
-
-  let horasEfetivas = 0, valor = 0;
-  if(inicio && fim) {
-    const calc = calcularHoras(inicio, fim,
-      intervAtivo ? document.getElementById('intervInicio').value : null,
-      intervAtivo ? document.getElementById('intervFim').value : null,
-      tipoSelecionado, data
-    );
-    if(calc) { horasEfetivas = calc.horasEfetivas; valor = calc.valor; }
-  }
-
-  // Tempo deslocamento
-  let tempoDesloc = 0;
-  if(deslocAtivo) {
-    const sd = document.getElementById('saidaDesloc').value;
-    const cd = document.getElementById('chegadaDesloc').value;
-    if(sd && cd) {
-      const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
-      let d = toMin(cd) - toMin(sd);
-      if(d < 0) d += 24*60;
-      tempoDesloc = d / 60;
-    }
-  }
-
-  const segmento = tipoSelecionado.includes('eletrica') || tipoSelecionado === 'admin-e' ? 'eletrica' :
-                   tipoSelecionado.includes('seguranca') || tipoSelecionado === 'admin-s' ? 'seguranca' : 'geral';
+  const kmRodado = kmFinal > 0 ? kmFinal - a.kmInicial : 0;
+  const tempoDesloc = diffMin(a.horaSaida, horaChegada) / 60;
 
   const bloco = {
-    tipo: tipoSelecionado,
-    segmento,
-    cliente: document.getElementById('cliente').value.trim(),
-    local: document.getElementById('local').value.trim(),
-    data,
-    hora_inicio: inicio || null,
-    hora_fim: fim || null,
-    interv_inicio: intervAtivo ? document.getElementById('intervInicio').value || null : null,
-    interv_fim: intervAtivo ? document.getElementById('intervFim').value || null : null,
-    horas_trabalhadas: horasEfetivas,
-    saida_desloc: deslocAtivo ? document.getElementById('saidaDesloc').value || null : null,
-    chegada_desloc: deslocAtivo ? document.getElementById('chegadaDesloc').value || null : null,
+    tipo: 'desloc',
+    segmento: a.segmento,
+    cliente: a.destino,
+    local: a.destino,
+    data: a.data,
+    hora_inicio: a.horaSaida,
+    hora_fim: horaChegada,
+    km_inicial: a.kmInicial,
+    km_final: kmFinal,
+    km_rodado: kmRodado,
     tempo_desloc: tempoDesloc,
-    km_rodado: deslocAtivo ? parseFloat(document.getElementById('kmRodado').value) || 0 : 0,
-    gera_cobranca: tipoSelecionado === 'admin-e' ? cobrancaAtiva : (tipoSelecionado === 'eletrica'),
-    obs: document.getElementById('obs').value.trim(),
+    horas_trabalhadas: 0,
+    valor_calculado: 0,
+    gera_cobranca: false
+  };
+
+  await salvarBloco(bloco);
+  ativos.splice(i, 1);
+  salvarAtivos();
+  fecharModal('modalDeslocEncerrar');
+  renderAtivos();
+  atualizarResumoDia();
+  toast('✓ Deslocamento registrado!');
+}
+
+// ══════════════════════════════════════════════
+// MODAL SERVIÇO
+// ══════════════════════════════════════════════
+function abrirModalServico(segmento) {
+  tipoServicoAtual = segmento;
+  const isE = segmento === 'eletrica';
+  document.getElementById('msTitulo').textContent = isE ? '⚡ Serviço Elétrica' : '📷 Serviço Segurança';
+  document.getElementById('msSalvarBtn').style.background = isE ? 'var(--elet)' : 'var(--seg)';
+  document.getElementById('msSalvarBtn').style.color = '#000';
+  ['msCliente','msLocal','msInicio','msFim','msIntervI','msIntervF','msObs'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  intervAberto = false;
+  document.getElementById('msIntervSection').style.display = 'none';
+  document.getElementById('msIntervBtn').style.display = 'block';
+  document.getElementById('msCalcPreview').classList.remove('show');
+  abrirModal('modalServico');
+}
+
+function toggleIntervModal() {
+  intervAberto = !intervAberto;
+  document.getElementById('msIntervSection').style.display = intervAberto ? 'block' : 'none';
+  document.getElementById('msIntervBtn').style.display = intervAberto ? 'none' : 'block';
+}
+
+function atualizarPreviewServico() {
+  const ini = document.getElementById('msInicio').value;
+  const fim = document.getElementById('msFim').value;
+  if(!ini || !fim) { document.getElementById('msCalcPreview').classList.remove('show'); return; }
+
+  const ii = intervAberto ? document.getElementById('msIntervI').value : null;
+  const if_ = intervAberto ? document.getElementById('msIntervF').value : null;
+  const calc = calcHoras(ini, fim, ii, if_, tipoServicoAtual, fmtISO(new Date()));
+  if(!calc) return;
+
+  const el = document.getElementById('msCalcPreview');
+  el.classList.add('show');
+
+  let html = `<div class="pc-row"><span class="pk">Horas efetivas</span><span class="pv">${fmtHoras(calc.total)}</span></div>`;
+  if(tipoServicoAtual === 'eletrica') {
+    html += `<div class="pc-row"><span class="pk">Horas normais</span><span class="pv">${fmtHoras(calc.normais)}</span></div>`;
+    html += `<div class="pc-row"><span class="pk">Horas extras</span><span class="pv">${fmtHoras(calc.extras)}</span></div>`;
+    html += `<div class="pc-row"><span class="pk">Valor estimado</span><span class="pv money">R$ ${calc.valor.toFixed(2)}</span></div>`;
+    if(calc.fds) html += `<div class="pc-row"><span class="pk">⚠️ FDS/Feriado</span><span class="pv fds">R$ ${cfg.he}/h</span></div>`;
+  }
+  el.innerHTML = html;
+}
+
+async function salvarServico() {
+  const ini = document.getElementById('msInicio').value;
+  const fim = document.getElementById('msFim').value;
+  if(!ini || !fim) { toast('Informe início e fim do serviço', true); return; }
+
+  const ii = intervAberto ? document.getElementById('msIntervI').value : null;
+  const if_ = intervAberto ? document.getElementById('msIntervF').value : null;
+  const data = fmtISO(new Date());
+  const calc = calcHoras(ini, fim, ii, if_, tipoServicoAtual, data) || { total: 0, valor: 0 };
+
+  const bloco = {
+    tipo: tipoServicoAtual === 'eletrica' ? 'eletrica' : 'seguranca',
+    segmento: tipoServicoAtual,
+    cliente: document.getElementById('msCliente').value.trim(),
+    local: document.getElementById('msLocal').value.trim(),
+    data,
+    hora_inicio: ini,
+    hora_fim: fim,
+    interv_inicio: ii || null,
+    interv_fim: if_ || null,
+    horas_trabalhadas: calc.total,
+    km_rodado: 0,
+    tempo_desloc: 0,
+    gera_cobranca: tipoServicoAtual === 'eletrica',
+    obs: document.getElementById('msObs').value.trim(),
+    valor_calculado: calc.valor
+  };
+
+  await salvarBloco(bloco);
+  fecharModal('modalServico');
+  atualizarResumoDia();
+  toast(`✓ Serviço registrado! ${tipoServicoAtual === 'eletrica' ? 'R$ ' + calc.valor.toFixed(2) : ''}`);
+}
+
+// ══════════════════════════════════════════════
+// MODAL ADMIN
+// ══════════════════════════════════════════════
+function abrirModalAdmin() {
+  document.getElementById('maDesc').value = '';
+  document.getElementById('maInicio').value = '';
+  document.getElementById('maFim').value = '';
+  document.getElementById('maCobrancaToggle').classList.remove('on');
+  abrirModal('modalAdmin');
+}
+
+async function salvarAdmin() {
+  const seg = document.getElementById('maSegmento').value;
+  const ini = document.getElementById('maInicio').value;
+  const fim = document.getElementById('maFim').value;
+  const cob = document.getElementById('maCobrancaToggle').classList.contains('on');
+  const data = fmtISO(new Date());
+
+  let horas = 0, valor = 0;
+  if(ini && fim) {
+    const calc = calcHoras(ini, fim, null, null, cob && seg === 'eletrica' ? 'eletrica' : 'nao', data);
+    if(calc) { horas = calc.total; valor = calc.valor; }
+  }
+
+  const bloco = {
+    tipo: 'admin-' + (seg === 'eletrica' ? 'e' : 's'),
+    segmento: seg,
+    cliente: document.getElementById('maDesc').value.trim(),
+    local: '',
+    data,
+    hora_inicio: ini || null,
+    hora_fim: fim || null,
+    horas_trabalhadas: horas,
+    km_rodado: 0, tempo_desloc: 0,
+    gera_cobranca: cob,
     valor_calculado: valor
   };
 
-  // Salvar no Supabase ou local
-  let salvoNuvem = false;
-  if(sbClient) {
-    try {
-      const { error } = await sbClient.from('blocos').insert([bloco]);
-      if(!error) salvoNuvem = true;
-    } catch(e) {}
-  }
-
-  // Sempre salva local também como backup
-  const local = JSON.parse(localStorage.getItem('blocos_local') || '[]');
-  local.unshift({ ...bloco, id: Date.now(), local_only: !salvoNuvem });
-  localStorage.setItem('blocos_local', JSON.stringify(local.slice(0, 500)));
-
-  limparFormulario();
-  showToast(salvoNuvem ? '✓ Salvo na nuvem!' : '✓ Salvo localmente!');
-  carregarBlocos();
+  await salvarBloco(bloco);
+  fecharModal('modalAdmin');
+  atualizarResumoDia();
+  toast('✓ Administrativo registrado!');
 }
 
-function limparFormulario() {
-  ['cliente','local','horaInicio','horaFim','intervInicio','intervFim',
-   'saidaDesloc','chegadaDesloc','kmRodado','obs'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('dataBloco').value = new Date().toISOString().split('T')[0];
-  tipoSelecionado = null;
-  cobrancaAtiva = false;
-  deslocAtivo = false;
-  intervAtivo = false;
-  document.querySelectorAll('.tipo-btn').forEach(b => b.className = 'tipo-btn');
-  document.getElementById('cobrancaRow').className = 'cobranca-row';
-  document.getElementById('cobrancaToggle').classList.remove('on');
-  document.getElementById('deslocToggle').classList.remove('on');
-  document.getElementById('intervToggle').classList.remove('on');
-  document.getElementById('deslocSection').style.display = 'none';
-  document.getElementById('intervSection').style.display = 'none';
-  document.getElementById('previewHoras').style.display = 'none';
+// ══════════════════════════════════════════════
+// MODAL CAPACITAÇÃO
+// ══════════════════════════════════════════════
+function abrirModalCapacitacao() {
+  document.getElementById('capDesc').value = '';
+  document.getElementById('capInicio').value = '';
+  document.getElementById('capFim').value = '';
+  document.getElementById('capObs').value = '';
+  abrirModal('modalCap');
 }
 
-// ============ CARREGAR BLOCOS ============
-async function carregarBlocos() {
-  const lista = document.getElementById('listaBlocos');
-  const data = document.getElementById('filtroBlocoData').value;
+async function salvarCapacitacao() {
+  const ini = document.getElementById('capInicio').value;
+  const fim = document.getElementById('capFim').value;
+  let horas = 0;
+  if(ini && fim) { horas = diffMin(ini, fim) / 60; }
 
-  lista.innerHTML = '<div class="loading"><div class="spinner"></div>Carregando...</div>';
+  const bloco = {
+    tipo: 'capacitacao',
+    segmento: 'geral',
+    cliente: document.getElementById('capDesc').value.trim(),
+    local: '',
+    data: fmtISO(new Date()),
+    hora_inicio: ini || null,
+    hora_fim: fim || null,
+    horas_trabalhadas: horas,
+    km_rodado: 0, tempo_desloc: 0,
+    gera_cobranca: false,
+    obs: document.getElementById('capObs').value.trim(),
+    valor_calculado: 0
+  };
 
-  let dados = [];
+  await salvarBloco(bloco);
+  fecharModal('modalCap');
+  atualizarResumoDia();
+  toast('✓ Capacitação registrada!');
+}
 
-  if(sbClient) {
-    try {
-      let q = sbClient.from('blocos').select('*').order('created_at', { ascending: false });
-      if(data) q = q.eq('data', data);
-      const { data: rows, error } = await q.limit(50);
-      if(!error && rows) dados = rows;
-    } catch(e) {}
-  }
+// ══════════════════════════════════════════════
+// SALVAR BLOCO (banco + local)
+// ══════════════════════════════════════════════
+async function salvarBloco(bloco) {
+  const ok = await salvarNoBanco(bloco);
+  const bk = JSON.parse(localStorage.getItem('blocos_bk') || '[]');
+  bk.unshift({ ...bloco, id: Date.now(), _local: !ok });
+  localStorage.setItem('blocos_bk', JSON.stringify(bk.slice(0, 500)));
+  return ok;
+}
+
+// ══════════════════════════════════════════════
+// RESUMO DO DIA
+// ══════════════════════════════════════════════
+async function atualizarResumoDia() {
+  const hoje = fmtISO(new Date());
+  const dados = await buscarBlocos({ data: hoje });
+  const el = document.getElementById('resumoDiaConteudo');
 
   if(!dados.length) {
-    dados = carregarBlocosLocal(data);
-  }
-
-  blocos = dados;
-  renderBlocos(dados);
-}
-
-function carregarBlocosLocal(filtroData) {
-  const local = JSON.parse(localStorage.getItem('blocos_local') || '[]');
-  if(filtroData) return local.filter(b => b.data === filtroData);
-  return local.slice(0, 30);
-}
-
-function renderBlocos(dados) {
-  const lista = document.getElementById('listaBlocos');
-  if(!dados.length) {
-    lista.innerHTML = '<div class="empty"><span class="e-icon">📋</span>Nenhum registro neste dia</div>';
+    el.innerHTML = '<div class="empty" style="padding:16px 0"><span class="ei">📅</span><span style="font-size:13px">Nenhum registro hoje</span></div>';
     return;
   }
 
-  const tipoInfo = {
-    'eletrica':     { label: '⚡ Elétrica', cls: 'tipo-eletrica', cor: 'eletrica' },
-    'seguranca':    { label: '📷 Segurança', cls: 'tipo-seguranca', cor: 'seguranca' },
-    'admin-e':      { label: '📋 Adm. Elétrica', cls: 'tipo-admin', cor: '' },
-    'admin-s':      { label: '📋 Adm. Segurança', cls: 'tipo-admin', cor: '' },
-    'capacitacao':  { label: '🎓 Capacitação', cls: 'tipo-capacitacao', cor: '' },
+  let horasE = 0, horasS = 0, kmS = 0, tempoDesloc = 0, valorDia = 0;
+  dados.forEach(b => {
+    const h = parseFloat(b.horas_trabalhadas || 0);
+    if(b.tipo === 'eletrica' || (b.tipo === 'admin-e' && b.gera_cobranca)) horasE += h;
+    if(b.tipo === 'seguranca') horasS += h;
+    if(b.segmento === 'seguranca') kmS += parseFloat(b.km_rodado || 0);
+    tempoDesloc += parseFloat(b.tempo_desloc || 0);
+  });
+
+  const isFds = [0,6].includes(new Date(hoje + 'T12:00:00').getDay());
+  if(isFds) {
+    valorDia = horasE * cfg.he;
+  } else {
+    const n = Math.min(horasE, cfg.base);
+    const e = Math.max(0, horasE - cfg.base);
+    valorDia = n * cfg.hn + e * cfg.he;
+  }
+
+  el.innerHTML = `
+    <div class="det-box">
+      ${horasE > 0 ? `<div class="det-row"><span class="dl">⚡ Horas elétrica</span><span class="dv">${fmtHoras(horasE)}</span></div>` : ''}
+      ${horasE > 0 ? `<div class="det-row"><span class="dl">💰 Valor estimado</span><span class="dv money">R$ ${valorDia.toFixed(2)}</span></div>` : ''}
+      ${horasS > 0 ? `<div class="det-row"><span class="dl">📷 Horas segurança</span><span class="dv">${fmtHoras(horasS)}</span></div>` : ''}
+      ${kmS > 0 ? `<div class="det-row"><span class="dl">🛣 Km segurança</span><span class="dv">${kmS.toFixed(0)} km</span></div>` : ''}
+      ${tempoDesloc > 0 ? `<div class="det-row"><span class="dl">🚗 Tempo deslocamento</span><span class="dv">${fmtHoras(tempoDesloc)}</span></div>` : ''}
+      <div class="det-row"><span class="dl">📋 Registros hoje</span><span class="dv">${dados.length}</span></div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════
+// CARREGAR REGISTROS
+// ══════════════════════════════════════════════
+async function carregarRegistros() {
+  const lista = document.getElementById('listaRegistros');
+  const data = document.getElementById('filtroData').value;
+  lista.innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
+
+  const dados = await buscarBlocos({ data });
+
+  if(!dados.length) {
+    lista.innerHTML = '<div class="empty"><span class="ei">📋</span>Nenhum registro neste dia</div>';
+    return;
+  }
+
+  const mapa = {
+    'eletrica':     { label: '⚡ Elétrica', cls: 'tc-e', cor: 'e' },
+    'seguranca':    { label: '📷 Segurança', cls: 'tc-s', cor: 's' },
+    'admin-e':      { label: '📋 Adm. Elétrica', cls: 'tc-a', cor: '' },
+    'admin-s':      { label: '📋 Adm. Segurança', cls: 'tc-a', cor: '' },
+    'capacitacao':  { label: '🎓 Capacitação', cls: 'tc-c', cor: '' },
+    'desloc':       { label: '🚗 Deslocamento', cls: 'tc-d', cor: 'b' },
   };
 
   lista.innerHTML = dados.map(b => {
-    const info = tipoInfo[b.tipo] || { label: b.tipo, cls: 'tipo-eletrica', cor: '' };
-    const horas = b.horas_trabalhadas ? formatHoras(parseFloat(b.horas_trabalhadas)) : null;
-    const kmTxt = b.km_rodado > 0 ? `🛣 ${b.km_rodado}km` : null;
-    const deslocTxt = b.tempo_desloc > 0 ? `🚗 ${formatHoras(parseFloat(b.tempo_desloc))}` : null;
-    const valor = b.valor_calculado > 0 ? b.valor_calculado : null;
+    const m = mapa[b.tipo] || { label: b.tipo, cls: 'tc-e', cor: '' };
+    const h = b.horas_trabalhadas > 0 ? fmtHoras(parseFloat(b.horas_trabalhadas)) : null;
+    const km = b.km_rodado > 0 ? `${parseFloat(b.km_rodado).toFixed(0)}km` : null;
+    const desloc = b.tempo_desloc > 0 ? fmtHoras(parseFloat(b.tempo_desloc)) : null;
+    const val = b.valor_calculado > 0 ? parseFloat(b.valor_calculado) : null;
 
-    return `
-    <div class="bloco-card ${info.cls}">
-      <button class="del-bloco" onclick="deletarBloco(${b.id || "'"+b.id+"'"})">🗑</button>
-      <div class="bloco-header">
-        <div class="bloco-tipo" style="color:var(--${info.cor || 'muted'})">${info.label}</div>
-        <div class="bloco-data">${formatData(b.data)}</div>
+    return `<div class="bloco-card ${m.cls}">
+      <button class="btn-del" onclick="deletarBloco(${b.id || "'"+b.id+"'"})">🗑</button>
+      <div class="bc-head">
+        <div class="bc-tipo" style="color:${m.cls==='tc-e'?'var(--elet)':m.cls==='tc-s'?'var(--seg)':m.cls==='tc-d'?'var(--blue)':'var(--admin)'}">${m.label}</div>
+        <div class="bc-data">${fmtData(b.data)}</div>
       </div>
-      ${b.cliente ? `<div class="bloco-cliente">${b.cliente}</div>` : ''}
-      <div class="bloco-tags">
-        ${horas ? `<span class="tag highlight">⏱ ${horas}</span>` : ''}
+      ${b.cliente ? `<div class="bc-cliente">${b.cliente}</div>` : ''}
+      <div class="bc-tags">
+        ${h ? `<span class="tag hi">⏱ ${h}</span>` : ''}
         ${b.hora_inicio ? `<span class="tag">${b.hora_inicio.slice(0,5)}${b.hora_fim?' → '+b.hora_fim.slice(0,5):''}</span>` : ''}
-        ${kmTxt ? `<span class="tag ${info.cor}">${kmTxt}</span>` : ''}
-        ${deslocTxt ? `<span class="tag">🚗 ${formatHoras(parseFloat(b.tempo_desloc))}</span>` : ''}
-        ${b.gera_cobranca ? '<span class="tag eletrica">💰 Cobrável</span>' : ''}
-        ${b.local_only ? '<span class="tag">📱 Local</span>' : ''}
+        ${km ? `<span class="tag ${m.cor}">🛣 ${km}</span>` : ''}
+        ${desloc ? `<span class="tag b">🚗 ${desloc}</span>` : ''}
+        ${b.gera_cobranca && b.tipo !== 'eletrica' ? '<span class="tag e">💰 Cobrável</span>' : ''}
       </div>
-      ${valor ? `<div class="bloco-valor"><span class="valor-badge">R$ ${parseFloat(valor).toFixed(2)}</span></div>` : ''}
+      ${val ? `<div class="bc-valor"><span class="valor-pill">R$ ${val.toFixed(2)}</span></div>` : ''}
       ${b.obs ? `<div style="font-size:12px;color:var(--muted);margin-top:8px;padding-left:8px">${b.obs}</div>` : ''}
     </div>`;
   }).join('');
 }
 
-async function deletarBloco(id) {
-  if(!confirm('Excluir este registro?')) return;
+// ══════════════════════════════════════════════
+// RESUMO POR PERÍODO
+// ══════════════════════════════════════════════
+async function calcResumo() {
+  const de = document.getElementById('pInicio').value;
+  const ate = document.getElementById('pFim').value;
+  if(!de || !ate) return;
 
-  if(sbClient) {
-    try {
-      await sbClient.from('blocos').delete().eq('id', id);
-    } catch(e) {}
-  }
-
-  // Remove do local também
-  const local = JSON.parse(localStorage.getItem('blocos_local') || '[]');
-  localStorage.setItem('blocos_local', JSON.stringify(local.filter(b => b.id != id)));
-
-  carregarBlocos();
-  showToast('Registro excluído');
-}
-
-// ============ RESUMO ============
-async function calcularResumo() {
-  const di = document.getElementById('periodoInicio').value;
-  const df = document.getElementById('periodoFim').value;
-  if(!di || !df) return;
-
-  let dados = [];
-
-  if(sbClient) {
-    try {
-      const { data, error } = await sbClient.from('blocos')
-        .select('*')
-        .gte('data', di)
-        .lte('data', df);
-      if(!error && data) dados = data;
-    } catch(e) {}
-  }
-
+  const dados = await buscarBlocos({ de, ate });
   if(!dados.length) {
-    const local = JSON.parse(localStorage.getItem('blocos_local') || '[]');
-    dados = local.filter(b => b.data >= di && b.data <= df);
+    document.getElementById('vtNum').textContent = 'R$ 0,00';
+    document.getElementById('vtSub').textContent = 'Nenhum registro no período';
+    return;
   }
 
-  // Calcular métricas
   let horasE = 0, horasS = 0, horasAdmin = 0, horasCap = 0;
-  let kmSeg = 0, tempoDesloc = 0;
-  let valorTotal = 0;
+  let kmSeg = 0, tempoDesloc = 0, valorTotal = 0;
   const dias = new Set();
-
-  // Agrupar por dia para calcular extras corretamente
   const porDia = {};
+
   dados.forEach(b => {
+    if(b.tipo === 'desloc') {
+      tempoDesloc += parseFloat(b.tempo_desloc || 0);
+      if(b.segmento === 'seguranca') kmSeg += parseFloat(b.km_rodado || 0);
+      return;
+    }
+    dias.add(b.data);
     if(!porDia[b.data]) porDia[b.data] = [];
     porDia[b.data].push(b);
-    dias.add(b.data);
-  });
-
-  // Recalcular valor por dia (soma de horas elétricas por dia)
-  Object.entries(porDia).forEach(([data, blocosDia]) => {
-    const blocsE = blocosDia.filter(b => (b.tipo === 'eletrica') || (b.tipo === 'admin-e' && b.gera_cobranca));
-    let horasDiaE = blocsE.reduce((a,b) => a + parseFloat(b.horas_trabalhadas||0), 0);
-
-    const isFds = [0,6].includes(new Date(data + 'T12:00:00').getDay());
-    let valorDia = 0;
-
-    if(isFds) {
-      valorDia = horasDiaE * cfg.horaExtra;
-    } else {
-      const normais = Math.min(horasDiaE, cfg.horasBase);
-      const extras = Math.max(0, horasDiaE - cfg.horasBase);
-      valorDia = normais * cfg.horaNormal + extras * cfg.horaExtra;
-    }
-
-    valorTotal += valorDia;
-  });
-
-  dados.forEach(b => {
     const h = parseFloat(b.horas_trabalhadas || 0);
     if(b.tipo === 'eletrica') horasE += h;
     else if(b.tipo === 'seguranca') horasS += h;
-    else if(b.tipo === 'admin-e' || b.tipo === 'admin-s') horasAdmin += h;
+    else if(b.tipo?.startsWith('admin')) horasAdmin += h;
     else if(b.tipo === 'capacitacao') horasCap += h;
-
     if(b.segmento === 'seguranca') kmSeg += parseFloat(b.km_rodado || 0);
-    tempoDesloc += parseFloat(b.tempo_desloc || 0);
   });
 
-  // Atualizar UI
-  document.getElementById('valorTotalEletrica').textContent = 'R$ ' + valorTotal.toFixed(2);
-  document.getElementById('valorTotalSub').textContent = `${dias.size} dia(s) • ${formatHoras(horasE)} trabalhadas`;
+  // Cálculo valor por dia
+  Object.entries(porDia).forEach(([data, bs]) => {
+    const cobr = bs.filter(b => b.tipo === 'eletrica' || (b.tipo === 'admin-e' && b.gera_cobranca));
+    const hDia = cobr.reduce((a,b) => a + parseFloat(b.horas_trabalhadas||0), 0);
+    if(!hDia) return;
+    const fds = [0,6].includes(new Date(data+'T12:00:00').getDay());
+    if(fds) {
+      valorTotal += hDia * cfg.he;
+    } else {
+      const n = Math.min(hDia, cfg.base);
+      const e = Math.max(0, hDia - cfg.base);
+      valorTotal += n * cfg.hn + e * cfg.he;
+    }
+  });
 
-  document.getElementById('statHorasE').textContent = formatHoras(horasE);
-  document.getElementById('statHorasS').textContent = formatHoras(horasS);
-  document.getElementById('statKm').textContent = kmSeg.toFixed(0) + ' km';
-  document.getElementById('statDesloc').textContent = formatHoras(tempoDesloc);
-  document.getElementById('statDias').textContent = dias.size;
-  document.getElementById('statAdmin').textContent = formatHoras(horasAdmin + horasCap);
+  document.getElementById('vtNum').textContent = 'R$ ' + valorTotal.toFixed(2);
+  document.getElementById('vtSub').textContent = `${dias.size} dia(s) trabalhado(s) · ${fmtHoras(horasE)} em elétrica`;
+  document.getElementById('stHE').textContent = fmtHoras(horasE);
+  document.getElementById('stHESub').textContent = valorTotal > 0 ? 'R$ ' + valorTotal.toFixed(2) : '—';
+  document.getElementById('stHS').textContent = fmtHoras(horasS);
+  document.getElementById('stKm').textContent = kmSeg.toFixed(0) + 'km';
+  document.getElementById('stKmSub').textContent = cfg.km > 0 ? 'R$ ' + (kmSeg * cfg.km).toFixed(2) : 'configure valor/km';
+  document.getElementById('stDesloc').textContent = fmtHoras(tempoDesloc);
+  document.getElementById('stDias').textContent = dias.size;
+  document.getElementById('stAdmin').textContent = fmtHoras(horasAdmin + horasCap);
 
-  const ressarcimento = kmSeg * cfg.kmValor;
-  document.getElementById('statKmSub').textContent = cfg.kmValor > 0 ? `R$ ${ressarcimento.toFixed(2)}` : 'configure valor/km';
+  // Detalhe por dia
+  const detDiv = document.getElementById('detalheElDiv');
+  const detC = document.getElementById('detalheElConteudo');
+  const diasComE = Object.entries(porDia).filter(([d,bs]) => bs.some(b => b.tipo === 'eletrica' || (b.tipo==='admin-e' && b.gera_cobranca)));
 
-  // Detalhe por dia elétrica
-  const detalheEl = document.getElementById('detalheEletrica');
-  const detalheElC = document.getElementById('detalheEletricaConteudo');
-
-  if(Object.keys(porDia).length > 0) {
-    detalheEl.style.display = 'block';
-    detalheElC.innerHTML = '<div class="horas-detalhe">' +
-      Object.entries(porDia).sort().map(([data, bs]) => {
-        const blocsE = bs.filter(b => (b.tipo === 'eletrica') || (b.tipo === 'admin-e' && b.gera_cobranca));
-        if(!blocsE.length) return '';
-        const h = blocsE.reduce((a,b) => a + parseFloat(b.horas_trabalhadas||0), 0);
-        const isFds = [0,6].includes(new Date(data + 'T12:00:00').getDay());
-        let v = isFds ? h * cfg.horaExtra : Math.min(h, cfg.horasBase)*cfg.horaNormal + Math.max(0,h-cfg.horasBase)*cfg.horaExtra;
-        return `<div class="horas-row">
-          <span class="h-label">${formatData(data)}${isFds?' 🔶':''}</span>
-          <span class="h-val">${formatHoras(h)} → <span class="money" style="color:var(--eletrica)">R$ ${v.toFixed(2)}</span></span>
-        </div>`;
-      }).filter(Boolean).join('') + '</div>';
+  if(diasComE.length) {
+    detDiv.style.display = 'block';
+    detC.innerHTML = diasComE.sort().map(([data, bs]) => {
+      const cobr = bs.filter(b => b.tipo === 'eletrica' || (b.tipo === 'admin-e' && b.gera_cobranca));
+      const h = cobr.reduce((a,b) => a + parseFloat(b.horas_trabalhadas||0), 0);
+      const fds = [0,6].includes(new Date(data+'T12:00:00').getDay());
+      const v = fds ? h*cfg.he : Math.min(h,cfg.base)*cfg.hn + Math.max(0,h-cfg.base)*cfg.he;
+      return `<div class="det-row">
+        <span class="dl">${fmtData(data)}${fds?' 🔶':''}</span>
+        <span class="dv">${fmtHoras(h)} → <span class="money" style="color:var(--elet)">R$ ${v.toFixed(2)}</span></span>
+      </div>`;
+    }).join('');
+  } else {
+    detDiv.style.display = 'none';
   }
 }
 
-// ============ CONFIG ============
+// ══════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════
 function carregarConfigUI() {
-  document.getElementById('cfgUrl').value = cfg.url || '';
-  document.getElementById('cfgKey').value = cfg.key || '';
-  document.getElementById('cfgHoraNormal').value = cfg.horaNormal || 30;
-  document.getElementById('cfgHoraExtra').value = cfg.horaExtra || 45;
-  document.getElementById('cfgHorasBase').value = cfg.horasBase || 9;
-  document.getElementById('cfgKmValor').value = cfg.kmValor || 0;
-  if(cfg.anthropicKey) document.getElementById('cfgAnthropicKey').value = cfg.anthropicKey;
+  document.getElementById('cfgUrl').value = cfg.url;
+  document.getElementById('cfgKey').value = cfg.key;
+  document.getElementById('cfgHN').value = cfg.hn;
+  document.getElementById('cfgHE').value = cfg.he;
+  document.getElementById('cfgBase').value = cfg.base;
+  document.getElementById('cfgKm').value = cfg.km;
 }
 
-function salvarConfig() {
+function salvarConexao() {
   cfg.url = document.getElementById('cfgUrl').value.trim();
   cfg.key = document.getElementById('cfgKey').value.trim();
-  salvarCfg();
+  localStorage.setItem('goCfg', JSON.stringify(cfg));
   iniciarSupabase();
-  showToast('✓ Configuração salva!');
+  toast('✓ Conexão salva!');
 }
 
 function salvarValores() {
-  cfg.horaNormal = parseFloat(document.getElementById('cfgHoraNormal').value) || 30;
-  cfg.horaExtra = parseFloat(document.getElementById('cfgHoraExtra').value) || 45;
-  cfg.horasBase = parseFloat(document.getElementById('cfgHorasBase').value) || 9;
-  cfg.kmValor = parseFloat(document.getElementById('cfgKmValor').value) || 0;
-  cfg.anthropicKey = document.getElementById('cfgAnthropicKey').value.trim();
-  salvarCfg();
-  showToast('✓ Valores salvos!');
+  cfg.hn = parseFloat(document.getElementById('cfgHN').value) || 30;
+  cfg.he = parseFloat(document.getElementById('cfgHE').value) || 45;
+  cfg.base = parseFloat(document.getElementById('cfgBase').value) || 9;
+  cfg.km = parseFloat(document.getElementById('cfgKm').value) || 0;
+  localStorage.setItem('goCfg', JSON.stringify(cfg));
+  toast('✓ Valores salvos!');
 }
 
-function salvarCfg() { localStorage.setItem('goCfg', JSON.stringify(cfg)); }
-
-// ============ EXPORT ============
+// ══════════════════════════════════════════════
+// EXPORT
+// ══════════════════════════════════════════════
 async function exportarExcel() {
-  let dados = [];
-  if(sbClient) {
-    try {
-      const { data } = await sbClient.from('blocos').select('*').order('data');
-      if(data) dados = data;
-    } catch(e) {}
-  }
-  if(!dados.length) dados = JSON.parse(localStorage.getItem('blocos_local') || '[]');
-  if(!dados.length) { showToast('Nenhum dado para exportar', true); return; }
-
+  const dados = await buscarBlocos({});
+  if(!dados.length) { toast('Nenhum dado para exportar', true); return; }
   const wb = XLSX.utils.book_new();
   const rows = dados.map(b => ({
-    'Data': formatData(b.data),
-    'Tipo': b.tipo,
-    'Segmento': b.segmento,
-    'Cliente': b.cliente,
-    'Local': b.local,
-    'Hora Início': b.hora_inicio,
-    'Hora Fim': b.hora_fim,
-    'Intervalo Início': b.interv_inicio,
-    'Intervalo Fim': b.interv_fim,
-    'Horas Trabalhadas': parseFloat(b.horas_trabalhadas||0).toFixed(2),
-    'Saída Desloc.': b.saida_desloc,
-    'Chegada Desloc.': b.chegada_desloc,
+    'Data': fmtData(b.data), 'Tipo': b.tipo, 'Segmento': b.segmento,
+    'Cliente/Destino': b.cliente, 'Local': b.local,
+    'Início': b.hora_inicio, 'Fim': b.hora_fim,
+    'Interv. Início': b.interv_inicio, 'Interv. Fim': b.interv_fim,
+    'Horas': parseFloat(b.horas_trabalhadas||0).toFixed(2),
+    'Km Inicial': b.km_inicial, 'Km Final': b.km_final,
+    'Km Rodado': parseFloat(b.km_rodado||0).toFixed(0),
     'Tempo Desloc. (h)': parseFloat(b.tempo_desloc||0).toFixed(2),
-    'Km Rodado': b.km_rodado,
     'Gera Cobrança': b.gera_cobranca ? 'Sim' : 'Não',
-    'Valor Calculado (R$)': parseFloat(b.valor_calculado||0).toFixed(2),
-    'Observações': b.obs
+    'Valor (R$)': parseFloat(b.valor_calculado||0).toFixed(2),
+    'Obs': b.obs
   }));
-
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Blocos');
-  XLSX.writeFile(wb, `gestao-op-${new Date().toISOString().split('T')[0]}.xlsx`);
-  showToast('✓ Excel exportado!');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Registros');
+  XLSX.writeFile(wb, `gestao-op-${fmtISO(new Date())}.xlsx`);
+  toast('✓ Excel exportado!');
 }
 
-// ============ HELPERS ============
-function formatData(d) {
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function calcHoras(ini, fim, ii, if_, tipo, data) {
+  if(!ini || !fim) return null;
+  let min = diffMin(ini, fim);
+  if(ii && if_) min -= diffMin(ii, if_);
+  if(min < 0) min = 0;
+  const total = min / 60;
+  const fds = [0,6].includes(new Date(data+'T12:00:00').getDay());
+  let normais = 0, extras = 0, valor = 0;
+  if(tipo === 'eletrica') {
+    if(fds) { extras = total; valor = total * cfg.he; }
+    else { normais = Math.min(total, cfg.base); extras = Math.max(0, total - cfg.base); valor = normais * cfg.hn + extras * cfg.he; }
+  }
+  return { total, normais, extras, valor, fds };
+}
+
+function diffMin(h1, h2) {
+  const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
+  let d = toMin(h2) - toMin(h1);
+  if(d < 0) d += 24*60;
+  return d;
+}
+
+function fmtHoras(h) {
+  const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+  return `${hh}h${mm > 0 ? mm+'min' : ''}`;
+}
+
+function fmtMin(m) {
+  const h = Math.floor(m/60), mm = m % 60;
+  return h > 0 ? `${h}h${mm > 0 ? mm+'min' : ''}` : `${mm}min`;
+}
+
+function fmtISO(d) { return d.toISOString().split('T')[0]; }
+
+function fmtData(d) {
   if(!d) return '';
   const [y,m,dd] = d.split('-');
   return `${dd}/${m}/${y}`;
 }
 
-function showToast(msg, err=false) {
+function horaAtual() {
+  const n = new Date();
+  return n.getHours().toString().padStart(2,'0') + ':' + n.getMinutes().toString().padStart(2,'0');
+}
+
+function showPage(p, el) {
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  el.classList.add('active');
+  if(p === 'home') atualizarResumoDia();
+  if(p === 'registros') carregarRegistros();
+  if(p === 'resumo') calcResumo();
+}
+
+function abrirModal(id) { document.getElementById(id).classList.add('open'); }
+function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Fechar modal ao clicar fora
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if(e.target === m) m.classList.remove('open'); });
+});
+
+function toast(msg, err = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.style.background = err ? 'var(--red)' : 'var(--green)';
@@ -1411,6 +1398,9 @@ function showToast(msg, err=false) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
 }
+
+// Iniciar resumo do dia ao carregar
+setTimeout(atualizarResumoDia, 500);
 </script>
 </body>
 </html>

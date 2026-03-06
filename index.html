@@ -37,26 +37,11 @@
   --r: 12px;
   --r-sm: 8px;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; overscroll-behavior: none; }
 
-body {
-  font-family: 'Outfit', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  padding-bottom: 80px;
-  overscroll-behavior: none;
-}
-
-/* ── HEADER ── */
-.header {
-  background: var(--s1);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-  position: sticky; top: 0; z-index: 300;
-  display: flex; align-items: center; justify-content: space-between;
-}
+/* HEADER */
+.header { background: var(--s1); border-bottom: 1px solid var(--border); padding: 12px 16px; position: sticky; top: 0; z-index: 300; display: flex; align-items: center; justify-content: space-between; }
 .logo { font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 700; letter-spacing: -0.5px; }
 .logo em { color: var(--elet); font-style: normal; }
 .header-right { display: flex; align-items: center; gap: 10px; }
@@ -65,108 +50,61 @@ body {
 .btn-icon { background: var(--s2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; font-family: 'Outfit', sans-serif; transition: all 0.2s; }
 .btn-icon:hover { border-color: var(--border2); color: var(--text); }
 
-/* ── NAV ── */
-.nav {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--s1); border-top: 1px solid var(--border);
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  z-index: 300; padding-bottom: env(safe-area-inset-bottom);
-}
-.nav-btn {
-  padding: 10px 4px 8px; text-align: center; cursor: pointer;
-  border-top: 2px solid transparent; transition: all 0.2s;
-  background: none; border-left: none; border-right: none; border-bottom: none;
-}
+/* NAV */
+.nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--s1); border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(5, 1fr); z-index: 300; padding-bottom: env(safe-area-inset-bottom); }
+.nav-btn { padding: 10px 4px 8px; text-align: center; cursor: pointer; border-top: 2px solid transparent; transition: all 0.2s; background: none; border-left: none; border-right: none; border-bottom: none; }
 .nav-btn.active { border-top-color: var(--elet); }
-.nav-btn .ni { font-size: 18px; display: block; margin-bottom: 2px; }
+.nav-btn .ni { font-size: 17px; display: block; margin-bottom: 2px; }
 .nav-btn .nl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
 .nav-btn.active .nl { color: var(--elet); }
 
-/* ── PAGES ── */
+/* PAGES */
 .page { display: none; padding: 14px; }
 .page.active { display: block; }
 
-/* ── CARDS ── */
+/* CARDS */
 .card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-bottom: 10px; }
 .card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px; }
 
-/* ── ATIVO CARD ── */
-.ativo-card {
-  border-radius: var(--r);
-  padding: 14px;
-  margin-bottom: 10px;
-  position: relative;
-  overflow: hidden;
-  animation: pulse-border 2s ease-in-out infinite;
-}
+/* ATIVO */
+.ativo-card { border-radius: var(--r); padding: 14px; margin-bottom: 10px; position: relative; overflow: hidden; }
 .ativo-card.desloc { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.4); }
-.ativo-card.servico-e { background: var(--elet-bg); border: 1px solid var(--elet-border); }
-.ativo-card.servico-s { background: var(--seg-bg); border: 1px solid var(--seg-border); }
-
-@keyframes pulse-border {
-  0%,100% { box-shadow: 0 0 0 0 transparent; }
-  50% { box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-}
-
 .ativo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.ativo-tipo { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-.ativo-tipo.desloc { color: var(--blue); }
-.ativo-tipo.elet { color: var(--elet); }
-.ativo-tipo.seg { color: var(--seg); }
-
-.cronometro {
-  font-family: 'Space Mono', monospace;
-  font-size: 28px; font-weight: 700;
-  color: var(--text);
-  letter-spacing: 2px;
-}
-
+.ativo-tipo { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); }
+.cronometro { font-family: 'Space Mono', monospace; font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: 2px; }
 .ativo-info { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
 .ativo-info strong { color: var(--text); }
-
 .ativo-actions { display: flex; gap: 8px; }
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 button { font-family: 'Outfit', sans-serif; cursor: pointer; }
-.btn {
-  width: 100%; padding: 13px; border-radius: var(--r);
-  font-size: 14px; font-weight: 700; border: none;
-  transition: all 0.15s; letter-spacing: 0.2px;
-}
+.btn { width: 100%; padding: 13px; border-radius: var(--r); font-size: 14px; font-weight: 700; border: none; transition: all 0.15s; }
 .btn:active { transform: scale(0.98); opacity: 0.9; }
 .btn-primary { background: var(--elet); color: #000; }
 .btn-seg { background: var(--seg); color: #000; }
 .btn-blue { background: var(--blue); color: #fff; }
 .btn-danger { background: var(--red); color: #fff; }
 .btn-ghost { background: var(--s2); border: 1px solid var(--border); color: var(--text); }
+.btn-green { background: var(--green); color: #000; }
 .btn-sm { padding: 8px 14px; border-radius: var(--r-sm); font-size: 12px; font-weight: 700; border: none; width: auto; }
 .btn-sm.primary { background: var(--elet); color: #000; }
 .btn-sm.blue { background: var(--blue); color: #fff; }
 .btn-sm.ghost { background: var(--s2); border: 1px solid var(--border); color: var(--text); }
 .btn-sm.danger { background: var(--red-bg); border: 1px solid rgba(244,63,94,0.3); color: var(--red); }
+.btn-sm.green { background: var(--green-bg); border: 1px solid rgba(34,197,94,0.3); color: var(--green); }
 
-/* ── FORM ── */
+/* FORM */
 .fg { margin-bottom: 10px; }
 label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 5px; }
-input, select, textarea {
-  width: 100%; background: var(--s2); border: 1px solid var(--border);
-  border-radius: var(--r-sm); padding: 11px 13px;
-  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px;
-  outline: none; transition: border-color 0.2s; -webkit-appearance: none;
-}
+input, select, textarea { width: 100%; background: var(--s2); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 11px 13px; color: var(--text); font-family: 'Outfit', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
 input:focus, select:focus, textarea:focus { border-color: var(--blue); }
 select option { background: var(--s2); }
 textarea { resize: vertical; min-height: 70px; font-size: 14px; }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 
-/* ── TIPO GRID ── */
+/* TIPO GRID */
 .tipo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
-.tipo-btn {
-  background: var(--s2); border: 2px solid var(--border);
-  border-radius: var(--r); padding: 12px 8px; text-align: center;
-  cursor: pointer; transition: all 0.18s;
-}
+.tipo-btn { background: var(--s2); border: 2px solid var(--border); border-radius: var(--r); padding: 12px 8px; text-align: center; cursor: pointer; transition: all 0.18s; }
 .tipo-btn .ti { font-size: 20px; display: block; margin-bottom: 4px; }
 .tipo-btn .tl { font-size: 12px; font-weight: 600; color: var(--muted); }
 .tipo-btn .ts { font-size: 10px; color: var(--muted2); margin-top: 2px; }
@@ -179,74 +117,48 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
 .tipo-btn.sel-c { border-color: var(--cap); background: var(--cap-bg); }
 .tipo-btn.sel-c .tl { color: var(--cap); }
 
-/* ── TOGGLE ── */
+/* TOGGLE */
 .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; }
 .toggle-info .tl { font-size: 14px; color: var(--text); }
 .toggle-info .ts { font-size: 11px; color: var(--muted); }
-.toggle {
-  width: 44px; height: 24px; background: var(--s3); border-radius: 12px;
-  position: relative; cursor: pointer; transition: background 0.3s; border: none; flex-shrink: 0;
-}
+.toggle { width: 44px; height: 24px; background: var(--s3); border-radius: 12px; position: relative; cursor: pointer; transition: background 0.3s; border: none; flex-shrink: 0; }
 .toggle.on { background: var(--blue); }
-.toggle::after {
-  content: ''; position: absolute;
-  width: 18px; height: 18px; background: white; border-radius: 50%;
-  top: 3px; left: 3px; transition: transform 0.3s;
-}
+.toggle::after { content: ''; position: absolute; width: 18px; height: 18px; background: white; border-radius: 50%; top: 3px; left: 3px; transition: transform 0.3s; }
 .toggle.on::after { transform: translateX(20px); }
 
-/* ── DIVIDER ── */
-.divider { height: 1px; background: var(--border); margin: 12px 0; }
-
-/* ── BLOCO CARD ── */
-.bloco-card {
-  background: var(--s1); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 13px; margin-bottom: 8px;
-  position: relative; overflow: hidden;
-}
-.bloco-card::before {
-  content: ''; position: absolute;
-  left: 0; top: 0; bottom: 0; width: 3px;
-}
+/* BLOCO CARD */
+.bloco-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 13px; margin-bottom: 8px; position: relative; overflow: hidden; }
+.bloco-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
 .bloco-card.tc-e::before { background: var(--elet); }
 .bloco-card.tc-s::before { background: var(--seg); }
 .bloco-card.tc-a::before { background: var(--admin); }
 .bloco-card.tc-c::before { background: var(--cap); }
 .bloco-card.tc-d::before { background: var(--blue); }
-
+.bloco-card.tc-fin-r::before { background: var(--green); }
+.bloco-card.tc-fin-g::before { background: var(--red); }
 .bc-head { display: flex; justify-content: space-between; align-items: flex-start; padding-left: 8px; margin-bottom: 6px; }
 .bc-tipo { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; }
 .bc-data { font-size: 11px; color: var(--muted); }
 .bc-cliente { font-size: 14px; font-weight: 600; padding-left: 8px; margin-bottom: 8px; }
 .bc-tags { display: flex; flex-wrap: wrap; gap: 5px; padding-left: 8px; }
-.tag {
-  background: var(--s2); border-radius: 5px;
-  padding: 3px 8px; font-size: 11px; color: var(--muted);
-}
+.tag { background: var(--s2); border-radius: 5px; padding: 3px 8px; font-size: 11px; color: var(--muted); }
 .tag.e { background: var(--elet-bg); color: var(--elet); }
 .tag.s { background: var(--seg-bg); color: var(--seg); }
 .tag.b { background: var(--blue-bg); color: var(--blue); }
+.tag.g { background: var(--green-bg); color: var(--green); }
+.tag.r { background: var(--red-bg); color: var(--red); }
 .tag.hi { background: var(--s3); color: var(--text); font-family: 'Space Mono', monospace; font-size: 10px; }
 .bc-valor { display: flex; justify-content: flex-end; margin-top: 8px; padding-left: 8px; }
-.valor-pill {
-  font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
-  color: var(--elet); background: var(--elet-bg);
-  padding: 3px 12px; border-radius: 20px;
-}
-.btn-del {
-  position: absolute; top: 10px; right: 10px;
-  background: none; border: none; color: var(--muted2);
-  font-size: 14px; cursor: pointer; padding: 3px; width: auto;
-  transition: color 0.2s;
-}
+.valor-pill { font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
+.valor-pill.e { color: var(--elet); background: var(--elet-bg); }
+.valor-pill.g { color: var(--green); background: var(--green-bg); }
+.valor-pill.r { color: var(--red); background: var(--red-bg); }
+.btn-del { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--muted2); font-size: 14px; cursor: pointer; padding: 3px; width: auto; transition: color 0.2s; }
 .btn-del:hover { color: var(--red); }
 
-/* ── STATS ── */
+/* STATS */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-.stat {
-  background: var(--s1); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 13px 12px;
-}
+.stat { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 13px 12px; }
 .stat .sl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 5px; }
 .stat .sv { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; color: var(--text); }
 .stat .ss { font-size: 11px; color: var(--muted); margin-top: 3px; }
@@ -254,23 +166,19 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
 .stat.e .sv { color: var(--elet); }
 .stat.s { border-color: var(--seg-border); background: var(--seg-bg); }
 .stat.s .sv { color: var(--seg); }
+.stat.gr { border-color: rgba(34,197,94,0.25); background: var(--green-bg); }
+.stat.gr .sv { color: var(--green); }
+.stat.rd { border-color: rgba(244,63,94,0.25); background: var(--red-bg); }
+.stat.rd .sv { color: var(--red); }
 
-/* ── VALOR TOTAL ── */
-.valor-total {
-  background: var(--s1); border: 1px solid var(--elet-border);
-  border-radius: var(--r); padding: 18px; text-align: center; margin-bottom: 12px;
-  position: relative; overflow: hidden;
-}
-.valor-total::before {
-  content: ''; position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--elet), var(--seg));
-}
+/* VALOR TOTAL */
+.valor-total { background: var(--s1); border: 1px solid var(--elet-border); border-radius: var(--r); padding: 18px; text-align: center; margin-bottom: 12px; position: relative; overflow: hidden; }
+.valor-total::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--elet), var(--seg)); }
 .vt-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; }
 .vt-num { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; color: var(--elet); }
 .vt-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
 
-/* ── DETALHE ROWS ── */
+/* DETALHE */
 .det-box { background: var(--s2); border-radius: var(--r-sm); padding: 12px 13px; margin-bottom: 8px; }
 .det-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); }
 .det-row:last-child { border-bottom: none; }
@@ -279,212 +187,255 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
 .det-row .dv.money { color: var(--elet); }
 .det-row .dv.fds { color: var(--admin); }
 
-/* ── PERIODO ── */
+/* PERIODO */
 .periodo-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
 .periodo-bar input { flex: 1; font-size: 12px; padding: 9px 11px; }
 
-/* ── SECTION HEADER ── */
+/* SEC HEAD */
 .sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .sec-title { font-size: 14px; font-weight: 700; color: var(--text); }
 
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-  z-index: 500; display: flex; align-items: flex-end; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.25s;
-}
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 500; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
-.modal {
-  background: var(--s1); border: 1px solid var(--border);
-  border-radius: 20px 20px 0 0; padding: 20px 16px;
-  width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
-  transform: translateY(30px); transition: transform 0.25s;
-}
+.modal { background: var(--s1); border: 1px solid var(--border); border-radius: 20px 20px 0 0; padding: 20px 16px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; transform: translateY(30px); transition: transform 0.25s; }
 .modal-overlay.open .modal { transform: translateY(0); }
 .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 16px; }
 .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
 
-/* ── PREVIEW CALC ── */
-.preview-calc {
-  background: var(--s2); border-radius: var(--r-sm);
-  padding: 10px 12px; margin-top: 8px; display: none;
-}
+/* PREVIEW CALC */
+.preview-calc { background: var(--s2); border-radius: var(--r-sm); padding: 10px 12px; margin-top: 8px; display: none; }
 .preview-calc.show { display: block; }
 .pc-row { display: flex; justify-content: space-between; font-size: 12px; padding: 3px 0; }
 .pc-row .pk { color: var(--muted); }
 .pc-row .pv { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--text); }
 .pc-row .pv.money { color: var(--elet); }
 
-/* ── EMPTY / LOADING ── */
+/* EMPTY / LOADING */
 .empty { text-align: center; color: var(--muted); padding: 40px 20px; }
 .empty .ei { font-size: 36px; display: block; margin-bottom: 8px; }
 .loading { text-align: center; padding: 40px 20px; color: var(--muted); }
 .spin { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--elet); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 10px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── TOAST ── */
-.toast {
-  position: fixed; bottom: 90px; left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  padding: 9px 20px; border-radius: 30px;
-  font-size: 13px; font-weight: 600;
-  opacity: 0; transition: all 0.25s; z-index: 999;
-  white-space: nowrap; pointer-events: none;
-}
+/* TOAST */
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(10px); padding: 9px 20px; border-radius: 30px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.25s; z-index: 999; white-space: nowrap; pointer-events: none; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── CONFIG ── */
+/* CONFIG */
 .cfg-item { background: var(--s2); border-radius: var(--r-sm); padding: 12px; margin-bottom: 8px; }
 
-/* ── HIGHLIGHT BOX ── */
-.info-box {
-  border-radius: var(--r-sm); padding: 10px 12px; margin-bottom: 10px;
-  font-size: 13px; line-height: 1.5;
-}
-.info-box.blue { background: var(--blue-bg); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; }
-.info-box.elet { background: var(--elet-bg); border: 1px solid var(--elet-border); color: #fcd34d; }
-
-/* ── INTERVALO BADGE ── */
-.interv-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--s3); border: 1px solid var(--border2);
-  border-radius: 20px; padding: 4px 12px; font-size: 12px;
-  color: var(--muted); cursor: pointer; margin-top: 8px;
-  transition: all 0.2s;
-}
+/* INTERVALO */
+.interv-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--s3); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--muted); cursor: pointer; margin-top: 8px; transition: all 0.2s; }
 .interv-badge:hover { border-color: var(--blue); color: var(--text); }
+
+/* DASHBOARD */
+.dash-hero { border-radius: var(--r); padding: 20px 16px; margin-bottom: 10px; position: relative; overflow: hidden; }
+.dash-hero.elet { background: linear-gradient(135deg, rgba(240,165,0,0.2), rgba(240,165,0,0.05)); border: 1px solid var(--elet-border); }
+.dash-hero.fin { background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.03)); border: 1px solid rgba(34,197,94,0.25); }
+.dash-hero-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
+.dash-hero-num { font-family: 'Space Mono', monospace; font-size: 36px; font-weight: 700; }
+.dash-hero-num.e { color: var(--elet); }
+.dash-hero-num.g { color: var(--green); }
+.dash-hero-num.r { color: var(--red); }
+.dash-hero-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.dash-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.dash-hero.elet::before { background: linear-gradient(90deg, var(--elet), transparent); }
+.dash-hero.fin::before { background: linear-gradient(90deg, var(--green), transparent); }
+
+/* GRÁFICO BARRAS */
+.grafico-wrap { margin-top: 8px; }
+.grafico-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.grafico-label { font-size: 11px; color: var(--muted); width: 70px; flex-shrink: 0; text-align: right; }
+.grafico-bar-bg { flex: 1; background: var(--s3); border-radius: 4px; height: 20px; overflow: hidden; position: relative; }
+.grafico-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; display: flex; align-items: center; padding-left: 8px; }
+.grafico-bar-fill span { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; color: #000; white-space: nowrap; }
+
+/* SALDO BOX */
+.saldo-box { border-radius: var(--r); padding: 14px; margin-bottom: 10px; border: 1px solid; }
+.saldo-box.positivo { background: var(--green-bg); border-color: rgba(34,197,94,0.3); }
+.saldo-box.negativo { background: var(--red-bg); border-color: rgba(244,63,94,0.3); }
+.saldo-box .sb-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+.saldo-box .sb-val { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; }
+.saldo-box.positivo .sb-val { color: var(--green); }
+.saldo-box.negativo .sb-val { color: var(--red); }
+.saldo-box .sb-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* CAT BADGES */
+.cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+.cat-btn { background: var(--s2); border: 2px solid var(--border); border-radius: var(--r-sm); padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.18s; }
+.cat-btn .ci { font-size: 18px; display: block; margin-bottom: 3px; }
+.cat-btn .cl { font-size: 10px; font-weight: 600; color: var(--muted); }
+.cat-btn.sel { border-color: var(--blue); background: var(--blue-bg); }
+.cat-btn.sel .cl { color: var(--blue); }
+
+/* FIN TABS */
+.fin-tabs { display: flex; gap: 0; margin-bottom: 14px; background: var(--s2); border-radius: var(--r-sm); padding: 3px; }
+.fin-tab { flex: 1; padding: 8px; text-align: center; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted); transition: all 0.2s; border: none; background: none; font-family: 'Outfit', sans-serif; }
+.fin-tab.active.receita { background: var(--green-bg); color: var(--green); }
+.fin-tab.active.gasto { background: var(--red-bg); color: var(--red); }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="logo">Gestão<em>Op</em></div>
   <div class="header-right">
-    <div class="conn-dot" id="connDot" title="Status da conexão"></div>
+    <div class="conn-dot" id="connDot"></div>
     <button class="btn-icon" onclick="exportarExcel()">↓ Excel</button>
   </div>
 </div>
 
-<!-- NAV -->
 <nav class="nav">
-  <button class="nav-btn active" onclick="showPage('home',this)">
-    <span class="ni">⚡</span><span class="nl">Hoje</span>
-  </button>
-  <button class="nav-btn" onclick="showPage('registros',this)">
-    <span class="ni">📋</span><span class="nl">Registros</span>
-  </button>
-  <button class="nav-btn" onclick="showPage('resumo',this)">
-    <span class="ni">📊</span><span class="nl">Resumo</span>
-  </button>
-  <button class="nav-btn" onclick="showPage('config',this)">
-    <span class="ni">⚙️</span><span class="nl">Config</span>
-  </button>
+  <button class="nav-btn active" onclick="showPage('home',this)"><span class="ni">⚡</span><span class="nl">Hoje</span></button>
+  <button class="nav-btn" onclick="showPage('registros',this)"><span class="ni">📋</span><span class="nl">Registros</span></button>
+  <button class="nav-btn" onclick="showPage('financeiro',this)"><span class="ni">💰</span><span class="nl">Financeiro</span></button>
+  <button class="nav-btn" onclick="showPage('dashboard',this)"><span class="ni">📊</span><span class="nl">Dashboard</span></button>
+  <button class="nav-btn" onclick="showPage('config',this)"><span class="ni">⚙️</span><span class="nl">Config</span></button>
 </nav>
 
-<!-- ═══════════════════════════════════ PAGE HOME ═══════════════════════════════════ -->
+<!-- ══════════ PAGE HOME ══════════ -->
 <div class="page active" id="page-home">
-
-  <!-- ATIVOS -->
   <div id="ativosContainer"></div>
-
-  <!-- AÇÕES RÁPIDAS -->
   <div class="card">
     <div class="card-label">Iniciar Atividade</div>
     <div class="tipo-grid">
-      <div class="tipo-btn" id="tb-desloc-e" onclick="abrirModalDesloc('eletrica')">
-        <span class="ti">🚗</span>
-        <div class="tl">Deslocamento</div>
-        <div class="ts">Elétrica</div>
-      </div>
-      <div class="tipo-btn" id="tb-desloc-s" onclick="abrirModalDesloc('seguranca')">
-        <span class="ti">🚗</span>
-        <div class="tl">Deslocamento</div>
-        <div class="ts">Segurança</div>
-      </div>
+      <div class="tipo-btn" onclick="abrirModalDesloc('eletrica')"><span class="ti">🚗</span><div class="tl">Deslocamento</div><div class="ts">Elétrica</div></div>
+      <div class="tipo-btn" onclick="abrirModalDesloc('seguranca')"><span class="ti">🚗</span><div class="tl">Deslocamento</div><div class="ts">Segurança</div></div>
     </div>
     <div class="tipo-grid" style="margin-top:8px">
-      <div class="tipo-btn" id="tb-serv-e" onclick="abrirModalServico('eletrica')">
-        <span class="ti">⚡</span>
-        <div class="tl">Serviço</div>
-        <div class="ts">Elétrica</div>
-      </div>
-      <div class="tipo-btn" id="tb-serv-s" onclick="abrirModalServico('seguranca')">
-        <span class="ti">📷</span>
-        <div class="tl">Serviço</div>
-        <div class="ts">Segurança</div>
-      </div>
+      <div class="tipo-btn" onclick="abrirModalServico('eletrica')"><span class="ti">⚡</span><div class="tl">Serviço</div><div class="ts">Elétrica</div></div>
+      <div class="tipo-btn" onclick="abrirModalServico('seguranca')"><span class="ti">📷</span><div class="tl">Serviço</div><div class="ts">Segurança</div></div>
     </div>
     <div class="tipo-grid" style="margin-top:8px">
-      <div class="tipo-btn" onclick="abrirModalAdmin()">
-        <span class="ti">📋</span>
-        <div class="tl">Administrativo</div>
-        <div class="ts">Elétrica / Seg.</div>
-      </div>
-      <div class="tipo-btn" onclick="abrirModalCapacitacao()">
-        <span class="ti">🎓</span>
-        <div class="tl">Capacitação</div>
-        <div class="ts">Estudo</div>
-      </div>
+      <div class="tipo-btn" onclick="abrirModalAdmin()"><span class="ti">📋</span><div class="tl">Administrativo</div><div class="ts">Elétrica / Seg.</div></div>
+      <div class="tipo-btn" onclick="abrirModalCapacitacao()"><span class="ti">🎓</span><div class="tl">Capacitação</div><div class="ts">Estudo</div></div>
     </div>
   </div>
-
-  <!-- RESUMO DO DIA -->
-  <div class="card" id="resumoDiaCard">
+  <div class="card">
     <div class="card-label">Resumo do Dia</div>
-    <div id="resumoDiaConteudo">
-      <div class="empty" style="padding:16px 0">
-        <span class="ei">📅</span>
-        <span style="font-size:13px">Nenhum registro hoje</span>
-      </div>
-    </div>
+    <div id="resumoDiaConteudo"><div class="empty" style="padding:16px 0"><span class="ei">📅</span><span style="font-size:13px">Nenhum registro hoje</span></div></div>
   </div>
-
 </div>
 
-<!-- ═══════════════════════════════════ PAGE REGISTROS ═══════════════════════════════════ -->
+<!-- ══════════ PAGE REGISTROS ══════════ -->
 <div class="page" id="page-registros">
   <div class="sec-head">
     <div class="sec-title">Registros</div>
     <input type="date" id="filtroData" style="padding:7px 10px;font-size:12px;width:auto;border-radius:8px" onchange="carregarRegistros()">
   </div>
-  <div id="listaRegistros">
-    <div class="loading"><div class="spin"></div>Carregando...</div>
-  </div>
+  <div id="listaRegistros"><div class="loading"><div class="spin"></div>Carregando...</div></div>
 </div>
 
-<!-- ═══════════════════════════════════ PAGE RESUMO ═══════════════════════════════════ -->
-<div class="page" id="page-resumo">
+<!-- ══════════ PAGE FINANCEIRO ══════════ -->
+<div class="page" id="page-financeiro">
   <div class="periodo-bar">
-    <input type="date" id="pInicio">
-    <input type="date" id="pFim">
-    <button class="btn-sm primary" onclick="calcResumo()">Ver</button>
+    <input type="date" id="fPInicio">
+    <input type="date" id="fPFim">
+    <button class="btn-sm primary" onclick="calcFinanceiro()">Ver</button>
   </div>
 
-  <div class="valor-total">
-    <div class="vt-label">⚡ Valor a Receber — Elétrica</div>
-    <div class="vt-num" id="vtNum">R$ 0,00</div>
-    <div class="vt-sub" id="vtSub">Selecione um período</div>
+  <!-- SALDO -->
+  <div class="saldo-box positivo" id="saldoBox">
+    <div class="sb-label">💰 Saldo do Período</div>
+    <div class="sb-val" id="saldoVal">R$ 0,00</div>
+    <div class="sb-sub" id="saldoSub">Selecione um período</div>
   </div>
 
   <div class="stats-grid">
-    <div class="stat e"><div class="sl">Horas Elétrica</div><div class="sv" id="stHE">0h</div><div class="ss" id="stHESub">—</div></div>
-    <div class="stat s"><div class="sl">Horas Segurança</div><div class="sv" id="stHS">0h</div><div class="ss">gerencial</div></div>
-    <div class="stat"><div class="sl">Km Segurança</div><div class="sv" id="stKm">0km</div><div class="ss" id="stKmSub">—</div></div>
-    <div class="stat"><div class="sl">Deslocamento</div><div class="sv" id="stDesloc">0h</div><div class="ss">tempo total</div></div>
-    <div class="stat"><div class="sl">Dias Trabalhados</div><div class="sv" id="stDias">0</div><div class="ss">no período</div></div>
-    <div class="stat"><div class="sl">Admin / Cap.</div><div class="sv" id="stAdmin">0h</div><div class="ss">investidas</div></div>
+    <div class="stat gr"><div class="sl">Receitas</div><div class="sv" id="finReceitas">R$ 0</div><div class="ss" id="finReceitasSub">—</div></div>
+    <div class="stat rd"><div class="sl">Gastos</div><div class="sv" id="finGastos">R$ 0</div><div class="ss" id="finGastosSub">—</div></div>
   </div>
 
-  <div id="detalheElDiv" style="display:none">
-    <div class="card">
-      <div class="card-label">Detalhamento Elétrica por Dia</div>
-      <div class="det-box" id="detalheElConteudo"></div>
+  <!-- LANÇAR -->
+  <div class="card">
+    <div class="card-label">Novo Lançamento</div>
+    <div class="fin-tabs">
+      <button class="fin-tab active receita" id="tabReceita" onclick="setFinTipo('receita')">➕ Receita</button>
+      <button class="fin-tab gasto" id="tabGasto" onclick="setFinTipo('gasto')">➖ Gasto</button>
     </div>
+    <div class="fg"><label>Data</label><input type="date" id="finData"></div>
+    <div class="fg"><label>Descrição</label><input type="text" id="finDesc" placeholder="Ex: Pagamento Avantt, Material elétrico..."></div>
+    <div class="fg"><label>Valor (R$)</label><input type="number" id="finValor" placeholder="0,00" step="0.01"></div>
+    <div class="fg"><label>Categoria</label>
+      <select id="finCat">
+        <option value="servico">💼 Serviço prestado</option>
+        <option value="material">🔧 Material</option>
+        <option value="combustivel">⛽ Combustível</option>
+        <option value="ferramenta">🛠 Ferramenta / Equipamento</option>
+        <option value="transporte">🚗 Transporte / Pedágio</option>
+        <option value="alimentacao">🍽 Alimentação</option>
+        <option value="outro">📦 Outro</option>
+      </select>
+    </div>
+    <div class="fg"><label>Segmento</label>
+      <select id="finSeg">
+        <option value="eletrica">⚡ Elétrica</option>
+        <option value="seguranca">📷 Segurança</option>
+        <option value="geral">🔵 Geral</option>
+      </select>
+    </div>
+    <button class="btn btn-green" id="finSalvarBtn" onclick="salvarLancamento()">✓ Salvar Lançamento</button>
+  </div>
+
+  <!-- LISTA LANÇAMENTOS -->
+  <div class="sec-head" style="margin-top:4px">
+    <div class="sec-title">Lançamentos</div>
+  </div>
+  <div id="listaLancamentos"><div class="empty"><span class="ei">💰</span>Nenhum lançamento no período</div></div>
+</div>
+
+<!-- ══════════ PAGE DASHBOARD ══════════ -->
+<div class="page" id="page-dashboard">
+  <div class="periodo-bar">
+    <input type="date" id="dPInicio">
+    <input type="date" id="dPFim">
+    <button class="btn-sm primary" onclick="calcDashboard()">Ver</button>
+  </div>
+
+  <!-- HERO ELÉTRICA -->
+  <div class="dash-hero elet">
+    <div class="dash-hero-label">⚡ Valor a Receber — Elétrica</div>
+    <div class="dash-hero-num e" id="dashValorE">R$ 0,00</div>
+    <div class="dash-hero-sub" id="dashValorESub">Selecione um período</div>
+  </div>
+
+  <!-- HERO FINANCEIRO -->
+  <div class="dash-hero fin">
+    <div class="dash-hero-label">💰 Saldo Financeiro</div>
+    <div class="dash-hero-num g" id="dashSaldo">R$ 0,00</div>
+    <div class="dash-hero-sub" id="dashSaldoSub">receitas − gastos</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat e"><div class="sl">Horas Elétrica</div><div class="sv" id="dHE">0h</div><div class="ss" id="dHESub">—</div></div>
+    <div class="stat s"><div class="sl">Horas Segurança</div><div class="sv" id="dHS">0h</div><div class="ss">gerencial</div></div>
+    <div class="stat"><div class="sl">Km Segurança</div><div class="sv" id="dKm">0km</div><div class="ss" id="dKmSub">—</div></div>
+    <div class="stat"><div class="sl">Deslocamento</div><div class="sv" id="dDesloc">0h</div><div class="ss">tempo total</div></div>
+    <div class="stat"><div class="sl">Dias Trabalhados</div><div class="sv" id="dDias">0</div><div class="ss">no período</div></div>
+    <div class="stat"><div class="sl">Admin / Cap.</div><div class="sv" id="dAdmin">0h</div><div class="ss">investidas</div></div>
+  </div>
+
+  <!-- GRÁFICO HORAS POR SEGMENTO -->
+  <div class="card" id="graficoHorasCard" style="display:none">
+    <div class="card-label">Horas por Segmento</div>
+    <div class="grafico-wrap" id="graficoHoras"></div>
+  </div>
+
+  <!-- GRÁFICO GASTOS POR CATEGORIA -->
+  <div class="card" id="graficoGastosCard" style="display:none">
+    <div class="card-label">Gastos por Categoria</div>
+    <div class="grafico-wrap" id="graficoGastos"></div>
+  </div>
+
+  <!-- DETALHE ELÉTRICA -->
+  <div class="card" id="detalheElDiv" style="display:none">
+    <div class="card-label">Elétrica — Detalhe por Dia</div>
+    <div class="det-box" id="detalheElConteudo"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════ PAGE CONFIG ═══════════════════════════════════ -->
+<!-- ══════════ PAGE CONFIG ══════════ -->
 <div class="page" id="page-config">
   <div class="card">
     <div class="card-label">🔑 Supabase</div>
@@ -506,30 +457,18 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
   </div>
 </div>
 
-<!-- ═══════════════════════════════════ MODAIS ═══════════════════════════════════ -->
+<!-- ══════════ MODAIS ══════════ -->
 
-<!-- MODAL DESLOCAMENTO INICIAR -->
+<!-- MODAL DESLOC INICIAR -->
 <div class="modal-overlay" id="modalDeslocIniciar">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="mdTitulo">🚗 Iniciar Deslocamento</div>
-    <div class="fg">
-      <label>Destino / Cliente</label>
-      <input type="text" id="mdDestino" placeholder="Ex: Avantt, Obra rua das flores...">
-    </div>
-    <div class="fg">
-      <label>Km Atual (odômetro)</label>
-      <input type="number" id="mdKmInicial" placeholder="Ex: 45230">
-    </div>
+    <div class="fg"><label>Destino / Cliente</label><input type="text" id="mdDestino" placeholder="Ex: Avantt, Obra rua das flores..."></div>
+    <div class="fg"><label>Km Atual (odômetro)</label><input type="number" id="mdKmInicial" placeholder="Ex: 45230"></div>
     <div class="row2">
-      <div class="fg">
-        <label>Data</label>
-        <input type="date" id="mdData">
-      </div>
-      <div class="fg">
-        <label>Hora de Saída</label>
-        <input type="time" id="mdHoraSaida">
-      </div>
+      <div class="fg"><label>Data</label><input type="date" id="mdData"></div>
+      <div class="fg"><label>Hora de Saída</label><input type="time" id="mdHoraSaida"></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px">
       <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalDeslocIniciar')">Cancelar</button>
@@ -538,20 +477,14 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
   </div>
 </div>
 
-<!-- MODAL DESLOCAMENTO ENCERRAR -->
+<!-- MODAL DESLOC ENCERRAR -->
 <div class="modal-overlay" id="modalDeslocEncerrar">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">📍 Cheguei no Destino</div>
-    <div class="info-box blue" id="mdEncInfo"></div>
-    <div class="fg">
-      <label>Km Atual (odômetro)</label>
-      <input type="number" id="mdKmFinal" placeholder="Ex: 45285">
-    </div>
-    <div class="fg">
-      <label>Hora de Chegada</label>
-      <input type="time" id="mdHoraChegada">
-    </div>
+    <div style="background:var(--blue-bg);border:1px solid rgba(59,130,246,0.25);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:12px;font-size:13px;color:#93c5fd" id="mdEncInfo"></div>
+    <div class="fg"><label>Km Atual (odômetro)</label><input type="number" id="mdKmFinal" placeholder="Ex: 45285"></div>
+    <div class="fg"><label>Hora de Chegada</label><input type="time" id="mdHoraChegada"></div>
     <div id="mdEncCalc" class="preview-calc"></div>
     <div style="display:flex;gap:8px;margin-top:12px">
       <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalDeslocEncerrar')">Cancelar</button>
@@ -569,34 +502,20 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
       <div class="fg"><label>Data</label><input type="date" id="msData"></div>
       <div class="fg"><label>Cliente</label><input type="text" id="msCliente" placeholder="Nome do cliente"></div>
     </div>
-    <div class="fg">
-      <label>Local</label>
-      <input type="text" id="msLocal" placeholder="Endereço ou descrição">
-    </div>
+    <div class="fg"><label>Local</label><input type="text" id="msLocal" placeholder="Endereço ou descrição"></div>
     <div class="row2">
       <div class="fg"><label>Início do Serviço</label><input type="time" id="msInicio"></div>
       <div class="fg"><label>Fim do Serviço</label><input type="time" id="msFim"></div>
     </div>
-
-    <!-- Intervalo -->
-    <div id="msIntervBtn">
-      <div class="interv-badge" onclick="toggleIntervModal()">
-        <span>+</span> Adicionar intervalo
-      </div>
-    </div>
+    <div id="msIntervBtn"><div class="interv-badge" onclick="toggleIntervModal()"><span>+</span> Adicionar intervalo</div></div>
     <div id="msIntervSection" style="display:none;margin-top:8px">
       <div class="row2">
         <div class="fg"><label>Início Intervalo</label><input type="time" id="msIntervI"></div>
         <div class="fg"><label>Fim Intervalo</label><input type="time" id="msIntervF"></div>
       </div>
     </div>
-
     <div id="msCalcPreview" class="preview-calc" style="margin-top:8px"></div>
-
-    <div class="fg" style="margin-top:10px">
-      <label>Observações (opcional)</label>
-      <textarea id="msObs" placeholder="Anotações..."></textarea>
-    </div>
+    <div class="fg" style="margin-top:10px"><label>Observações (opcional)</label><textarea id="msObs" placeholder="Anotações..."></textarea></div>
     <div style="display:flex;gap:8px;margin-top:4px">
       <button class="btn btn-ghost" style="flex:1" onclick="fecharModal('modalServico')">Cancelar</button>
       <button class="btn" id="msSalvarBtn" style="flex:2" onclick="salvarServico()">✓ Salvar Serviço</button>
@@ -609,20 +528,16 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">📋 Registro Administrativo</div>
-    <div class="fg">
-      <label>Segmento</label>
-      <select id="maSegmento">
-        <option value="eletrica">Elétrica</option>
-        <option value="seguranca">Segurança</option>
-      </select>
+    <div class="row2">
+      <div class="fg"><label>Data</label><input type="date" id="maData"></div>
+      <div class="fg"><label>Segmento</label><select id="maSegmento"><option value="eletrica">⚡ Elétrica</option><option value="seguranca">📷 Segurança</option></select></div>
     </div>
-    <div class="fg"><label>Data</label><input type="date" id="maData"></div>
     <div class="fg"><label>Descrição</label><input type="text" id="maDesc" placeholder="Ex: Reunião, orçamento, visita técnica..."></div>
     <div class="row2">
       <div class="fg"><label>Início</label><input type="time" id="maInicio"></div>
       <div class="fg"><label>Fim</label><input type="time" id="maFim"></div>
     </div>
-    <div class="toggle-row" style="margin-top:4px">
+    <div class="toggle-row">
       <div class="toggle-info"><div class="tl">Gera cobrança?</div><div class="ts">Entra no valor a receber</div></div>
       <button class="toggle" id="maCobrancaToggle" onclick="this.classList.toggle('on')"></button>
     </div>
@@ -658,7 +573,7 @@ textarea { resize: vertical; min-height: 70px; font-size: 14px; }
 
 <script>
 // ══════════════════════════════════════════════
-// CONFIG & STATE
+// CONFIG
 // ══════════════════════════════════════════════
 const SUPA_URL = 'https://vfjpwrahcwiekbunflbb.supabase.co';
 const SUPA_KEY = 'sb_publishable_A2GQIb5iUrSXAHaHBk21AQ_CEyHhSGu';
@@ -677,6 +592,7 @@ let tipoDeslocAtual = null;
 let tipoServicoAtual = null;
 let intervAberto = false;
 let cronTimer = null;
+let finTipoAtual = 'receita';
 
 // ══════════════════════════════════════════════
 // INIT
@@ -686,15 +602,16 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('filtroData').value = fmtISO(hoje);
   const p1 = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
   const p2 = new Date(hoje.getFullYear(), hoje.getMonth()+1, 0);
-  document.getElementById('pInicio').value = fmtISO(p1);
-  document.getElementById('pFim').value = fmtISO(p2);
+  ['pInicio','pFim','fPInicio','fPFim','dPInicio','dPFim'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if(el) el.value = fmtISO(i % 2 === 0 ? p1 : p2);
+  });
 
   carregarConfigUI();
   iniciarSupabase();
   renderAtivos();
   iniciarCronometros();
 
-  // Preview em tempo real no modal serviço
   ['msInicio','msFim','msIntervI','msIntervF'].forEach(id => {
     document.getElementById(id).addEventListener('input', atualizarPreviewServico);
   });
@@ -710,40 +627,36 @@ async function iniciarSupabase() {
   try {
     sbClient = window.supabase.createClient(cfg.url, cfg.key);
     const { error } = await sbClient.from('blocos').select('id').limit(1);
-    if(error && error.code === '42P01') await criarTabela();
     document.getElementById('connDot').classList.add('on');
   } catch(e) {
     document.getElementById('connDot').classList.remove('on');
   }
 }
 
-async function criarTabela() {
-  // Tabela criada via interface Supabase ou SQL Editor
-  // O app salva localmente como fallback
-}
-
-async function salvarNoBanco(bloco) {
+async function salvarNoBanco(tabela, obj) {
   if(!sbClient) return false;
   try {
-    const { error } = await sbClient.from('blocos').insert([bloco]);
+    const { error } = await sbClient.from(tabela).insert([obj]);
     return !error;
   } catch(e) { return false; }
 }
 
-async function buscarBlocos(filtros = {}) {
-  if(!sbClient) return [];
+async function buscarDoBanco(tabela, filtros = {}) {
+  if(!sbClient) return null;
   try {
-    let q = sbClient.from('blocos').select('*').order('data', { ascending: false }).order('created_at', { ascending: false });
+    let q = sbClient.from(tabela).select('*').order('data', { ascending: false });
     if(filtros.data) q = q.eq('data', filtros.data);
     if(filtros.de) q = q.gte('data', filtros.de);
     if(filtros.ate) q = q.lte('data', filtros.ate);
-    const { data, error } = await q.limit(200);
-    if(error) return buscarLocal(filtros);
+    const { data, error } = await q.limit(500);
+    if(error) return null;
     return data || [];
-  } catch(e) { return buscarLocal(filtros); }
+  } catch(e) { return null; }
 }
 
-function buscarLocal(filtros = {}) {
+async function buscarBlocos(filtros = {}) {
+  const banco = await buscarDoBanco('blocos', filtros);
+  if(banco) return banco;
   let dados = JSON.parse(localStorage.getItem('blocos_bk') || '[]');
   if(filtros.data) dados = dados.filter(b => b.data === filtros.data);
   if(filtros.de) dados = dados.filter(b => b.data >= filtros.de);
@@ -751,11 +664,18 @@ function buscarLocal(filtros = {}) {
   return dados;
 }
 
+async function buscarLancamentos(filtros = {}) {
+  const banco = await buscarDoBanco('lancamentos', filtros);
+  if(banco) return banco;
+  let dados = JSON.parse(localStorage.getItem('lancamentos_bk') || '[]');
+  if(filtros.de) dados = dados.filter(l => l.data >= filtros.de);
+  if(filtros.ate) dados = dados.filter(l => l.data <= filtros.ate);
+  return dados;
+}
+
 async function deletarBloco(id) {
   if(!confirm('Excluir este registro?')) return;
-  if(sbClient) {
-    try { await sbClient.from('blocos').delete().eq('id', id); } catch(e) {}
-  }
+  if(sbClient) { try { await sbClient.from('blocos').delete().eq('id', id); } catch(e) {} }
   const bk = JSON.parse(localStorage.getItem('blocos_bk') || '[]');
   localStorage.setItem('blocos_bk', JSON.stringify(bk.filter(b => b.id != id)));
   carregarRegistros();
@@ -763,33 +683,35 @@ async function deletarBloco(id) {
   toast('Registro excluído');
 }
 
+async function deletarLancamento(id) {
+  if(!confirm('Excluir este lançamento?')) return;
+  if(sbClient) { try { await sbClient.from('lancamentos').delete().eq('id', id); } catch(e) {} }
+  const bk = JSON.parse(localStorage.getItem('lancamentos_bk') || '[]');
+  localStorage.setItem('lancamentos_bk', JSON.stringify(bk.filter(l => l.id != id)));
+  calcFinanceiro();
+  toast('Lançamento excluído');
+}
+
 // ══════════════════════════════════════════════
-// ATIVOS (em andamento)
+// ATIVOS
 // ══════════════════════════════════════════════
 function salvarAtivos() { localStorage.setItem('goAtivos', JSON.stringify(ativos)); }
 
 function renderAtivos() {
   const c = document.getElementById('ativosContainer');
   if(!ativos.length) { c.innerHTML = ''; return; }
-
-  c.innerHTML = ativos.map((a, i) => {
-    if(a.tipo === 'desloc') {
-      return `
-      <div class="ativo-card desloc">
-        <div class="ativo-header">
-          <div class="ativo-tipo desloc">🚗 Deslocamento em andamento — ${a.segmento === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}</div>
-          <div class="cronometro" id="cron-${i}">00:00</div>
-        </div>
-        <div class="ativo-info">Para: <strong>${a.destino || '—'}</strong> · Saída: <strong>${a.horaSaida}</strong> · Km inicial: <strong>${a.kmInicial}</strong></div>
-        <div class="ativo-actions">
-          <button class="btn btn-primary btn-sm" onclick="abrirEncerrarDesloc(${i})">📍 Cheguei</button>
-          <button class="btn btn-sm danger" onclick="cancelarAtivo(${i})">Cancelar</button>
-        </div>
-      </div>`;
-    }
-    return '';
-  }).join('');
-
+  c.innerHTML = ativos.map((a, i) => `
+    <div class="ativo-card desloc">
+      <div class="ativo-header">
+        <div class="ativo-tipo">🚗 Deslocamento — ${a.segmento === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}</div>
+        <div class="cronometro" id="cron-${i}">00:00</div>
+      </div>
+      <div class="ativo-info">Para: <strong>${a.destino || '—'}</strong> · Saída: <strong>${a.horaSaida}</strong> · Km: <strong>${a.kmInicial}</strong></div>
+      <div class="ativo-actions">
+        <button class="btn-sm blue" onclick="abrirEncerrarDesloc(${i})">📍 Cheguei</button>
+        <button class="btn-sm danger" onclick="cancelarAtivo(${i})">Cancelar</button>
+      </div>
+    </div>`).join('');
   iniciarCronometros();
 }
 
@@ -800,29 +722,26 @@ function iniciarCronometros() {
     ativos.forEach((a, i) => {
       const el = document.getElementById('cron-' + i);
       if(!el) return;
-      const inicio = new Date(a.tsInicio);
-      const diff = Math.floor((Date.now() - inicio.getTime()) / 1000);
-      const h = Math.floor(diff / 3600).toString().padStart(2,'0');
-      const m = Math.floor((diff % 3600) / 60).toString().padStart(2,'0');
-      const s = (diff % 60).toString().padStart(2,'0');
+      const diff = Math.floor((Date.now() - new Date(a.tsInicio).getTime()) / 1000);
+      const h = Math.floor(diff/3600).toString().padStart(2,'0');
+      const m = Math.floor((diff%3600)/60).toString().padStart(2,'0');
+      const s = (diff%60).toString().padStart(2,'0');
       el.textContent = `${h}:${m}:${s}`;
     });
   }, 1000);
 }
 
 function cancelarAtivo(i) {
-  if(!confirm('Cancelar este registro em andamento?')) return;
-  ativos.splice(i, 1);
-  salvarAtivos();
-  renderAtivos();
+  if(!confirm('Cancelar este deslocamento?')) return;
+  ativos.splice(i, 1); salvarAtivos(); renderAtivos();
 }
 
 // ══════════════════════════════════════════════
 // MODAL DESLOCAMENTO
 // ══════════════════════════════════════════════
-function abrirModalDesloc(segmento) {
-  tipoDeslocAtual = segmento;
-  document.getElementById('mdTitulo').textContent = `🚗 Deslocamento — ${segmento === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}`;
+function abrirModalDesloc(seg) {
+  tipoDeslocAtual = seg;
+  document.getElementById('mdTitulo').textContent = `🚗 Deslocamento — ${seg === 'eletrica' ? '⚡ Elétrica' : '📷 Segurança'}`;
   document.getElementById('mdDestino').value = '';
   document.getElementById('mdKmInicial').value = '';
   document.getElementById('mdData').value = fmtISO(new Date());
@@ -831,33 +750,25 @@ function abrirModalDesloc(segmento) {
 }
 
 function iniciarDeslocamento() {
-  const destino = document.getElementById('mdDestino').value.trim();
-  const kmInicial = document.getElementById('mdKmInicial').value;
   const horaSaida = document.getElementById('mdHoraSaida').value;
   if(!horaSaida) { toast('Informe a hora de saída', true); return; }
-
   ativos.push({
-    tipo: 'desloc',
-    segmento: tipoDeslocAtual,
-    destino,
-    kmInicial: parseFloat(kmInicial) || 0,
+    tipo: 'desloc', segmento: tipoDeslocAtual,
+    destino: document.getElementById('mdDestino').value.trim(),
+    kmInicial: parseFloat(document.getElementById('mdKmInicial').value) || 0,
     horaSaida,
     tsInicio: new Date().toISOString(),
     data: document.getElementById('mdData').value || fmtISO(new Date())
   });
-  salvarAtivos();
-  fecharModal('modalDeslocIniciar');
-  renderAtivos();
+  salvarAtivos(); fecharModal('modalDeslocIniciar'); renderAtivos();
   toast('🚗 Deslocamento iniciado!');
 }
 
 function abrirEncerrarDesloc(i) {
   const a = ativos[i];
-  document.getElementById('mdEncInfo').textContent =
-    `Para ${a.destino || 'destino'} · Saída ${a.horaSaida} · Km inicial ${a.kmInicial}`;
+  document.getElementById('mdEncInfo').textContent = `Para ${a.destino || 'destino'} · Saída ${a.horaSaida} · Km inicial ${a.kmInicial}`;
   document.getElementById('mdKmFinal').value = '';
   document.getElementById('mdHoraChegada').value = horaAtual();
-  document.getElementById('mdEncCalc').innerHTML = '';
   document.getElementById('mdEncCalc').classList.remove('show');
   document.getElementById('modalDeslocEncerrar').dataset.ativoIdx = i;
   abrirModal('modalDeslocEncerrar');
@@ -867,23 +778,18 @@ function abrirEncerrarDesloc(i) {
 function atualizarPreviewDesloc() {
   const i = document.getElementById('modalDeslocEncerrar').dataset.ativoIdx;
   if(i === undefined) return;
-  const a = ativos[parseInt(i)];
-  if(!a) return;
-
+  const a = ativos[parseInt(i)]; if(!a) return;
   const kmF = parseFloat(document.getElementById('mdKmFinal').value) || 0;
   const hCheg = document.getElementById('mdHoraChegada').value;
-
   const km = kmF > 0 ? kmF - a.kmInicial : 0;
   const tempMin = hCheg && a.horaSaida ? diffMin(a.horaSaida, hCheg) : 0;
-
   const el = document.getElementById('mdEncCalc');
   if(km > 0 || tempMin > 0) {
     el.classList.add('show');
     el.innerHTML = `
       <div class="pc-row"><span class="pk">Km rodado</span><span class="pv">${km > 0 ? km.toFixed(0)+' km' : '—'}</span></div>
       <div class="pc-row"><span class="pk">Tempo de deslocamento</span><span class="pv">${tempMin > 0 ? fmtMin(tempMin) : '—'}</span></div>
-      ${cfg.km > 0 && km > 0 ? `<div class="pc-row"><span class="pk">Ressarcimento estimado</span><span class="pv money">R$ ${(km * cfg.km).toFixed(2)}</span></div>` : ''}
-    `;
+      ${cfg.km > 0 && km > 0 ? `<div class="pc-row"><span class="pk">Ressarcimento</span><span class="pv money">R$ ${(km*cfg.km).toFixed(2)}</span></div>` : ''}`;
   }
 }
 
@@ -893,48 +799,32 @@ async function encerrarDeslocamento() {
   const kmFinal = parseFloat(document.getElementById('mdKmFinal').value) || 0;
   const horaChegada = document.getElementById('mdHoraChegada').value;
   if(!horaChegada) { toast('Informe a hora de chegada', true); return; }
-
   const kmRodado = kmFinal > 0 ? kmFinal - a.kmInicial : 0;
   const tempoDesloc = diffMin(a.horaSaida, horaChegada) / 60;
-
   const bloco = {
-    tipo: 'desloc',
-    segmento: a.segmento,
-    cliente: a.destino,
-    local: a.destino,
-    data: a.data,
-    hora_inicio: a.horaSaida,
-    hora_fim: horaChegada,
-    km_inicial: a.kmInicial,
-    km_final: kmFinal,
-    km_rodado: kmRodado,
-    tempo_desloc: tempoDesloc,
-    horas_trabalhadas: 0,
-    valor_calculado: 0,
-    gera_cobranca: false
+    tipo: 'desloc', segmento: a.segmento,
+    cliente: a.destino, local: a.destino, data: a.data,
+    hora_inicio: a.horaSaida, hora_fim: horaChegada,
+    km_inicial: a.kmInicial, km_final: kmFinal, km_rodado: kmRodado,
+    tempo_desloc: tempoDesloc, horas_trabalhadas: 0,
+    valor_calculado: 0, gera_cobranca: false
   };
-
   await salvarBloco(bloco);
-  ativos.splice(i, 1);
-  salvarAtivos();
-  fecharModal('modalDeslocEncerrar');
-  renderAtivos();
-  atualizarResumoDia();
+  ativos.splice(i, 1); salvarAtivos();
+  fecharModal('modalDeslocEncerrar'); renderAtivos(); atualizarResumoDia();
   toast('✓ Deslocamento registrado!');
 }
 
 // ══════════════════════════════════════════════
 // MODAL SERVIÇO
 // ══════════════════════════════════════════════
-function abrirModalServico(segmento) {
-  tipoServicoAtual = segmento;
-  const isE = segmento === 'eletrica';
+function abrirModalServico(seg) {
+  tipoServicoAtual = seg;
+  const isE = seg === 'eletrica';
   document.getElementById('msTitulo').textContent = isE ? '⚡ Serviço Elétrica' : '📷 Serviço Segurança';
   document.getElementById('msSalvarBtn').style.background = isE ? 'var(--elet)' : 'var(--seg)';
   document.getElementById('msSalvarBtn').style.color = '#000';
-  ['msCliente','msLocal','msInicio','msFim','msIntervI','msIntervF','msObs'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
+  ['msCliente','msLocal','msInicio','msFim','msIntervI','msIntervF','msObs'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('msData').value = fmtISO(new Date());
   intervAberto = false;
   document.getElementById('msIntervSection').style.display = 'none';
@@ -953,21 +843,19 @@ function atualizarPreviewServico() {
   const ini = document.getElementById('msInicio').value;
   const fim = document.getElementById('msFim').value;
   if(!ini || !fim) { document.getElementById('msCalcPreview').classList.remove('show'); return; }
-
   const ii = intervAberto ? document.getElementById('msIntervI').value : null;
   const if_ = intervAberto ? document.getElementById('msIntervF').value : null;
-  const calc = calcHoras(ini, fim, ii, if_, tipoServicoAtual, fmtISO(new Date()));
+  const data = document.getElementById('msData').value || fmtISO(new Date());
+  const calc = calcHoras(ini, fim, ii, if_, tipoServicoAtual, data);
   if(!calc) return;
-
   const el = document.getElementById('msCalcPreview');
   el.classList.add('show');
-
   let html = `<div class="pc-row"><span class="pk">Horas efetivas</span><span class="pv">${fmtHoras(calc.total)}</span></div>`;
   if(tipoServicoAtual === 'eletrica') {
     html += `<div class="pc-row"><span class="pk">Horas normais</span><span class="pv">${fmtHoras(calc.normais)}</span></div>`;
     html += `<div class="pc-row"><span class="pk">Horas extras</span><span class="pv">${fmtHoras(calc.extras)}</span></div>`;
     html += `<div class="pc-row"><span class="pk">Valor estimado</span><span class="pv money">R$ ${calc.valor.toFixed(2)}</span></div>`;
-    if(calc.fds) html += `<div class="pc-row"><span class="pk">⚠️ FDS/Feriado</span><span class="pv fds">R$ ${cfg.he}/h</span></div>`;
+    if(calc.fds) html += `<div class="pc-row"><span class="pk">⚠️ FDS/Feriado — tudo extra</span><span class="pv fds">R$ ${cfg.he}/h</span></div>`;
   }
   el.innerHTML = html;
 }
@@ -976,34 +864,25 @@ async function salvarServico() {
   const ini = document.getElementById('msInicio').value;
   const fim = document.getElementById('msFim').value;
   if(!ini || !fim) { toast('Informe início e fim do serviço', true); return; }
-
   const ii = intervAberto ? document.getElementById('msIntervI').value : null;
   const if_ = intervAberto ? document.getElementById('msIntervF').value : null;
   const data = document.getElementById('msData').value || fmtISO(new Date());
   const calc = calcHoras(ini, fim, ii, if_, tipoServicoAtual, data) || { total: 0, valor: 0 };
-
   const bloco = {
     tipo: tipoServicoAtual === 'eletrica' ? 'eletrica' : 'seguranca',
     segmento: tipoServicoAtual,
     cliente: document.getElementById('msCliente').value.trim(),
     local: document.getElementById('msLocal').value.trim(),
-    data,
-    hora_inicio: ini,
-    hora_fim: fim,
-    interv_inicio: ii || null,
-    interv_fim: if_ || null,
-    horas_trabalhadas: calc.total,
-    km_rodado: 0,
-    tempo_desloc: 0,
+    data, hora_inicio: ini, hora_fim: fim,
+    interv_inicio: ii || null, interv_fim: if_ || null,
+    horas_trabalhadas: calc.total, km_rodado: 0, tempo_desloc: 0,
     gera_cobranca: tipoServicoAtual === 'eletrica',
     obs: document.getElementById('msObs').value.trim(),
     valor_calculado: calc.valor
   };
-
   await salvarBloco(bloco);
-  fecharModal('modalServico');
-  atualizarResumoDia();
-  toast(`✓ Serviço registrado! ${tipoServicoAtual === 'eletrica' ? 'R$ ' + calc.valor.toFixed(2) : ''}`);
+  fecharModal('modalServico'); atualizarResumoDia();
+  toast(`✓ Serviço registrado!${tipoServicoAtual === 'eletrica' ? ' R$ '+calc.valor.toFixed(2) : ''}`);
 }
 
 // ══════════════════════════════════════════════
@@ -1024,30 +903,20 @@ async function salvarAdmin() {
   const fim = document.getElementById('maFim').value;
   const cob = document.getElementById('maCobrancaToggle').classList.contains('on');
   const data = document.getElementById('maData').value || fmtISO(new Date());
-
   let horas = 0, valor = 0;
   if(ini && fim) {
     const calc = calcHoras(ini, fim, null, null, cob && seg === 'eletrica' ? 'eletrica' : 'nao', data);
     if(calc) { horas = calc.total; valor = calc.valor; }
   }
-
   const bloco = {
-    tipo: 'admin-' + (seg === 'eletrica' ? 'e' : 's'),
-    segmento: seg,
-    cliente: document.getElementById('maDesc').value.trim(),
-    local: '',
-    data,
-    hora_inicio: ini || null,
-    hora_fim: fim || null,
-    horas_trabalhadas: horas,
-    km_rodado: 0, tempo_desloc: 0,
-    gera_cobranca: cob,
-    valor_calculado: valor
+    tipo: 'admin-' + (seg === 'eletrica' ? 'e' : 's'), segmento: seg,
+    cliente: document.getElementById('maDesc').value.trim(), local: '', data,
+    hora_inicio: ini || null, hora_fim: fim || null,
+    horas_trabalhadas: horas, km_rodado: 0, tempo_desloc: 0,
+    gera_cobranca: cob, valor_calculado: valor
   };
-
   await salvarBloco(bloco);
-  fecharModal('modalAdmin');
-  atualizarResumoDia();
+  fecharModal('modalAdmin'); atualizarResumoDia();
   toast('✓ Administrativo registrado!');
 }
 
@@ -1055,10 +924,7 @@ async function salvarAdmin() {
 // MODAL CAPACITAÇÃO
 // ══════════════════════════════════════════════
 function abrirModalCapacitacao() {
-  document.getElementById('capDesc').value = '';
-  document.getElementById('capInicio').value = '';
-  document.getElementById('capFim').value = '';
-  document.getElementById('capObs').value = '';
+  ['capDesc','capInicio','capFim','capObs'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('capData').value = fmtISO(new Date());
   abrirModal('modalCap');
 }
@@ -1066,39 +932,243 @@ function abrirModalCapacitacao() {
 async function salvarCapacitacao() {
   const ini = document.getElementById('capInicio').value;
   const fim = document.getElementById('capFim').value;
-  let horas = 0;
-  if(ini && fim) { horas = diffMin(ini, fim) / 60; }
-
   const bloco = {
-    tipo: 'capacitacao',
-    segmento: 'geral',
-    cliente: document.getElementById('capDesc').value.trim(),
-    local: '',
+    tipo: 'capacitacao', segmento: 'geral',
+    cliente: document.getElementById('capDesc').value.trim(), local: '',
     data: document.getElementById('capData').value || fmtISO(new Date()),
-    hora_inicio: ini || null,
-    hora_fim: fim || null,
-    horas_trabalhadas: horas,
-    km_rodado: 0, tempo_desloc: 0,
-    gera_cobranca: false,
-    obs: document.getElementById('capObs').value.trim(),
-    valor_calculado: 0
+    hora_inicio: ini || null, hora_fim: fim || null,
+    horas_trabalhadas: ini && fim ? diffMin(ini, fim)/60 : 0,
+    km_rodado: 0, tempo_desloc: 0, gera_cobranca: false,
+    obs: document.getElementById('capObs').value.trim(), valor_calculado: 0
   };
-
   await salvarBloco(bloco);
-  fecharModal('modalCap');
-  atualizarResumoDia();
+  fecharModal('modalCap'); atualizarResumoDia();
   toast('✓ Capacitação registrada!');
 }
 
 // ══════════════════════════════════════════════
-// SALVAR BLOCO (banco + local)
+// SALVAR BLOCO
 // ══════════════════════════════════════════════
 async function salvarBloco(bloco) {
-  const ok = await salvarNoBanco(bloco);
+  const ok = await salvarNoBanco('blocos', bloco);
   const bk = JSON.parse(localStorage.getItem('blocos_bk') || '[]');
   bk.unshift({ ...bloco, id: Date.now(), _local: !ok });
   localStorage.setItem('blocos_bk', JSON.stringify(bk.slice(0, 500)));
   return ok;
+}
+
+// ══════════════════════════════════════════════
+// FINANCEIRO
+// ══════════════════════════════════════════════
+function setFinTipo(tipo) {
+  finTipoAtual = tipo;
+  document.getElementById('tabReceita').classList.toggle('active', tipo === 'receita');
+  document.getElementById('tabGasto').classList.toggle('active', tipo === 'gasto');
+  document.getElementById('tabReceita').classList.toggle('receita', tipo === 'receita');
+  document.getElementById('tabGasto').classList.toggle('gasto', tipo === 'gasto');
+  document.getElementById('finSalvarBtn').style.background = tipo === 'receita' ? 'var(--green)' : 'var(--red)';
+  document.getElementById('finSalvarBtn').style.color = tipo === 'receita' ? '#000' : '#fff';
+  // Ajustar categorias conforme tipo
+  const cat = document.getElementById('finCat');
+  if(tipo === 'receita') {
+    cat.innerHTML = `
+      <option value="servico">💼 Serviço prestado</option>
+      <option value="ressarcimento">🚗 Ressarcimento km</option>
+      <option value="material_cliente">🔧 Material (reembolso cliente)</option>
+      <option value="outro">📦 Outro</option>`;
+  } else {
+    cat.innerHTML = `
+      <option value="material">🔧 Material</option>
+      <option value="combustivel">⛽ Combustível</option>
+      <option value="ferramenta">🛠 Ferramenta / Equipamento</option>
+      <option value="transporte">🚗 Transporte / Pedágio</option>
+      <option value="alimentacao">🍽 Alimentação</option>
+      <option value="outro">📦 Outro</option>`;
+  }
+}
+
+async function salvarLancamento() {
+  const desc = document.getElementById('finDesc').value.trim();
+  const valor = parseFloat(document.getElementById('finValor').value);
+  const data = document.getElementById('finData').value;
+  if(!desc || !valor || !data) { toast('Preencha todos os campos', true); return; }
+  const lanc = {
+    tipo: finTipoAtual,
+    descricao: desc,
+    valor,
+    data,
+    categoria: document.getElementById('finCat').value,
+    segmento: document.getElementById('finSeg').value
+  };
+  const ok = await salvarNoBanco('lancamentos', lanc);
+  const bk = JSON.parse(localStorage.getItem('lancamentos_bk') || '[]');
+  bk.unshift({ ...lanc, id: Date.now(), _local: !ok });
+  localStorage.setItem('lancamentos_bk', JSON.stringify(bk.slice(0, 500)));
+  document.getElementById('finDesc').value = '';
+  document.getElementById('finValor').value = '';
+  toast('✓ Lançamento salvo!');
+  calcFinanceiro();
+}
+
+async function calcFinanceiro() {
+  const de = document.getElementById('fPInicio').value;
+  const ate = document.getElementById('fPFim').value;
+  if(!de || !ate) return;
+  const dados = await buscarLancamentos({ de, ate });
+  let receitas = 0, gastos = 0;
+  const catGastos = {};
+  dados.forEach(l => {
+    if(l.tipo === 'receita') receitas += parseFloat(l.valor||0);
+    else { gastos += parseFloat(l.valor||0); catGastos[l.categoria] = (catGastos[l.categoria]||0) + parseFloat(l.valor||0); }
+  });
+  const saldo = receitas - gastos;
+  const saldoBox = document.getElementById('saldoBox');
+  saldoBox.className = 'saldo-box ' + (saldo >= 0 ? 'positivo' : 'negativo');
+  document.getElementById('saldoVal').textContent = 'R$ ' + Math.abs(saldo).toFixed(2) + (saldo < 0 ? ' (negativo)' : '');
+  document.getElementById('saldoSub').textContent = `Receitas R$ ${receitas.toFixed(2)} · Gastos R$ ${gastos.toFixed(2)}`;
+  document.getElementById('finReceitas').textContent = 'R$ ' + receitas.toFixed(2);
+  document.getElementById('finGastos').textContent = 'R$ ' + gastos.toFixed(2);
+  document.getElementById('finReceitasSub').textContent = dados.filter(l=>l.tipo==='receita').length + ' lançamentos';
+  document.getElementById('finGastosSub').textContent = dados.filter(l=>l.tipo==='gasto').length + ' lançamentos';
+  renderLancamentos(dados);
+}
+
+function renderLancamentos(dados) {
+  const lista = document.getElementById('listaLancamentos');
+  if(!dados.length) { lista.innerHTML = '<div class="empty"><span class="ei">💰</span>Nenhum lançamento no período</div>'; return; }
+  const catIcon = { servico:'💼', material:'🔧', combustivel:'⛽', ferramenta:'🛠', transporte:'🚗', alimentacao:'🍽', ressarcimento:'🚗', material_cliente:'🔧', outro:'📦' };
+  lista.innerHTML = dados.map(l => {
+    const isR = l.tipo === 'receita';
+    return `<div class="bloco-card ${isR ? 'tc-fin-r' : 'tc-fin-g'}">
+      <button class="btn-del" onclick="deletarLancamento(${l.id})">🗑</button>
+      <div class="bc-head">
+        <div class="bc-tipo" style="color:${isR ? 'var(--green)' : 'var(--red)'}">${isR ? '➕ Receita' : '➖ Gasto'}</div>
+        <div class="bc-data">${fmtData(l.data)}</div>
+      </div>
+      <div class="bc-cliente">${l.descricao}</div>
+      <div class="bc-tags">
+        <span class="tag ${isR ? 'g' : 'r'}">${catIcon[l.categoria]||'📦'} ${l.categoria}</span>
+        <span class="tag">${l.segmento}</span>
+      </div>
+      <div class="bc-valor"><span class="valor-pill ${isR ? 'g' : 'r'}">R$ ${parseFloat(l.valor).toFixed(2)}</span></div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════
+async function calcDashboard() {
+  const de = document.getElementById('dPInicio').value;
+  const ate = document.getElementById('dPFim').value;
+  if(!de || !ate) return;
+
+  const [blocos, lancamentos] = await Promise.all([
+    buscarBlocos({ de, ate }),
+    buscarLancamentos({ de, ate })
+  ]);
+
+  let horasE = 0, horasS = 0, horasAdmin = 0, horasCap = 0;
+  let kmSeg = 0, tempoDesloc = 0, valorTotal = 0;
+  const dias = new Set();
+  const porDia = {};
+
+  blocos.forEach(b => {
+    if(b.tipo === 'desloc') { tempoDesloc += parseFloat(b.tempo_desloc||0); if(b.segmento==='seguranca') kmSeg += parseFloat(b.km_rodado||0); return; }
+    dias.add(b.data);
+    if(!porDia[b.data]) porDia[b.data] = [];
+    porDia[b.data].push(b);
+    const h = parseFloat(b.horas_trabalhadas||0);
+    if(b.tipo==='eletrica') horasE += h;
+    else if(b.tipo==='seguranca') horasS += h;
+    else if(b.tipo?.startsWith('admin')) horasAdmin += h;
+    else if(b.tipo==='capacitacao') horasCap += h;
+    if(b.segmento==='seguranca') kmSeg += parseFloat(b.km_rodado||0);
+  });
+
+  Object.entries(porDia).forEach(([data, bs]) => {
+    const cobr = bs.filter(b => b.tipo==='eletrica' || (b.tipo==='admin-e' && b.gera_cobranca));
+    const hDia = cobr.reduce((a,b) => a + parseFloat(b.horas_trabalhadas||0), 0);
+    if(!hDia) return;
+    const fds = [0,6].includes(new Date(data+'T12:00:00').getDay());
+    valorTotal += fds ? hDia*cfg.he : Math.min(hDia,cfg.base)*cfg.hn + Math.max(0,hDia-cfg.base)*cfg.he;
+  });
+
+  // Financeiro
+  let receitas = 0, gastos = 0;
+  const catGastos = {};
+  lancamentos.forEach(l => {
+    if(l.tipo==='receita') receitas += parseFloat(l.valor||0);
+    else { gastos += parseFloat(l.valor||0); catGastos[l.categoria] = (catGastos[l.categoria]||0) + parseFloat(l.valor||0); }
+  });
+  const saldo = receitas - gastos;
+
+  // Atualizar UI
+  document.getElementById('dashValorE').textContent = 'R$ ' + valorTotal.toFixed(2);
+  document.getElementById('dashValorESub').textContent = `${dias.size} dia(s) · ${fmtHoras(horasE)} em elétrica`;
+  document.getElementById('dashSaldo').textContent = 'R$ ' + Math.abs(saldo).toFixed(2);
+  document.getElementById('dashSaldo').className = 'dash-hero-num ' + (saldo >= 0 ? 'g' : 'r');
+  document.getElementById('dashSaldoSub').textContent = `Receitas R$ ${receitas.toFixed(2)} − Gastos R$ ${gastos.toFixed(2)}`;
+
+  document.getElementById('dHE').textContent = fmtHoras(horasE);
+  document.getElementById('dHESub').textContent = valorTotal > 0 ? 'R$ '+valorTotal.toFixed(2) : '—';
+  document.getElementById('dHS').textContent = fmtHoras(horasS);
+  document.getElementById('dKm').textContent = kmSeg.toFixed(0)+'km';
+  document.getElementById('dKmSub').textContent = cfg.km > 0 ? 'R$ '+(kmSeg*cfg.km).toFixed(2) : 'configure valor/km';
+  document.getElementById('dDesloc').textContent = fmtHoras(tempoDesloc);
+  document.getElementById('dDias').textContent = dias.size;
+  document.getElementById('dAdmin').textContent = fmtHoras(horasAdmin+horasCap);
+
+  // Gráfico horas por segmento
+  const maxH = Math.max(horasE, horasS, horasAdmin+horasCap, 0.1);
+  document.getElementById('graficoHorasCard').style.display = 'block';
+  document.getElementById('graficoHoras').innerHTML = [
+    { label: '⚡ Elétrica', h: horasE, cor: 'var(--elet)' },
+    { label: '📷 Segurança', h: horasS, cor: 'var(--seg)' },
+    { label: '📋 Admin/Cap', h: horasAdmin+horasCap, cor: 'var(--admin)' },
+  ].map(item => `
+    <div class="grafico-bar-row">
+      <div class="grafico-label">${item.label}</div>
+      <div class="grafico-bar-bg">
+        <div class="grafico-bar-fill" style="width:${Math.round((item.h/maxH)*100)}%;background:${item.cor}">
+          <span>${fmtHoras(item.h)}</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Gráfico gastos por categoria
+  if(Object.keys(catGastos).length > 0) {
+    const maxG = Math.max(...Object.values(catGastos), 0.1);
+    const catIcon = { material:'🔧', combustivel:'⛽', ferramenta:'🛠', transporte:'🚗', alimentacao:'🍽', outro:'📦' };
+    document.getElementById('graficoGastosCard').style.display = 'block';
+    document.getElementById('graficoGastos').innerHTML = Object.entries(catGastos)
+      .sort((a,b) => b[1]-a[1])
+      .map(([cat, val]) => `
+        <div class="grafico-bar-row">
+          <div class="grafico-label">${catIcon[cat]||'📦'} ${cat}</div>
+          <div class="grafico-bar-bg">
+            <div class="grafico-bar-fill" style="width:${Math.round((val/maxG)*100)}%;background:var(--red)">
+              <span>R$ ${val.toFixed(0)}</span>
+            </div>
+          </div>
+        </div>`).join('');
+  }
+
+  // Detalhe por dia
+  const diasComE = Object.entries(porDia).filter(([d,bs]) => bs.some(b => b.tipo==='eletrica' || (b.tipo==='admin-e' && b.gera_cobranca)));
+  if(diasComE.length) {
+    document.getElementById('detalheElDiv').style.display = 'block';
+    document.getElementById('detalheElConteudo').innerHTML = diasComE.sort().map(([data, bs]) => {
+      const cobr = bs.filter(b => b.tipo==='eletrica' || (b.tipo==='admin-e' && b.gera_cobranca));
+      const h = cobr.reduce((a,b) => a+parseFloat(b.horas_trabalhadas||0), 0);
+      const fds = [0,6].includes(new Date(data+'T12:00:00').getDay());
+      const v = fds ? h*cfg.he : Math.min(h,cfg.base)*cfg.hn + Math.max(0,h-cfg.base)*cfg.he;
+      return `<div class="det-row">
+        <span class="dl">${fmtData(data)}${fds?' 🔶':''}</span>
+        <span class="dv">${fmtHoras(h)} → <span class="money">R$ ${v.toFixed(2)}</span></span>
+      </div>`;
+    }).join('');
+  } else { document.getElementById('detalheElDiv').style.display = 'none'; }
 }
 
 // ══════════════════════════════════════════════
@@ -1108,175 +1178,95 @@ async function atualizarResumoDia() {
   const hoje = fmtISO(new Date());
   const dados = await buscarBlocos({ data: hoje });
   const el = document.getElementById('resumoDiaConteudo');
-
-  if(!dados.length) {
-    el.innerHTML = '<div class="empty" style="padding:16px 0"><span class="ei">📅</span><span style="font-size:13px">Nenhum registro hoje</span></div>';
-    return;
-  }
-
-  let horasE = 0, horasS = 0, kmS = 0, tempoDesloc = 0, valorDia = 0;
+  if(!dados.length) { el.innerHTML = '<div class="empty" style="padding:16px 0"><span class="ei">📅</span><span style="font-size:13px">Nenhum registro hoje</span></div>'; return; }
+  let horasE = 0, horasS = 0, kmS = 0, tempoDesloc = 0;
   dados.forEach(b => {
-    const h = parseFloat(b.horas_trabalhadas || 0);
-    if(b.tipo === 'eletrica' || (b.tipo === 'admin-e' && b.gera_cobranca)) horasE += h;
-    if(b.tipo === 'seguranca') horasS += h;
-    if(b.segmento === 'seguranca') kmS += parseFloat(b.km_rodado || 0);
-    tempoDesloc += parseFloat(b.tempo_desloc || 0);
+    const h = parseFloat(b.horas_trabalhadas||0);
+    if(b.tipo==='eletrica' || (b.tipo==='admin-e' && b.gera_cobranca)) horasE += h;
+    if(b.tipo==='seguranca') horasS += h;
+    if(b.segmento==='seguranca') kmS += parseFloat(b.km_rodado||0);
+    tempoDesloc += parseFloat(b.tempo_desloc||0);
   });
-
-  const isFds = [0,6].includes(new Date(hoje + 'T12:00:00').getDay());
-  if(isFds) {
-    valorDia = horasE * cfg.he;
-  } else {
-    const n = Math.min(horasE, cfg.base);
-    const e = Math.max(0, horasE - cfg.base);
-    valorDia = n * cfg.hn + e * cfg.he;
-  }
-
-  el.innerHTML = `
-    <div class="det-box">
-      ${horasE > 0 ? `<div class="det-row"><span class="dl">⚡ Horas elétrica</span><span class="dv">${fmtHoras(horasE)}</span></div>` : ''}
-      ${horasE > 0 ? `<div class="det-row"><span class="dl">💰 Valor estimado</span><span class="dv money">R$ ${valorDia.toFixed(2)}</span></div>` : ''}
-      ${horasS > 0 ? `<div class="det-row"><span class="dl">📷 Horas segurança</span><span class="dv">${fmtHoras(horasS)}</span></div>` : ''}
-      ${kmS > 0 ? `<div class="det-row"><span class="dl">🛣 Km segurança</span><span class="dv">${kmS.toFixed(0)} km</span></div>` : ''}
-      ${tempoDesloc > 0 ? `<div class="det-row"><span class="dl">🚗 Tempo deslocamento</span><span class="dv">${fmtHoras(tempoDesloc)}</span></div>` : ''}
-      <div class="det-row"><span class="dl">📋 Registros hoje</span><span class="dv">${dados.length}</span></div>
-    </div>`;
+  const hoje_ = new Date(hoje+'T12:00:00');
+  const isFds = [0,6].includes(hoje_.getDay());
+  const valorDia = isFds ? horasE*cfg.he : Math.min(horasE,cfg.base)*cfg.hn + Math.max(0,horasE-cfg.base)*cfg.he;
+  el.innerHTML = `<div class="det-box">
+    ${horasE > 0 ? `<div class="det-row"><span class="dl">⚡ Horas elétrica</span><span class="dv">${fmtHoras(horasE)}</span></div>` : ''}
+    ${horasE > 0 ? `<div class="det-row"><span class="dl">💰 Valor estimado${isFds?' 🔶':''}</span><span class="dv money">R$ ${valorDia.toFixed(2)}</span></div>` : ''}
+    ${horasS > 0 ? `<div class="det-row"><span class="dl">📷 Horas segurança</span><span class="dv">${fmtHoras(horasS)}</span></div>` : ''}
+    ${kmS > 0 ? `<div class="det-row"><span class="dl">🛣 Km segurança</span><span class="dv">${kmS.toFixed(0)} km</span></div>` : ''}
+    ${tempoDesloc > 0 ? `<div class="det-row"><span class="dl">🚗 Deslocamento</span><span class="dv">${fmtHoras(tempoDesloc)}</span></div>` : ''}
+    <div class="det-row"><span class="dl">📋 Registros hoje</span><span class="dv">${dados.length}</span></div>
+  </div>`;
 }
 
 // ══════════════════════════════════════════════
-// CARREGAR REGISTROS
+// REGISTROS
 // ══════════════════════════════════════════════
 async function carregarRegistros() {
   const lista = document.getElementById('listaRegistros');
-  const data = document.getElementById('filtroData').value;
   lista.innerHTML = '<div class="loading"><div class="spin"></div>Carregando...</div>';
-
+  const data = document.getElementById('filtroData').value;
   const dados = await buscarBlocos({ data });
-
-  if(!dados.length) {
-    lista.innerHTML = '<div class="empty"><span class="ei">📋</span>Nenhum registro neste dia</div>';
-    return;
-  }
-
+  if(!dados.length) { lista.innerHTML = '<div class="empty"><span class="ei">📋</span>Nenhum registro neste dia</div>'; return; }
   const mapa = {
-    'eletrica':     { label: '⚡ Elétrica', cls: 'tc-e', cor: 'e' },
-    'seguranca':    { label: '📷 Segurança', cls: 'tc-s', cor: 's' },
-    'admin-e':      { label: '📋 Adm. Elétrica', cls: 'tc-a', cor: '' },
-    'admin-s':      { label: '📋 Adm. Segurança', cls: 'tc-a', cor: '' },
-    'capacitacao':  { label: '🎓 Capacitação', cls: 'tc-c', cor: '' },
-    'desloc':       { label: '🚗 Deslocamento', cls: 'tc-d', cor: 'b' },
+    'eletrica': { label:'⚡ Elétrica', cls:'tc-e', cor:'var(--elet)' },
+    'seguranca': { label:'📷 Segurança', cls:'tc-s', cor:'var(--seg)' },
+    'admin-e': { label:'📋 Adm. Elétrica', cls:'tc-a', cor:'var(--admin)' },
+    'admin-s': { label:'📋 Adm. Segurança', cls:'tc-a', cor:'var(--admin)' },
+    'capacitacao': { label:'🎓 Capacitação', cls:'tc-c', cor:'var(--cap)' },
+    'desloc': { label:'🚗 Deslocamento', cls:'tc-d', cor:'var(--blue)' },
   };
-
   lista.innerHTML = dados.map(b => {
-    const m = mapa[b.tipo] || { label: b.tipo, cls: 'tc-e', cor: '' };
+    const m = mapa[b.tipo] || { label:b.tipo, cls:'tc-e', cor:'var(--elet)' };
     const h = b.horas_trabalhadas > 0 ? fmtHoras(parseFloat(b.horas_trabalhadas)) : null;
     const km = b.km_rodado > 0 ? `${parseFloat(b.km_rodado).toFixed(0)}km` : null;
-    const desloc = b.tempo_desloc > 0 ? fmtHoras(parseFloat(b.tempo_desloc)) : null;
+    const desl = b.tempo_desloc > 0 ? fmtHoras(parseFloat(b.tempo_desloc)) : null;
     const val = b.valor_calculado > 0 ? parseFloat(b.valor_calculado) : null;
-
     return `<div class="bloco-card ${m.cls}">
-      <button class="btn-del" onclick="deletarBloco(${b.id || "'"+b.id+"'"})">🗑</button>
-      <div class="bc-head">
-        <div class="bc-tipo" style="color:${m.cls==='tc-e'?'var(--elet)':m.cls==='tc-s'?'var(--seg)':m.cls==='tc-d'?'var(--blue)':'var(--admin)'}">${m.label}</div>
-        <div class="bc-data">${fmtData(b.data)}</div>
-      </div>
+      <button class="btn-del" onclick="deletarBloco(${b.id})">🗑</button>
+      <div class="bc-head"><div class="bc-tipo" style="color:${m.cor}">${m.label}</div><div class="bc-data">${fmtData(b.data)}</div></div>
       ${b.cliente ? `<div class="bc-cliente">${b.cliente}</div>` : ''}
       <div class="bc-tags">
         ${h ? `<span class="tag hi">⏱ ${h}</span>` : ''}
         ${b.hora_inicio ? `<span class="tag">${b.hora_inicio.slice(0,5)}${b.hora_fim?' → '+b.hora_fim.slice(0,5):''}</span>` : ''}
-        ${km ? `<span class="tag ${m.cor}">🛣 ${km}</span>` : ''}
-        ${desloc ? `<span class="tag b">🚗 ${desloc}</span>` : ''}
+        ${km ? `<span class="tag s">🛣 ${km}</span>` : ''}
+        ${desl ? `<span class="tag b">🚗 ${desl}</span>` : ''}
         ${b.gera_cobranca && b.tipo !== 'eletrica' ? '<span class="tag e">💰 Cobrável</span>' : ''}
       </div>
-      ${val ? `<div class="bc-valor"><span class="valor-pill">R$ ${val.toFixed(2)}</span></div>` : ''}
+      ${val ? `<div class="bc-valor"><span class="valor-pill e">R$ ${val.toFixed(2)}</span></div>` : ''}
       ${b.obs ? `<div style="font-size:12px;color:var(--muted);margin-top:8px;padding-left:8px">${b.obs}</div>` : ''}
     </div>`;
   }).join('');
 }
 
 // ══════════════════════════════════════════════
-// RESUMO POR PERÍODO
+// EXPORT
 // ══════════════════════════════════════════════
-async function calcResumo() {
-  const de = document.getElementById('pInicio').value;
-  const ate = document.getElementById('pFim').value;
-  if(!de || !ate) return;
-
-  const dados = await buscarBlocos({ de, ate });
-  if(!dados.length) {
-    document.getElementById('vtNum').textContent = 'R$ 0,00';
-    document.getElementById('vtSub').textContent = 'Nenhum registro no período';
-    return;
+async function exportarExcel() {
+  const [blocos, lancamentos] = await Promise.all([buscarBlocos({}), buscarLancamentos({})]);
+  if(!blocos.length && !lancamentos.length) { toast('Nenhum dado para exportar', true); return; }
+  const wb = XLSX.utils.book_new();
+  if(blocos.length) {
+    const rows = blocos.map(b => ({
+      'Data': fmtData(b.data), 'Tipo': b.tipo, 'Segmento': b.segmento,
+      'Cliente': b.cliente, 'Local': b.local, 'Início': b.hora_inicio, 'Fim': b.hora_fim,
+      'Horas': parseFloat(b.horas_trabalhadas||0).toFixed(2),
+      'Km Rodado': parseFloat(b.km_rodado||0).toFixed(0),
+      'Tempo Desloc (h)': parseFloat(b.tempo_desloc||0).toFixed(2),
+      'Valor (R$)': parseFloat(b.valor_calculado||0).toFixed(2), 'Obs': b.obs
+    }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Registros');
   }
-
-  let horasE = 0, horasS = 0, horasAdmin = 0, horasCap = 0;
-  let kmSeg = 0, tempoDesloc = 0, valorTotal = 0;
-  const dias = new Set();
-  const porDia = {};
-
-  dados.forEach(b => {
-    if(b.tipo === 'desloc') {
-      tempoDesloc += parseFloat(b.tempo_desloc || 0);
-      if(b.segmento === 'seguranca') kmSeg += parseFloat(b.km_rodado || 0);
-      return;
-    }
-    dias.add(b.data);
-    if(!porDia[b.data]) porDia[b.data] = [];
-    porDia[b.data].push(b);
-    const h = parseFloat(b.horas_trabalhadas || 0);
-    if(b.tipo === 'eletrica') horasE += h;
-    else if(b.tipo === 'seguranca') horasS += h;
-    else if(b.tipo?.startsWith('admin')) horasAdmin += h;
-    else if(b.tipo === 'capacitacao') horasCap += h;
-    if(b.segmento === 'seguranca') kmSeg += parseFloat(b.km_rodado || 0);
-  });
-
-  // Cálculo valor por dia
-  Object.entries(porDia).forEach(([data, bs]) => {
-    const cobr = bs.filter(b => b.tipo === 'eletrica' || (b.tipo === 'admin-e' && b.gera_cobranca));
-    const hDia = cobr.reduce((a,b) => a + parseFloat(b.horas_trabalhadas||0), 0);
-    if(!hDia) return;
-    const fds = [0,6].includes(new Date(data+'T12:00:00').getDay());
-    if(fds) {
-      valorTotal += hDia * cfg.he;
-    } else {
-      const n = Math.min(hDia, cfg.base);
-      const e = Math.max(0, hDia - cfg.base);
-      valorTotal += n * cfg.hn + e * cfg.he;
-    }
-  });
-
-  document.getElementById('vtNum').textContent = 'R$ ' + valorTotal.toFixed(2);
-  document.getElementById('vtSub').textContent = `${dias.size} dia(s) trabalhado(s) · ${fmtHoras(horasE)} em elétrica`;
-  document.getElementById('stHE').textContent = fmtHoras(horasE);
-  document.getElementById('stHESub').textContent = valorTotal > 0 ? 'R$ ' + valorTotal.toFixed(2) : '—';
-  document.getElementById('stHS').textContent = fmtHoras(horasS);
-  document.getElementById('stKm').textContent = kmSeg.toFixed(0) + 'km';
-  document.getElementById('stKmSub').textContent = cfg.km > 0 ? 'R$ ' + (kmSeg * cfg.km).toFixed(2) : 'configure valor/km';
-  document.getElementById('stDesloc').textContent = fmtHoras(tempoDesloc);
-  document.getElementById('stDias').textContent = dias.size;
-  document.getElementById('stAdmin').textContent = fmtHoras(horasAdmin + horasCap);
-
-  // Detalhe por dia
-  const detDiv = document.getElementById('detalheElDiv');
-  const detC = document.getElementById('detalheElConteudo');
-  const diasComE = Object.entries(porDia).filter(([d,bs]) => bs.some(b => b.tipo === 'eletrica' || (b.tipo==='admin-e' && b.gera_cobranca)));
-
-  if(diasComE.length) {
-    detDiv.style.display = 'block';
-    detC.innerHTML = diasComE.sort().map(([data, bs]) => {
-      const cobr = bs.filter(b => b.tipo === 'eletrica' || (b.tipo === 'admin-e' && b.gera_cobranca));
-      const h = cobr.reduce((a,b) => a + parseFloat(b.horas_trabalhadas||0), 0);
-      const fds = [0,6].includes(new Date(data+'T12:00:00').getDay());
-      const v = fds ? h*cfg.he : Math.min(h,cfg.base)*cfg.hn + Math.max(0,h-cfg.base)*cfg.he;
-      return `<div class="det-row">
-        <span class="dl">${fmtData(data)}${fds?' 🔶':''}</span>
-        <span class="dv">${fmtHoras(h)} → <span class="money" style="color:var(--elet)">R$ ${v.toFixed(2)}</span></span>
-      </div>`;
-    }).join('');
-  } else {
-    detDiv.style.display = 'none';
+  if(lancamentos.length) {
+    const rows = lancamentos.map(l => ({
+      'Data': fmtData(l.data), 'Tipo': l.tipo, 'Descrição': l.descricao,
+      'Categoria': l.categoria, 'Segmento': l.segmento, 'Valor (R$)': parseFloat(l.valor||0).toFixed(2)
+    }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Financeiro');
   }
+  XLSX.writeFile(wb, `gestao-op-${fmtISO(new Date())}.xlsx`);
+  toast('✓ Excel exportado!');
 }
 
 // ══════════════════════════════════════════════
@@ -1295,8 +1285,7 @@ function salvarConexao() {
   cfg.url = document.getElementById('cfgUrl').value.trim();
   cfg.key = document.getElementById('cfgKey').value.trim();
   localStorage.setItem('goCfg', JSON.stringify(cfg));
-  iniciarSupabase();
-  toast('✓ Conexão salva!');
+  iniciarSupabase(); toast('✓ Conexão salva!');
 }
 
 function salvarValores() {
@@ -1306,31 +1295,6 @@ function salvarValores() {
   cfg.km = parseFloat(document.getElementById('cfgKm').value) || 0;
   localStorage.setItem('goCfg', JSON.stringify(cfg));
   toast('✓ Valores salvos!');
-}
-
-// ══════════════════════════════════════════════
-// EXPORT
-// ══════════════════════════════════════════════
-async function exportarExcel() {
-  const dados = await buscarBlocos({});
-  if(!dados.length) { toast('Nenhum dado para exportar', true); return; }
-  const wb = XLSX.utils.book_new();
-  const rows = dados.map(b => ({
-    'Data': fmtData(b.data), 'Tipo': b.tipo, 'Segmento': b.segmento,
-    'Cliente/Destino': b.cliente, 'Local': b.local,
-    'Início': b.hora_inicio, 'Fim': b.hora_fim,
-    'Interv. Início': b.interv_inicio, 'Interv. Fim': b.interv_fim,
-    'Horas': parseFloat(b.horas_trabalhadas||0).toFixed(2),
-    'Km Inicial': b.km_inicial, 'Km Final': b.km_final,
-    'Km Rodado': parseFloat(b.km_rodado||0).toFixed(0),
-    'Tempo Desloc. (h)': parseFloat(b.tempo_desloc||0).toFixed(2),
-    'Gera Cobrança': b.gera_cobranca ? 'Sim' : 'Não',
-    'Valor (R$)': parseFloat(b.valor_calculado||0).toFixed(2),
-    'Obs': b.obs
-  }));
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Registros');
-  XLSX.writeFile(wb, `gestao-op-${fmtISO(new Date())}.xlsx`);
-  toast('✓ Excel exportado!');
 }
 
 // ══════════════════════════════════════════════
@@ -1365,7 +1329,7 @@ function fmtHoras(h) {
 
 function fmtMin(m) {
   const h = Math.floor(m/60), mm = m % 60;
-  return h > 0 ? `${h}h${mm > 0 ? mm+'min' : ''}` : `${mm}min`;
+  return h > 0 ? `${h}h${mm>0?mm+'min':''}` : `${mm}min`;
 }
 
 function fmtISO(d) { return d.toISOString().split('T')[0]; }
@@ -1378,23 +1342,23 @@ function fmtData(d) {
 
 function horaAtual() {
   const n = new Date();
-  return n.getHours().toString().padStart(2,'0') + ':' + n.getMinutes().toString().padStart(2,'0');
+  return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
 }
 
 function showPage(p, el) {
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x => x.classList.remove('active'));
-  document.getElementById('page-' + p).classList.add('active');
+  document.getElementById('page-'+p).classList.add('active');
   el.classList.add('active');
-  if(p === 'home') atualizarResumoDia();
-  if(p === 'registros') carregarRegistros();
-  if(p === 'resumo') calcResumo();
+  if(p==='home') atualizarResumoDia();
+  if(p==='registros') carregarRegistros();
+  if(p==='financeiro') { calcFinanceiro(); document.getElementById('finData').value = fmtISO(new Date()); }
+  if(p==='dashboard') calcDashboard();
 }
 
 function abrirModal(id) { document.getElementById(id).classList.add('open'); }
 function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// Fechar modal ao clicar fora
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if(e.target === m) m.classList.remove('open'); });
 });
@@ -1408,8 +1372,9 @@ function toast(msg, err = false) {
   setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-// Iniciar resumo do dia ao carregar
+// Init
 setTimeout(atualizarResumoDia, 500);
+setFinTipo('receita');
 </script>
 </body>
 </html>

@@ -1609,7 +1609,7 @@ Regras:
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': cfg.anthropicKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 500,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -1621,9 +1621,15 @@ Regras:
     voiceDadosInterpretados = parsed;
     mostrarResultadoVoice(parsed, texto);
   } catch(e) {
+    console.error('Voice error:', e);
+    // Tentar mostrar detalhe do erro
+    let msg = 'Erro ao interpretar. Tente novamente.';
+    try {
+      if(e.message) msg = 'Erro: ' + e.message;
+    } catch(_) {}
     document.getElementById('voiceOrb').className = 'voice-orb';
     document.getElementById('voiceOrb').textContent = '🎤';
-    document.getElementById('voiceStatus').textContent = 'Erro ao interpretar. Tente novamente.';
+    document.getElementById('voiceStatus').textContent = msg;
     document.getElementById('voiceTranscript').textContent = '"' + texto + '"';
     document.getElementById('voiceHint').style.display = 'block';
   }

@@ -1589,7 +1589,17 @@ Segmento padrão: eletrica. Hora padrão: ${horaAgora}. Apenas JSON, nada mais.`
       body: JSON.stringify({ texto, hoje, horaAgora, ativosInfo })
     });
     const jsonStr = await res.text();
-    const parsed = JSON.parse(jsonStr);
+    console.log('Voice raw response:', jsonStr);
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonStr);
+    } catch(parseErr) {
+      // Tentar extrair JSON da resposta
+      const match = jsonStr.match(/\{[\s\S]*\}/);
+      if(match) parsed = JSON.parse(match[0]);
+      else throw new Error('JSON inválido: ' + jsonStr.substring(0, 100));
+    }
+    console.log('Voice parsed:', parsed);
     voiceDadosInterpretados = parsed;
     mostrarResultadoVoice(parsed, texto);
   } catch(e) {
@@ -1617,10 +1627,13 @@ function mostrarResultadoVoice(dados, textoOriginal) {
 
   orb.className = 'voice-orb';
 
-  if(dados.acao === 'nao_entendido') {
+  // Debug: mostrar o que veio
+  console.log('mostrarResultadoVoice dados:', JSON.stringify(dados));
+
+  if(!dados.acao || dados.acao === 'nao_entendido') {
     orb.textContent = '❓';
     status.textContent = 'Não entendi bem...';
-    document.getElementById('voiceTranscript').textContent = dados.mensagem;
+    document.getElementById('voiceTranscript').textContent = dados.mensagem || JSON.stringify(dados);
     return;
   }
 
